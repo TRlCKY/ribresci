@@ -77,13 +77,13 @@ sudo nano /etc/pam.d/common-password
 
 Domain name: ribresci42
 
-User account: ribresci
+User account: ribresci42
 
-User password: Gioborbo42
+User password: bobby
 
 Encryption passphrase: bobby
 
-Root password: Gioborbo42
+Root password: bobby
 
 ##🖥️ HOSTNAME CONFIGURATION
 
@@ -165,7 +165,7 @@ Example:
 */10 * * * * sh /home/ribresci/monitoring.sh
 
 🌐 SSH CONNECTION
-ssh ribresci@localhost -p 4241
+ssh ribresci42@localhost -p 4241
 
 🔌 PORTS
 

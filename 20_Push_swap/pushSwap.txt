@@ -1,0 +1,31 @@
+Stack b vuoto.
+
+Stack a con numeri distinti in ordine casuale(se presi da terminale/dati di default il primo preso è il primo nell'ordine), da ordinare dal più piccolo al più grande nel numero più basso di operazioni possibile.
+
+Operazioni da poter usare:
+
+sa/b (swap a/b): Scambia i primi due elementi in cima allo stack a/b. Se b/a è vuoto, non fa nulla.
+
+ss : Fa sa e sb insieme.
+
+pa/b (push a/b): Prende il primo elemento in cima a b/a e lo mette in cima di a/b. Se b/a è vuoto, non fa nulla
+
+ra/b (rotate a/b): Shifta tutti gli elementi nello stack di 1 in su in modo che il primo elemento diventa l'ultimo.
+
+rr : Fa ra e rb insieme.
+
+rra/b (reverse rotate a/b): Shifta tutti gli elementi nello stack di 1 in su in modo che l'ultimo elemento diventa il primo.
+
+rrr : Fa rra and rrb insieme.
+
+Bisogna stampare le operazioni seguita da un "\n".
+
+In caso di errore(numeri non interi, numeri fuori dai limiti di int, numeri duplicati...) stampa "Error\n".
+
+Se non ci sono parametri, non stampa nulla.
+
+Voto minimo 80.
+
+Per prendere il massimo(100) bisogna avere:
+-100 numeri in meno di 700 operazioni;
+-500 numeri in meno di 5500 operazioni.

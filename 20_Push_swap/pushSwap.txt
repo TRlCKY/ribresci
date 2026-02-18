@@ -4,7 +4,7 @@ Stack a con numeri distinti in ordine casuale(se presi da terminale/dati di defa
 
 Operazioni da poter usare:
 
-sa/b (swap a/b): Scambia i primi due elementi in cima allo stack a/b. Se b/a è vuoto, non fa nulla.
+sa/b (swap a/b): Scambia i primi due elementi in cima allo stack a/b. Se a/b è vuoto o ha un solo elemento, non fa nulla.
 
 ss : Fa sa e sb insieme.
 

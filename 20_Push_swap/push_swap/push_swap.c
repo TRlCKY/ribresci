@@ -41,6 +41,7 @@ int	check_content(char *argv)
 int	main(int argc, char *argv)
 {
 	t_list	*a;
+	int		i;
 
 	if (argc < 2 || check_same(argv) || check_content(argv))
 		return ;
@@ -50,4 +51,5 @@ int	main(int argc, char *argv)
 		if (argv[argc])
 			ft_lstadd_back(a, argv[argc]);
 	}
+	
 }

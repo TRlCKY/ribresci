@@ -113,7 +113,7 @@ int	main(int argc, char *argv)
 	if (i >= 2 && i < 5)
 		manual_sort(a);
 	if (i >= 5 && i < 100)
-		chunk_sort(a);
-	if (i >= 100)
 		radix_sort(a);
+	if (i >= 100)
+		chunk_sort(a);
 }

@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 10:14:44 by ribresci          #+#    #+#             */
-/*   Updated: 2026/02/20 18:10:49 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/02/24 12:37:24 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	index(t_list **a, int i)
 {
 	unsigned char	*b;
 	t_list			*c;
-	int				e;
+	unsigned int	e;
 
 	b = malloc(sizeof(unsigned char) * i + 1);
 	if (!b)
@@ -107,21 +107,13 @@ int	main(int argc, char *argv)
 		return ;
 	a = ft_lstnew(argv[++argc]);
 	while (argv[++argc])
-<<<<<<< HEAD
-	{
-		if (argv[argc])
-			ft_lstadd_back(a, argv[argc]);
-	}
-	
-=======
 		ft_lstadd_back(a, argv[argc]);
 	i = ft_lstsize(a);
 	index(a, i);
-	if (i > 2 && i < 5)
+	if (i >= 2 && i < 5)
 		manual_sort(a);
 	if (i >= 5 && i < 100)
 		chunk_sort(a);
 	if (i >= 100)
 		radix_sort(a);
->>>>>>> 970033c (OKE)
 }

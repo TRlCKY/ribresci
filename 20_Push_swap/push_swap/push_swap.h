@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 11:00:22 by ribresci          #+#    #+#             */
-/*   Updated: 2026/02/20 18:47:47 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/02/24 12:21:10 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 typedef struct s_list
 {
 	void			*content;
-	void			*index;
+	unsigned int	*index;
 	struct s_list	*next;
 }	t_list;
 // Liste

@@ -6,54 +6,72 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 17:06:42 by ribresci          #+#    #+#             */
-/*   Updated: 2026/02/20 18:03:38 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/02/26 17:21:03 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-int	find_max(t_list **a, int limit)
+int	count_i(t_list **a, int x)
 {
 	t_list	*c;
-	int		max;
-	int		i;
+	int		n;
 
 	c = *a;
-	max = 0;
+	n = 0;
 	while (c->next)
 	{
-		i = c->index;
-		if (i > max && i < limit)
-			max = i;
+		if (c->index != x)
+			n++;
+		else
+			return (n);
+		c = c->next;
 	}
-	return (max);
+	if (n > ft_lstsize(*a) / 2)
+		n = (n - (ft_lstsize(*a) / 2)* -1);
+	return (n);
+}
+
+rotate_reverse(t_list **a, t_list **b, int *i)
+{
+	if (*i < 0)
+	{
+		reverse_rotate(*a, *b, 0);
+		*i++;
+	}
+	else
+	{
+		rotate(*a, *b, 0);
+		*i--;
+	}
 }
 
 void	chunk_sort(t_list **a)
 {
-	int		e;
 	int		n;
 	int		x;
-	t_list	*b;
-	t_list	*c;
+	int		i;
+	t_list	**b;
 
 	b = ft_lstnew(NULL);
-	c = *a;
-	e = get_number(ft_lstsize(c));
-	n = ft_lstsize(c) / e;
-	x = ft_lstsize(c);
+	n = ft_lstsize(*a) / get_number(ft_lstsize(*a));
+	x = ft_lstsize(*a) - 1;
 	while (n--)
 	{
-		c = *a;
-		while (c->next)
-		{
-			if (c->index == find_max(c, x))
-			{
-				push(c, b, 0);
-				x--;
-			}
-			c = c->next;
-		}
-		
+		i = count_i(*a, x);
+		x--;
+		if (i == 1)
+			rotate(*a, *b, 0);
+		else
+			while (i != 0)
+				rotate_reverse(*a, *b, &i);
+		push(*b, *a, 0);
 	}
 }
+
+/*
+	Push prende solo il 1o elemento. Non potendo modificare la lista
+	si usa il rotate/reverse rotate/swap per spostare l'elemento
+	che va pushato nell'altro stack. Non si usa c per pushare ma solo
+	a.
+*/

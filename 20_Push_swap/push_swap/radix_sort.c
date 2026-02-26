@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 17:06:49 by ribresci          #+#    #+#             */
-/*   Updated: 2026/02/24 12:45:43 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/02/26 18:39:07 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,13 @@ void	radix_sort(t_list **a)
 		c = *a;
 		while (c->next)
 		{
+			while (c->index != (*a)->index)
+				c = c->index;
 			x = c->index;
-			if (x == 0)
-				push(b, a, 1);
+			if (x % 2 == 0)
+				push(b, *a, 1);
 			else
-				rotate(a, b, 0);
+				rotate(*a, b, 0);
 			c->index = x >> 1;
 			c = c->next;
 		}

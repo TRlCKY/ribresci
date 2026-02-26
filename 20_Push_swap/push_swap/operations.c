@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 11:31:43 by ribresci          #+#    #+#             */
-/*   Updated: 2026/02/18 12:38:34 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/02/26 12:19:32 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ void	rotate(t_list **a, t_list **b, int x)
 		*b = (*b)->next;
 		ft_lstadd_back(b, c);
 	}
+	free (c);
 }
 
 void	reverse_rotate2(t_list **b)

@@ -6,12 +6,12 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 10:14:44 by ribresci          #+#    #+#             */
-/*   Updated: 2026/02/24 12:37:24 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/02/27 09:50:01 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-
+// Controlla che tutti gli argomenti siano diversi
 int	check_same(char *argv)
 {
 	int	i;
@@ -33,7 +33,8 @@ int	check_same(char *argv)
 	return (0);
 }
 
-void	order(t_list **a, unsigned char **b, int i)
+// Ordina l'array dopo aver ricevuto i valori contenuti nella lista
+char	*order(t_list **a, unsigned char **b, int i)
 {
 	int				e;
 	int				k;
@@ -55,9 +56,11 @@ void	order(t_list **a, unsigned char **b, int i)
 		}
 		e++;
 	}
+	return (*b);
 }
 
-void	fill_array(unsigned char **b, t_list **a)
+// Riempie l'array da ordinare con gli elementi della lista
+char	*fill_array(unsigned char **b, t_list **a)
 {
 	int		e;
 	t_list	*c;
@@ -71,10 +74,12 @@ void	fill_array(unsigned char **b, t_list **a)
 		b[e++] = c->content;
 		c = c->next;
 	}
-	order(a, b, i);
+	b = order(a, b, i);
+	return (b);
 }
 
-void	index(t_list **a, int i)
+// Indicizza la lista
+char	*index(t_list **a, int i)
 {
 	unsigned char	*b;
 	t_list			*c;
@@ -95,13 +100,14 @@ void	index(t_list **a, int i)
 		}
 		c = c->next;
 	}
-	free(b);
+	return (b);
 }
 
 int	main(int argc, char *argv)
 {
 	t_list	*a;
 	int		i;
+	char	*num;
 
 	if (argc < 2 || check_same(argv) || check_content(argv))
 		return ;
@@ -109,11 +115,11 @@ int	main(int argc, char *argv)
 	while (argv[++argc])
 		ft_lstadd_back(a, argv[argc]);
 	i = ft_lstsize(a);
-	index(a, i);
+	num = index(a, i);
 	if (i >= 2 && i < 5)
 		manual_sort(a);
 	if (i >= 5 && i < 100)
-		radix_sort(a);
+		radix_sort(a, num);
 	if (i >= 100)
 		chunk_sort(a);
 }

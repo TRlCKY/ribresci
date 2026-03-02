@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 17:06:49 by ribresci          #+#    #+#             */
-/*   Updated: 2026/02/27 09:54:01 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/03/02 15:04:41 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 void	push_back(t_list **a, t_list **b)
 {
 	while ((*b)->next)
-		push(*a, *b, 0);
+		push(a, b, 0);
 }
 
 // Trova il numero di bit che servono a rappresentare il numero passato
@@ -37,15 +37,15 @@ int	get_number(int x)
 
 // Il get_number(ft_lstsize) da il numero di cicli per shiftare tutti i bit
 // Il ciclo interno lavora su tutti gli elementi della lista
-void	radix_sort(t_list **a, char *num)
+void	radix_sort(t_list **a)
 {
-	t_list			*b;
+	t_list			**b;
 	int				e;
 	int				i;
 	unsigned int	x;
 
 	e = get_number(ft_lstsize(*a));
-	b = ft_lstnew(NULL);
+	b = NULL;
 	while (e--)
 	{
 		i = ft_lstsize(*a);

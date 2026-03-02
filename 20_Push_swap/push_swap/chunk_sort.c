@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 17:06:42 by ribresci          #+#    #+#             */
-/*   Updated: 2026/02/27 18:17:54 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/03/02 09:49:57 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 // Controlla quante posizioni ci sono per raggungere il nodo che contiene x e se
 // supera la meta' lo mette negativo per distinguere le operazioni da fare
-int	count_i(t_list **a, int x)
+int	count_pos(t_list **a, int x)
 {
 	t_list	*c;
 	int		n;
@@ -38,17 +38,17 @@ int	count_i(t_list **a, int x)
 // avere il nodo che contiene x in cima ad a
 void	rotate_reverse(t_list **a, t_list **b, int *i)
 {
-	while (*i != 0)
+	while (i != 0)
 	{
-		if (*i < 0)
+		if (i < 0)
 		{
 			reverse_rotate(*a, *b, 0);
-			(*i)++;
+			i++;
 		}
 		else
 		{
 			rotate(*a, *b, 0);
-			(*i)--;
+			i--;
 		}
 	}
 }
@@ -76,7 +76,6 @@ void	chunk_sort(t_list **a)
 {
 	int		n;
 	int		x;
-	int		i;
 	int		e;
 	t_list	**b;
 
@@ -91,11 +90,10 @@ void	chunk_sort(t_list **a)
 			// controllare calcolo visto che n si decrementa
 			if (n * e != ft_lstsize(*a) && n == 1)
 				e += ft_lstsize(*a) % n;
-			i = count_i(*a, x--);
-			if (i == 1)
+			if (count_pos(*a, x--) == 1)
 				rotate(*a, *b, 0);
 			else
-				rotate_reverse(*a, *b, &i);
+				rotate_reverse(*a, *b, count_pos(*a, x--));
 			push(*b, *a, 1);
 		}
 		send_back(*a, *b);

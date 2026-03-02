@@ -6,35 +6,14 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 10:14:44 by ribresci          #+#    #+#             */
-/*   Updated: 2026/02/27 09:50:01 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/03/02 16:12:34 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-// Controlla che tutti gli argomenti siano diversi
-int	check_same(char *argv)
-{
-	int	i;
-	int	e;
-
-	i = 1;
-	e = 1;
-	while (argv[i])
-	{
-		while (argv[e])
-		{
-			if (argv[i] != argv[e] && i != e)
-				e++;
-			else
-				return (1);
-		}
-		i++;
-	}
-	return (0);
-}
 
 // Ordina l'array dopo aver ricevuto i valori contenuti nella lista
-char	*order(t_list **a, unsigned char **b, int i)
+unsigned char	*order(unsigned char **b, int i)
 {
 	int				e;
 	int				k;
@@ -56,11 +35,11 @@ char	*order(t_list **a, unsigned char **b, int i)
 		}
 		e++;
 	}
-	return (*b);
+	return (b);
 }
 
 // Riempie l'array da ordinare con gli elementi della lista
-char	*fill_array(unsigned char **b, t_list **a)
+unsigned char	*fill_array(unsigned char *b, t_list **a)
 {
 	int		e;
 	t_list	*c;
@@ -74,18 +53,18 @@ char	*fill_array(unsigned char **b, t_list **a)
 		b[e++] = c->content;
 		c = c->next;
 	}
-	b = order(a, b, i);
+	b = order(b, i);
 	return (b);
 }
 
 // Indicizza la lista
-char	*index(t_list **a, int i)
+void	*index(t_list **a, int i)
 {
 	unsigned char	*b;
 	t_list			*c;
-	unsigned int	e;
+	int				e;
 
-	b = malloc(sizeof(unsigned char) * i + 1);
+	b = malloc(sizeof(unsigned char) * (i + 1));
 	if (!b)
 		return (NULL);
 	fill_array(b, a);
@@ -95,31 +74,29 @@ char	*index(t_list **a, int i)
 		e = 0;
 		while (e < i)
 		{
-			if (b[e] == c->content)
+			if (b[e] == (unsigned char)c->content)
 				c->index = e++;
 		}
 		c = c->next;
 	}
-	return (b);
 }
 
 int	main(int argc, char *argv)
 {
 	t_list	*a;
 	int		i;
-	char	*num;
 
-	if (argc < 2 || check_same(argv) || check_content(argv))
+	if (argc < 2 || check_all(argv) || check_content(argv))
 		return ;
 	a = ft_lstnew(argv[++argc]);
 	while (argv[++argc])
 		ft_lstadd_back(a, argv[argc]);
 	i = ft_lstsize(a);
-	num = index(a, i);
+	index(a, i);
 	if (i >= 2 && i < 5)
 		manual_sort(a);
 	if (i >= 5 && i < 100)
-		radix_sort(a, num);
+		radix_sort(a);
 	if (i >= 100)
 		chunk_sort(a);
 }

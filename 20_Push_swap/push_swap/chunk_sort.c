@@ -12,6 +12,17 @@
 
 #include "push_swap.h"
 
+// Non ci sono 2 stack ma 4 posizioni: TOP_A/B e BOTTOM_A/B
+// Ci sono 3 chunk grandi:
+// - TOP/BOTTOM_A con i numeri più grandi(ra);
+// - TOP_B con i numeri intermedi(pb);
+// - BOTTOM_B con i numeri più piccoli(pb, rb);
+// Si riutilizza la stessa divisione in chunk per ognuno creando dei mini-chunk
+// con MAX, MID e MIN finchè non si arriva ad avere dei chunk di 2 o 1 elementi.
+// A quel punto si usa swap e poi si riunisco ordinati per riavere il MAX. Le
+// stesse operazioni si fanno con MID e MIN.
+
+
 // Controlla quante posizioni ci sono per raggungere il nodo che contiene x e se
 // supera la meta' lo mette negativo per distinguere le operazioni da fare
 int	count_pos(t_list **a, int x)
@@ -99,10 +110,3 @@ void	chunk_sort(t_list **a)
 		send_back(*a, *b);
 	}
 }
-
-/*
-	Push prende solo il 1o elemento. Non potendo modificare la lista
-	si usa il rotate/reverse rotate/swap per spostare l'elemento
-	che va pushato nell'altro stack. Non si usa c per pushare ma solo
-	a.
-*/

@@ -21,7 +21,7 @@ void	swap(t_list	**a, t_list **b, int x)
 {
 	t_list	*c;
 
-	if (ft_lstsize(a) <= 1)
+	if (ft_lstsize(*a) <= 1)
 		return ;
 	if (x == 0)
 		ft_printf("sa\n");
@@ -29,15 +29,17 @@ void	swap(t_list	**a, t_list **b, int x)
 		ft_printf("sb\n");
 	c = (*a)->next;
 	(*a)->next = c->next;
-	c->next = a;
+	c->next = *a;
+	*a = c;
 	if (x == 2)
 	{
-		if (ft_lstsize(b) <= 1)
+		if (!(*b))
 			return ;
 		ft_printf("ss\n");
 		c = (*b)->next;
 		(*b)->next = c->next;
-		c->next = b;
+		c->next = *b;
+		*b = c;
 	}
 }
 
@@ -45,7 +47,7 @@ void	push(t_list **a, t_list **b, int x)
 {
 	t_list	*c;
 
-	if (ft_lstsize(b) <= 1)
+	if (!(*b))
 		return ;
 	if (x == 0)
 		ft_printf("pa\n");
@@ -53,14 +55,14 @@ void	push(t_list **a, t_list **b, int x)
 		ft_printf("pb\n");
 	c = *b;
 	*b = (*b)->next;
-	ft_lstadd_front(a, b);
+	ft_lstadd_front(a, c);
 }
 
 void	rotate(t_list **a, t_list **b, int x)
 {
 	t_list	*c;
 
-	if (ft_lstsize(a) <= 1)
+	if (ft_lstsize(*a) <= 1)
 		return ;
 	if (x == 0)
 		ft_printf("ra\n");
@@ -68,17 +70,17 @@ void	rotate(t_list **a, t_list **b, int x)
 		ft_printf("rb\n");
 	c = *a;
 	*a = (*a)->next;
+	c->next = NULL;
 	ft_lstadd_back(a, c);
 	if (x == 2)
 	{
-		if (ft_lstsize(b) <= 1)
+		if (ft_lstsize(*b) <= 1)
 			return ;
 		ft_printf("rr\n");
 		c = *b;
 		*b = (*b)->next;
 		ft_lstadd_back(b, c);
 	}
-	free (c);
 }
 
 void	reverse_rotate2(t_list **b)
@@ -90,7 +92,7 @@ void	reverse_rotate2(t_list **b)
 	if (ft_lstsize(*b) <= 1)
 		return ;
 	ft_printf("rrr\n");
-	i = ft_lstsize(*b) - 1;
+	i = ft_lstsize(*b) - 2;
 	c = ft_lstlast(*b);
 	d = *b;
 	while (i--)
@@ -111,7 +113,7 @@ void	reverse_rotate(t_list **a, t_list **b, int x)
 		ft_printf("rra\n");
 	if (x == 1)
 		ft_printf("rrb\n");
-	i = ft_lstsize(*a) - 1;
+	i = ft_lstsize(*a) - 2;
 	c = ft_lstlast(*a);
 	d = *a;
 	while (i--)

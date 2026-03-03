@@ -93,10 +93,10 @@ int	main(int argc, char *argv)
 		ft_lstadd_back(a, argv[argc]);
 	i = ft_lstsize(a);
 	index(a, i);
-	if (i >= 2 && i < 5)
+	if (i >= 2 && i <= 5)
 		manual_sort(a);
-	if (i >= 5 && i < 100)
-		radix_sort(a);
-	if (i >= 100)
+	if (i > 5 && i <= 300)
 		chunk_sort(a);
+	if (i > 300)
+		radix_sort(a);
 }

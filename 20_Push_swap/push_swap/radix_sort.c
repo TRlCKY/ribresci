@@ -15,7 +15,7 @@
 // Pusha tutto da b in a
 void	push_back(t_list **a, t_list **b)
 {
-	while ((*b)->next)
+	while (*b)
 		push(a, b, 0);
 }
 
@@ -25,7 +25,7 @@ int	get_number(int x)
 	int	i;
 	int	n;
 
-	i = 1;
+	i = 0;
 	n = 1;
 	while (n < x)
 	{
@@ -39,25 +39,27 @@ int	get_number(int x)
 // Il ciclo interno lavora su tutti gli elementi della lista
 void	radix_sort(t_list **a)
 {
-	t_list			**b;
-	int				e;
-	int				i;
-	unsigned int	x;
+	t_list	*b;
+	int		e;
+	int		i;
+	int		x;
+	int		n;
 
 	e = get_number(ft_lstsize(*a));
 	b = NULL;
+	n = 0;
 	while (e--)
 	{
 		i = ft_lstsize(*a);
 		while (i--)
 		{
 			x = (*a)->index;
-			if (x % 2 == 0)
-				push(b, *a, 1);
+			if ((x >> n) & 1)
+				rotate(a, b, 0);
 			else
-				rotate(*a, b, 0);
-			(*a)->index = x >> 1;
+				push(b, a, 1);
 		}
+		n++;
 	}
 	push_back(a, b);
 }

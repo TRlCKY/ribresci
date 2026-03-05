@@ -55,7 +55,7 @@ void	radix_sort(t_list **a)
 		{
 			x = (*a)->index;
 			if ((x >> n) & 1)
-				rotate(a, b, 0);
+				rotate(a, NULL, 0);
 			else
 				push(b, a, 1);
 		}

@@ -81,12 +81,12 @@ void	*index(t_list **a, int i)
 	}
 }
 
-int	main(int argc, char *argv)
+int	main(int argc, char **argv)
 {
 	t_list	*a;
 	int		i;
 
-	if (argc < 2 || check_all(argv) || check_content(argv))
+	if (check_all(argv))
 		return ;
 	a = ft_lstnew(argv[++argc]);
 	while (argv[++argc])

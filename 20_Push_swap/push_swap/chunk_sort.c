@@ -12,8 +12,8 @@
 
 #include "push_swap.h"
 
-// Se non si trova in prima/ultima posizione lo trova e lo mette o in prima o in
-// ultima posizione
+// Se il valore piu' alto non si trova in prima/ultima posizione lo trova e lo 
+// mette o in prima o in ultima posizione
 int	find_max(t_list **b)
 {
 	int		max;
@@ -44,13 +44,24 @@ int	find_max(t_list **b)
 // non si trova in cima o in fondo alla lista
 void	send_back(t_list **a, t_list **b)
 {
-	t_list	*c;
+	int		i;
 
 	while (*b)
 	{
-		c = ft_lstlast(*b);
-		if (c->index < (*b)->index)
-			reverse_rotate(b, NULL, 1);
+		i = find_max(*b);
+		while (i != 0 || i != ft_lstsize(*b))
+		{
+			if (i > ft_lstsize(*b) / 2)
+			{
+				reverse_rotate(b, NULL, 1);
+				i++;
+			}
+			else
+			{
+				rotate(b, NULL, 1);
+				i--;
+			}
+		}
 		push(a, b, 0);
 	}
 }

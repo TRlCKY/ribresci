@@ -20,7 +20,7 @@ void	sort2(t_list **a)
 	b = *a;
 	b = b->next;
 	if ((*a)->index > b->index)
-		swap(a, a, 0);
+		swap(a, NULL, 0);
 }
 
 // Ordina manualmente ogni caso:
@@ -39,21 +39,21 @@ void	sort3(t_list **a)
 	c = b;
 	c = c->next;
 	if ((*a)->index > b->index && (*a)->index < c->index)
-		swap(a, a, 0);
+		swap(a, NULL, 0);
 	if ((*a)->index < b->index && b->index > c->index)
 	{
-		reverse_rotate(a, a, 0);
-		swap(a, a, 0);
+		reverse_rotate(a, NULL, 0);
+		swap(a, NULL, 0);
 	}
 	if ((*a)->index > b->index && b->index > c->index)
 	{
-		rotate(a, a, 0);
-		swap(a, a, 0);
+		rotate(a, NULL, 0);
+		swap(a, NULL, 0);
 	}
 	if ((*a)->index < b->index && b->index > c->index)
-		reverse_rotate(a, a, 0);
+		reverse_rotate(a, NULL, 0);
 	if ((*a)->index > b->index && b->index < c->index)
-		rotate(a, a, 0);
+		rotate(a, NULL, 0);
 }
 
 void	sort4(t_list **a)
@@ -68,9 +68,9 @@ void	sort4(t_list **a)
 	else
 	{
 		if (e == 3)
-			reverse_rotate(a, b, 0);
+			reverse_rotate(a, NULL, 0);
 		while (e--)
-			rotate(a, b, 0);
+			rotate(a, NULL, 0);
 		push(a, b, 1);
 	}
 	sort3(a);
@@ -89,9 +89,9 @@ void	sort5(t_list **a)
 	else
 	{
 		if (e == 3)
-			reverse_rotate(a, b, 0);
+			reverse_rotate(a, NULL, 0);
 		while (e--)
-			rotate(a, b, 0);
+			rotate(a, NULL, 0);
 		push(a, b, 1);
 	}
 	sort4(a);

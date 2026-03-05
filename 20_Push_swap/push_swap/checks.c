@@ -13,6 +13,7 @@
 #include "push_swap.h"
 
 // Controlla che tutti gli argomenti siano diversi
+// Restituisce 0 se non lo sono, 1 se lo sono
 int	check_same(char *argv)
 {
 	int	i;
@@ -27,14 +28,15 @@ int	check_same(char *argv)
 			if (argv[i] != argv[e] && i != e)
 				e++;
 			else
-				return (1);
+				return (0);
 		}
 		i++;
 	}
-	return (0);
+	return (1);
 }
 
 // Controlla che gli elementi siano gia' in ordine
+// Restituisce 0 se non lo sono, 1 se lo sono
 int	is_in_order(t_list **a)
 {
 	t_list	*b;
@@ -53,10 +55,11 @@ int	is_in_order(t_list **a)
 	return (1);
 }
 
+// Restituisce 0 se non e' tutto corretto, 1 se lo e'
 int	check_all(t_list	**argv)
 {
 	if (is_in_order(*argv) && check_same(*argv))
-		return (0);
-	else
 		return (1);
+	else
+		return (0);
 }

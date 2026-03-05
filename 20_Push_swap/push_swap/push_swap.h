@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 11:00:22 by ribresci          #+#    #+#             */
-/*   Updated: 2026/03/02 16:12:19 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/03/05 16:26:33 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void			radix_sort(t_list **a);
 int				count_pos(t_list **a, int x);
 void			rotate_reverse(t_list **a, t_list **b, int *i);
 void			send_back(t_list **a, t_list **b);
-void			chunk_sort(t_list **a);
+void			chunk_sort(t_list **a, int size);
 // Controlli
 int				check_same(char *argv);
 int				is_in_order(t_list **a);

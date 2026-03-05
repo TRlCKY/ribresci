@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 10:14:44 by ribresci          #+#    #+#             */
-/*   Updated: 2026/03/02 16:12:34 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/03/05 16:26:08 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,8 @@ int	main(int argc, char *argv)
 	index(a, i);
 	if (i >= 2 && i <= 5)
 		manual_sort(a);
-	if (i > 5 && i <= 300)
-		chunk_sort(a);
-	if (i > 300)
+	if (i > 5 && i <= 100)
+		chunk_sort(a, i);
+	if (i > 100)
 		radix_sort(a);
 }

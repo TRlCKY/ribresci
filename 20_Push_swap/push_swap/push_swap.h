@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 11:00:22 by ribresci          #+#    #+#             */
-/*   Updated: 2026/03/05 16:26:33 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/03/06 17:11:14 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,16 @@ void			rotate_reverse(t_list **a, t_list **b, int *i);
 void			send_back(t_list **a, t_list **b);
 void			chunk_sort(t_list **a, int size);
 // Controlli
-int				check_same(char *argv);
+int				has_duplicates(t_list **a);
 int				is_in_order(t_list **a);
-int				check_all(t_list	**argv);
+int				ft_strlen(const char *str);
+void			check_limit(const char *str, int *x);
+char			*ft_atoi(const char *str);
+t_list			*convert_str(char **argv);
 // Main
 unsigned char	*order(unsigned char **b, int i);
 unsigned char	*fill_array(unsigned char **b, t_list **a);
-void			*index(t_list **a, int i);
+void			*index(t_list *a, int i);
+int				man_rad_chun(t_list **a, int i);
 int				main(int argc, char **argv);
 #endif

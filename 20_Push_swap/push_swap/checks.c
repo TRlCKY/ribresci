@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 10:16:04 by ribresci          #+#    #+#             */
-/*   Updated: 2026/03/02 10:18:27 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/03/06 16:24:00 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,24 @@
 
 // Controlla che tutti gli argomenti siano diversi
 // Restituisce 0 se non lo sono, 1 se lo sono
-int	check_same(char *argv)
+int	has_duplicates(t_list **a)
 {
-	int	i;
-	int	e;
+	t_list	*b;
+	t_list	*c;
 
-	i = 1;
-	e = 1;
-	while (argv[i])
+	b = *a;
+	while (b)
 	{
-		while (argv[e])
+		c = b->next;
+		while (c)
 		{
-			if (argv[i] != argv[e] && i != e)
-				e++;
-			else
-				return (0);
+			if (b->content == c->content)
+				return (1);
+			b = b->next;
+			c = c->next;
 		}
-		i++;
 	}
-	return (1);
+	return (0);
 }
 
 // Controlla che gli elementi siano gia' in ordine
@@ -43,9 +42,8 @@ int	is_in_order(t_list **a)
 	t_list	*c;
 
 	b = *a;
-	c = *a;
-	c = c->next;
-	while (c->next)
+	c = b->next;
+	while (c)
 	{
 		if (b->index > c->index)
 			return (0);
@@ -55,11 +53,16 @@ int	is_in_order(t_list **a)
 	return (1);
 }
 
-// Restituisce 0 se non e' tutto corretto, 1 se lo e'
-int	check_all(t_list	**argv)
+// Resituisce la lunghezza della stringa
+int	ft_strlen(const char *str)
 {
-	if (is_in_order(*argv) && check_same(*argv))
-		return (1);
-	else
-		return (0);
+	int	i;
+
+	i = 0;
+	if (str)
+	{
+		while (str[i])
+			i++;
+	}
+	return (i);
 }

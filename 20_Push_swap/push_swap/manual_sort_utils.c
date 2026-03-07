@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 12:40:35 by ribresci          #+#    #+#             */
-/*   Updated: 2026/03/02 13:06:23 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/03/07 11:22:43 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ int	find_min(t_list **a)
 	min = (*a)->index;
 	b = *a;
 	b = b->next;
-	i = 0;
+	i = 1;
 	e = 0;
-	while (b->next)
+	while (b)
 	{
 		if (min > b->index)
 		{

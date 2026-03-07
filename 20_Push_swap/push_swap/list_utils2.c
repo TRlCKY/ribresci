@@ -6,14 +6,14 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 11:10:17 by ribresci          #+#    #+#             */
-/*   Updated: 2026/02/18 11:11:07 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/03/07 10:59:10 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 #include <stdlib.h>
 
-void	ft_lstiter(t_list *lst, void (*f)(void *))
+void	ft_lstiter(t_list *lst, void (*f)(int))
 {
 	if (!lst || !f)
 		return ;
@@ -24,34 +24,7 @@ void	ft_lstiter(t_list *lst, void (*f)(void *))
 	}
 }
 
-t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
-{
-	t_list	*final;
-	t_list	*ptr;
-
-	if (!lst || !f || !del)
-		return (NULL);
-	final = ft_lstnew(f(lst->content));
-	if (!final)
-	{
-		ft_lstclear(&final, del);
-		return (NULL);
-	}
-	while (lst->next)
-	{
-		lst = lst->next;
-		ptr = ft_lstnew(f(lst->content));
-		if (!ptr)
-		{
-			ft_lstclear(&final, del);
-			return (NULL);
-		}
-		ft_lstadd_back(&final, ptr);
-	}
-	return (final);
-}
-
-t_list	*ft_lstnew(void *content)
+t_list	*ft_lstnew(int content)
 {
 	t_list	*ptr;
 

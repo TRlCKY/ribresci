@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 11:31:43 by ribresci          #+#    #+#             */
-/*   Updated: 2026/03/06 18:51:27 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/03/07 12:17:59 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <limits.h>
 #include <string.h>
 
+// Scambia i primi 2 elementi
 void	swap(t_list	**a, t_list **b, int x)
 {
 	t_list	*c;
@@ -34,16 +35,16 @@ void	swap(t_list	**a, t_list **b, int x)
 	}
 	if ((x == 1 || x == 2) && (*b) && (*b)->next)
 	{
-		ft_printf("sb\n");
 		c = (*b)->next;
 		(*b)->next = c->next;
 		c->next = *b;
 		*b = c;
 		if (x == 1)
-			ft_printf("sa\n");
+			ft_printf("sb\n");
 	}
 }
 
+// Sposta il primo elemento di (b) in cima ad (a)
 void	push(t_list **a, t_list **b, int x)
 {
 	t_list	*c;
@@ -59,6 +60,7 @@ void	push(t_list **a, t_list **b, int x)
 	ft_lstadd_front(a, c);
 }
 
+// Sposta il primo elemento nell'ultima posizione
 void	rotate(t_list **a, t_list **b, int x)
 {
 	t_list	*c;
@@ -100,9 +102,10 @@ void	reverse_rotate2(t_list **b)
 	while (i--)
 		d = d->next;
 	d->next = NULL;
-	ft_lstadd_back(b, c);
+	ft_lstadd_front(b, c);
 }
 
+// Sposta l'ultimo elemento in prima posizione
 void	reverse_rotate(t_list **a, t_list **b, int x)
 {
 	t_list	*c;
@@ -121,7 +124,7 @@ void	reverse_rotate(t_list **a, t_list **b, int x)
 	while (i--)
 		d = d->next;
 	d->next = NULL;
-	ft_lstadd_back(a, c);
+	ft_lstadd_front(a, c);
 	if (x == 2 && ft_lstsize(*b) >= 2)
 		reverse_rotate2(b);
 }

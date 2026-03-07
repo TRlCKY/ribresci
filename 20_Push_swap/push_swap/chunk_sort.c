@@ -48,7 +48,7 @@ void	send_back(t_list **a, t_list **b)
 
 	while (*b)
 	{
-		i = find_max(*b);
+		i = find_max(b);
 		while (i != 0 || i != ft_lstsize(*b))
 		{
 			if (i > ft_lstsize(*b) / 2)
@@ -124,7 +124,6 @@ void	find_chunk(t_list **a, int size, int chunk_size, int n)
 void	chunk_sort(t_list **a, int size)
 {
 	int		n;
-	int		i;
 	int		chunk_size;
 	int		chunk_size2;
 	t_list	*b;

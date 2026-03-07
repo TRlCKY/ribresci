@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 10:14:44 by ribresci          #+#    #+#             */
-/*   Updated: 2026/03/06 17:09:21 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/03/07 12:11:40 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	*fill_array(int *b, t_list **a)
 }
 
 // Indicizza la lista basandosi sull'array creato
-void	index(t_list **a, int i)
+void	set_index(t_list **a, int i)
 {
 	int		*b;
 	t_list	*c;
@@ -105,28 +105,28 @@ int	man_rad_chun(t_list **a, int i)
 int	main(int argc, char **argv)
 {
 	t_list	*a;
-	int		i;
 	int		e;
 
-	e = 0;
+	e = 1;
 	if (argc == 1)
 		return (0);
 	if (argc == 2)
 		a = convert_str(argv[1]);
 	else
 	{
-		a = ft_lstnew(ft_atoi(argv[++e]));
-		while (argv[++e])
-			ft_lstadd_back(&a, ft_lstnew(ft_atoi(argv[e])));
+		a = ft_lstnew(ft_atoi(argv[e++]));
+		while (argv[e])
+			ft_lstadd_back(&a, ft_lstnew(ft_atoi(argv[e++])));
 	}
-	i = ft_lstsize(a);
-	index(&a, i);
-	if (has_duplicates(a) || is_over_limit(a))
+	set_index(&a, ft_lstsize(a));
+	if (has_duplicates(&a))
 	{
 		ft_printf("Error\n");
 		return (0);
 	}
-	if (is_in_order(a) || i < 2)
+	if (is_in_order(&a) || ft_lstsize(a) < 2)
 		return (0);
-	return (man_rad_chun(&a, i));
+	man_rad_chun(&a, ft_lstsize(a));
+	ft_lstclear(&a);
+	return (0);
 }

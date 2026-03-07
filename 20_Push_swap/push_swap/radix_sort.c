@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 17:06:49 by ribresci          #+#    #+#             */
-/*   Updated: 2026/03/05 16:20:18 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/03/07 11:02:27 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,9 @@ void	radix_sort(t_list **a)
 			if ((x >> n) & 1)
 				rotate(a, NULL, 0);
 			else
-				push(b, a, 1);
+				push(&b, a, 1);
 		}
 		n++;
 	}
-	push_back(a, b);
+	push_back(a, &b);
 }

@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 12:31:19 by ribresci          #+#    #+#             */
-/*   Updated: 2026/03/02 13:10:47 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/03/07 12:23:53 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@ void	sort3(t_list **a)
 	b = b->next;
 	c = b;
 	c = c->next;
-	if ((*a)->index > b->index && (*a)->index < c->index)
+	if ((*a)->index > b->index && (*a)->index < c->index && b->index < c->index)
 		swap(a, NULL, 0);
-	if ((*a)->index < b->index && b->index > c->index)
+	if ((*a)->index < b->index && b->index > c->index && (*a)->index < c->index)
 	{
 		reverse_rotate(a, NULL, 0);
 		swap(a, NULL, 0);
@@ -50,52 +50,57 @@ void	sort3(t_list **a)
 		rotate(a, NULL, 0);
 		swap(a, NULL, 0);
 	}
-	if ((*a)->index < b->index && b->index > c->index)
+	if ((*a)->index < b->index && b->index > c->index && (*a)->index > c->index)
 		reverse_rotate(a, NULL, 0);
-	if ((*a)->index > b->index && b->index < c->index)
+	if ((*a)->index > b->index && b->index < c->index && (*a)->index > c->index)
 		rotate(a, NULL, 0);
 }
 
 void	sort4(t_list **a)
 {
-	t_list	**b;
+	t_list	*b;
 	int		e;
 
 	b = NULL;
 	e = find_min(a);
 	if (e == 0)
-		push(a, b, 1);
+		push(&b, a, 1);
 	else
 	{
 		if (e == 3)
 			reverse_rotate(a, NULL, 0);
 		while (e--)
 			rotate(a, NULL, 0);
-		push(a, b, 1);
+		push(&b, a, 1);
 	}
 	sort3(a);
-	push(b, a, 0);
+	push(a, &b, 0);
 }
 
 void	sort5(t_list **a)
 {
-	t_list	**b;
+	t_list	*b;
 	int		e;
 
 	b = NULL;
 	e = find_min(a);
 	if (e == 0)
-		push(a, b, 1);
+		push(&b, a, 1);
 	else
 	{
 		if (e == 3)
+		{
+			reverse_rotate(a, NULL, 0);
+			e++;
+		}
+		if (e == 4)
 			reverse_rotate(a, NULL, 0);
 		while (e--)
 			rotate(a, NULL, 0);
-		push(a, b, 1);
+		push(&b, a, 1);
 	}
 	sort4(a);
-	push(b, a, 0);
+	push(a, &b, 0);
 }
 
 void	manual_sort(t_list **a)

@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 11:06:50 by ribresci          #+#    #+#             */
-/*   Updated: 2026/02/18 11:09:19 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/03/07 12:03:36 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,30 +49,16 @@ void	ft_lstadd_front(t_list **lst, t_list *new)
 	}
 }
 
-void	ft_lstclear(t_list **lst, void (*del)(void *))
+void	ft_lstclear(t_list **lst)
 {
 	t_list	*ptr;
 
-	if (!(*lst))
+	if (!lst || !(*lst))
 		return ;
-	ptr = *lst;
-	while (ptr)
+	while (*lst)
 	{
-		del((*lst)->content);
 		ptr = (*lst)->next;
 		free(*lst);
 		*lst = ptr;
 	}
-	*lst = NULL;
-}
-
-void	ft_lstdelone(t_list *lst, void (*del)(void *))
-{
-	t_list	*ptr;
-
-	if (!lst || !del)
-		return ;
-	ptr = lst;
-	del(ptr->content);
-	free(ptr);
 }

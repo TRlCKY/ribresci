@@ -6,12 +6,36 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 16:46:39 by ribresci          #+#    #+#             */
-/*   Updated: 2026/03/06 16:12:17 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/03/07 10:44:27 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "push_swap.h"
+
+unsigned int	ft_strlcpy(char *dest, const char *src, size_t size)
+{
+	size_t	i;
+	size_t	e;
+
+	i = 0;
+	e = 0;
+	if (src && dest)
+	{
+		while (src[e])
+			e++;
+		if (size > 0)
+		{
+			while (src[i] != '\0' && i < size - 1)
+			{
+				dest[i] = src[i];
+				i++;
+			}
+			dest[i] = '\0';
+		}
+	}
+	return (e);
+}
 
 int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {

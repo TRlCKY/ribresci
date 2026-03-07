@@ -6,11 +6,12 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 11:13:37 by ribresci          #+#    #+#             */
-/*   Updated: 2026/02/18 11:15:16 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/03/07 10:46:59 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
+#include "push_swap.h"
 #include <stddef.h>
 
 int	ft_print_pointer(void *p)

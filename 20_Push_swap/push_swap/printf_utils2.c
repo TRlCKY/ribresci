@@ -6,13 +6,14 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 11:15:32 by ribresci          #+#    #+#             */
-/*   Updated: 2026/02/18 11:18:37 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/03/07 10:51:40 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <stddef.h>
 #include <limits.h>
+#include "push_swap.h"
 
 int	power(int a, int b)
 {
@@ -106,7 +107,7 @@ int	ft_putnbr_fd_di(int n, int fd)
 	int	x;
 
 	i = 0;
-	e = count1(n, 1);
+	e = count(n);
 	x = 0;
 	if (n < 0)
 		x++;
@@ -114,8 +115,8 @@ int	ft_putnbr_fd_di(int n, int fd)
 		return (1);
 	while (e > 0)
 	{
-		n1 = n / power1(10, (e - 1));
-		n = n - (n1 * power1(10, (e - 1)));
+		n1 = n / power(10, (e - 1));
+		n = n - (n1 * power(10, (e - 1)));
 		if (n1 < 0)
 			n1 = -n1;
 		n1 += '0';

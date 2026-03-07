@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 10:16:04 by ribresci          #+#    #+#             */
-/*   Updated: 2026/03/06 16:24:00 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/03/07 12:06:27 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ int	has_duplicates(t_list **a)
 		{
 			if (b->content == c->content)
 				return (1);
-			b = b->next;
 			c = c->next;
 		}
+		b = b->next;
 	}
 	return (0);
 }

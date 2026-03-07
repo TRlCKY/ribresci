@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 16:24:12 by ribresci          #+#    #+#             */
-/*   Updated: 2026/03/06 16:59:29 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/03/07 11:04:49 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	freeall(char **mtx)
 	free(mtx);
 }
 
-int	count(char const *s, char c)
+int	count_x(char const *s, char c)
 {
 	int	x;
 	int	i;
@@ -81,14 +81,14 @@ char	**ft_split(char const *s, char c)
 
 	e = 0;
 	i = 0;
-	mtx = ft_calloc((count(s, c) + 1), sizeof(char *));
+	mtx = malloc((count_x(s, c) + 1) * sizeof(char *));
 	if (!mtx)
 		return (NULL);
-	while (e < count(s, c))
+	while (e < count_x(s, c))
 	{
 		y = 0;
 		i = go(s, i, c, &y);
-		mtx[e] = ft_calloc(y + 1, sizeof(char));
+		mtx[e] = malloc((y + 1) * sizeof(char));
 		if (!mtx[e])
 		{
 			freeall(mtx);
@@ -106,7 +106,6 @@ t_list	*convert_str(char *argv)
 	int		i;
 	char	**mtx;
 	t_list	*a;
-	t_list	*b;
 
 	mtx = ft_split(argv, ' ');
 	if (!mtx)

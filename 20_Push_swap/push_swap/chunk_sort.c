@@ -1,16 +1,17 @@
 /* ************************************************************************** */
-/*																			*/
-/*														:::	  ::::::::   */
-/*   chunk_sort.c									   :+:	  :+:	:+:   */
-/*													+:+ +:+		 +:+	 */
-/*   By: ribresci <ribresci@student.42.fr>		  +#+  +:+	   +#+		*/
-/*												+#+#+#+#+#+   +#+		   */
-/*   Created: 2026/02/20 17:06:42 by ribresci		  #+#	#+#			 */
-/*   Updated: 2026/03/05 18:50:20 by ribresci		 ###   ########.fr	   */
-/*																			*/
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   chunk_sort.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/09 15:14:40 by ribresci          #+#    #+#             */
+/*   Updated: 2026/03/09 18:44:03 by ribresci         ###   ########.fr       */
+/*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
+#include <limits.h>
 
 // Se il valore piu' alto non si trova in prima/ultima posizione lo trova e lo 
 // mette o in prima o in ultima posizione
@@ -23,6 +24,8 @@ int	find_max(t_list **b)
 
 	if (!b || !*b)
 		return (-1);
+	if (ft_lstsize(*b) == 1)
+		return (0);
 	c = *b;
 	max = c->index;
 	x = 0;
@@ -45,104 +48,106 @@ int	find_max(t_list **b)
 void	send_back(t_list **a, t_list **b)
 {
 	int		i;
+	int		e;
+	int		size;
 
 	while (*b)
 	{
 		i = find_max(b);
-		while (i != 0 || i != ft_lstsize(*b))
+		if (ft_lstsize(*b) % 2 == 0)
+			e = (ft_lstsize(*b) / 2) - 1;
+		else
+			e = ft_lstsize(*b);
+		size = ft_lstsize(*b);
+		if (i == 0)
+			push(a, b, 0);
+		else
 		{
-			if (i > ft_lstsize(*b) / 2)
-			{
-				reverse_rotate(b, NULL, 1);
-				i++;
-			}
+			if (i < e)
+				while (i--)
+					rotate(b, NULL, 1);
 			else
-			{
-				rotate(b, NULL, 1);
-				i--;
-			}
+				while (i++ < size)
+					reverse_rotate(b, NULL, 1);
+			push(a, b, 0);
 		}
-		push(a, b, 0);
 	}
 }
 
-// Trova il massimo con x = 0 e il minimo con x = 1
-// Si mette size - 20 per poter prendere solo il massimo e il minimo di ogni
-// chunk.
-int	get_max_min(t_list **a, int x, int n)
+int	find_max_min(t_list **a, int max, int min)
 {
-	t_list	*c;
 	int		i;
+	t_list	*c;
 
+	i = 0;
 	c = *a;
-	i = c->index;
 	while (c)
 	{
-		if (i < c->index && x == 0)
-			i = c->index;
-		if (i > c->index && x == 1 && c->index < n)
-			i = c->index;
+		if (c->index >= min && c->index <= max)
+			return (i);
+		i++;
 		c = c->next;
 	}
-	return (i);
+	return (-1);
 }
 
 // Trova il primo elemento appartenente al chunk tra max e min e decide se 
 // usare ra o rra per portare quell'elemento in cima alla lista.
-// Nel primo while scorre la lista tra i valori max e min resituiti da
-// get_max_min per trovare gli elementi da pushare in B
-void	find_chunk(t_list **a, int size, int chunk_size, int n)
+int	find_chunk(t_list **a, int size, int chunk_size)
 {
 	int		max;
 	int		min;
 	int		i;
-	t_list	*c;
+	int		e;
 
-	c = *a;
-	i = 0;
-	max = get_max_min(a, 0, size - (n * chunk_size));
-	min = get_max_min(a, 1, size - (n * chunk_size));
-	while (c->index > max || c->index < min)
-	{
-		i++;
-		c = c->next;
-	}
-	while ((*a)->index != c->index)
-	{
-		if (i >= chunk_size - (n * chunk_size) / 2)
+	e = ft_lstsize(*a);
+	max = size - 1;
+	min = size - chunk_size;
+	i = find_max_min(a, max, min);
+	if (i < 0)
+		return (0);
+	if (i == 0)
+		return (1);
+	if (i >= e / 2)
+		while (i++ < e)
 			reverse_rotate(a, NULL, 0);
-		else
+	else
+		while (i--)
 			rotate(a, NULL, 0);
-	}
+	return (1);
 }
 
 // n e' il numero di chunk su cui lavorare finche' non si esauriscono tutti 
 // gli elementi del chunk. chunk_size e' il numero di elementi per chunk e il
 // resto  della divisione viene aggiunto al primo chunk. Poi si pusha 
 // l'elemento in B. Se l'elemento e' nella parte dei numeri piu' piccoli viene
-// messo in fondo a B. Si inizia dagli elementi piu' piccoli e poi a salire
-void	chunk_sort(t_list **a, int size)
+// messo in fondo a B. Si inizia dagli elementi piu' piccoli e poi a salire.
+// i valori con 2 nel nome rimangono fissi, gli altri variano.
+void	chunk_sort(t_list **a, int size, int n)
 {
-	int		n;
+	int		size2;
 	int		chunk_size;
 	int		chunk_size2;
 	t_list	*b;
 
 	b = NULL;
-	n = 5;
 	while (n--)
 	{
+		size2 = size;
 		chunk_size = size / 5;
 		if (n == 0)
 			chunk_size += size % 5;
 		chunk_size2 = chunk_size;
-		while (chunk_size--)
+		while (chunk_size-- > 0)
 		{
-			find_chunk(a, size, chunk_size2, n);
+			if (!find_chunk(a, size2, chunk_size2))
+				break ;
 			push(&b, a, 1);
+			if (b && b->index <= size2 - 1 - (chunk_size2 / 2)
+				&& b->index >= size2 - chunk_size2)
+				rotate(&b, NULL, 1);
 		}
-		if (b->index < size - (n * chunk_size) - (chunk_size2 / 2))
-			rotate(&b, NULL, 1);
+		size -= (chunk_size2 - (chunk_size + 1));
 	}
 	send_back(a, &b);
 }

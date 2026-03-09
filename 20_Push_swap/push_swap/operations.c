@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 11:31:43 by ribresci          #+#    #+#             */
-/*   Updated: 2026/03/07 12:17:59 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/03/09 18:51:01 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,15 +49,16 @@ void	push(t_list **a, t_list **b, int x)
 {
 	t_list	*c;
 
-	if (!(*b))
+	if (!*a)
 		return ;
 	if (x == 0)
 		ft_printf("pa\n");
-	if (x == 1)
+	else
 		ft_printf("pb\n");
-	c = *b;
-	*b = (*b)->next;
-	ft_lstadd_front(a, c);
+	c = *a;
+	*a = (*a)->next;
+	c->next = *b;
+	*b = c;
 }
 
 // Sposta il primo elemento nell'ultima posizione
@@ -65,7 +66,7 @@ void	rotate(t_list **a, t_list **b, int x)
 {
 	t_list	*c;
 
-	if ((x == 0 || x == 2) && ft_lstsize(*a) >= 2)
+	if ((x == 0 || x == 2) && ft_lstsize(*a) >= 2 && *a)
 	{
 		c = *a;
 		*a = (*a)->next;
@@ -76,7 +77,7 @@ void	rotate(t_list **a, t_list **b, int x)
 		else
 			ft_printf("rr\n");
 	}
-	if ((x == 1 || x == 2) && ft_lstsize(*b) >= 2)
+	if ((x == 1 || x == 2) && ft_lstsize(*b) >= 2 && *b)
 	{
 		c = *b;
 		*b = (*b)->next;
@@ -93,9 +94,6 @@ void	reverse_rotate2(t_list **b)
 	t_list	*d;
 	int		i;
 
-	if (ft_lstsize(*b) <= 1)
-		return ;
-	ft_printf("rrr\n");
 	i = ft_lstsize(*b) - 2;
 	c = ft_lstlast(*b);
 	d = *b;
@@ -108,23 +106,20 @@ void	reverse_rotate2(t_list **b)
 // Sposta l'ultimo elemento in prima posizione
 void	reverse_rotate(t_list **a, t_list **b, int x)
 {
-	t_list	*c;
-	t_list	*d;
-	int		i;
-
-	if (ft_lstsize(*a) <= 1)
-		return ;
-	if (x == 0)
+	if (x == 0 && ft_lstsize(*a) > 1)
+	{
+		reverse_rotate2(a);
 		ft_printf("rra\n");
-	if (x == 1)
-		ft_printf("rrb\n");
-	i = ft_lstsize(*a) - 2;
-	c = ft_lstlast(*a);
-	d = *a;
-	while (i--)
-		d = d->next;
-	d->next = NULL;
-	ft_lstadd_front(a, c);
-	if (x == 2 && ft_lstsize(*b) >= 2)
+	}
+	if (x == 1 && ft_lstsize(*b) > 1)
+	{
 		reverse_rotate2(b);
+		ft_printf("rrb\n");
+	}
+	if (x == 2 && ft_lstsize(*a) > 1 && ft_lstsize(*b) > 1)
+	{
+		reverse_rotate2(a);
+		reverse_rotate2(b);
+		ft_printf("rrr\n");
+	}
 }

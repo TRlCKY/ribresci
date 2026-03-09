@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 11:00:22 by ribresci          #+#    #+#             */
-/*   Updated: 2026/03/07 12:03:46 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/03/09 17:48:19 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,12 @@ void			push_back(t_list **a, t_list **b);
 int				get_number(int x);
 void			radix_sort(t_list **a);
 // Chunk sort
+int				find_max_min(t_list **a, int max, int min);
 int				find_max(t_list **b);
 void			send_back(t_list **a, t_list **b);
-int				get_max_min(t_list **a, int x, int n);
-void			find_chunk(t_list **a, int size, int chunk_size, int n);
-void			chunk_sort(t_list **a, int size);
+int				get_max_min(t_list **a, int x, int min, int max);
+int				find_chunk(t_list **a, int size, int chunk_size);
+void			chunk_sort(t_list **a, int size, int n);
 // Controlli
 int				has_duplicates(t_list **a);
 int				is_in_order(t_list **a);

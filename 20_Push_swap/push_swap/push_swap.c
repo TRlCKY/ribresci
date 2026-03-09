@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 10:14:44 by ribresci          #+#    #+#             */
-/*   Updated: 2026/03/07 12:11:40 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/03/09 16:40:48 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int	man_rad_chun(t_list **a, int i)
 	if (i >= 2 && i <= 5)
 		manual_sort(a);
 	if (i > 5 && i <= 100)
-		chunk_sort(a, i);
+		chunk_sort(a, i, 5);
 	if (i > 100)
 		radix_sort(a);
 	return (0);

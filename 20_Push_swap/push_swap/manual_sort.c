@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 12:31:19 by ribresci          #+#    #+#             */
-/*   Updated: 2026/03/07 12:23:53 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/03/10 12:21:30 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,7 @@
 // Swap se sono nell'ordine opposto
 void	sort2(t_list **a)
 {
-	t_list	*b;
-
-	b = *a;
-	b = b->next;
-	if ((*a)->index > b->index)
+	if ((*a)->index > (*a)->next->index)
 		swap(a, NULL, 0);
 }
 
@@ -34,10 +30,8 @@ void	sort3(t_list **a)
 	t_list	*b;
 	t_list	*c;
 
-	b = *a;
-	b = b->next;
-	c = b;
-	c = c->next;
+	b = (*a)->next;
+	c = (*a)->next->next;
 	if ((*a)->index > b->index && (*a)->index < c->index && b->index < c->index)
 		swap(a, NULL, 0);
 	if ((*a)->index < b->index && b->index > c->index && (*a)->index < c->index)
@@ -56,36 +50,32 @@ void	sort3(t_list **a)
 		rotate(a, NULL, 0);
 }
 
-void	sort4(t_list **a)
+void	sort4(t_list **a, t_list **b)
 {
-	t_list	*b;
 	int		e;
 
-	b = NULL;
 	e = find_min(a);
 	if (e == 0)
-		push(&b, a, 1);
+		push(b, a, 1);
 	else
 	{
 		if (e == 3)
 			reverse_rotate(a, NULL, 0);
 		while (e--)
 			rotate(a, NULL, 0);
-		push(&b, a, 1);
+		push(b, a, 1);
 	}
 	sort3(a);
-	push(a, &b, 0);
+	push(a, b, 0);
 }
 
-void	sort5(t_list **a)
+void	sort5(t_list **a, t_list **b)
 {
-	t_list	*b;
 	int		e;
 
-	b = NULL;
 	e = find_min(a);
 	if (e == 0)
-		push(&b, a, 1);
+		push(b, a, 1);
 	else
 	{
 		if (e == 3)
@@ -97,13 +87,13 @@ void	sort5(t_list **a)
 			reverse_rotate(a, NULL, 0);
 		while (e--)
 			rotate(a, NULL, 0);
-		push(&b, a, 1);
+		push(b, a, 1);
 	}
-	sort4(a);
-	push(a, &b, 0);
+	sort4(a, b);
+	push(a, b, 0);
 }
 
-void	manual_sort(t_list **a)
+void	manual_sort(t_list **a, t_list **b)
 {
 	int		i;
 
@@ -113,7 +103,7 @@ void	manual_sort(t_list **a)
 	if (i == 3)
 		sort3(a);
 	if (i == 4)
-		sort4(a);
+		sort4(a, b);
 	if (i == 5)
-		sort5(a);
+		sort5(a, b);
 }

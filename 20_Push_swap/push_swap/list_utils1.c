@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 11:06:50 by ribresci          #+#    #+#             */
-/*   Updated: 2026/03/07 12:03:36 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/03/10 15:36:07 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,18 +26,16 @@ void	ft_lstadd_back(t_list **lst, t_list *new)
 {
 	t_list	*ptr;
 
-	ptr = *lst;
-	if (!*lst && new)
+	if (!lst || !new)
+		return ;
+	new->next = NULL;
+	if (!*lst)
 	{
 		*lst = new;
 		return ;
 	}
-	if (!*lst || !new)
-		return ;
-	ptr = ft_lstlast(ptr);
+	ptr = ft_lstlast(*lst);
 	ptr->next = new;
-	ptr = ptr->next;
-	ptr->next = NULL;
 }
 
 void	ft_lstadd_front(t_list **lst, t_list *new)

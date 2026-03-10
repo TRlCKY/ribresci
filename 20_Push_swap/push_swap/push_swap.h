@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 11:00:22 by ribresci          #+#    #+#             */
-/*   Updated: 2026/03/09 17:48:19 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/03/10 18:41:04 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,20 +57,20 @@ void			reverse_rotate(t_list **a, t_list **b, int x);
 int				find_min(t_list **a);
 void			sort2(t_list **a);
 void			sort3(t_list **a);
-void			sort4(t_list **a);
-void			sort5(t_list **a);
-void			manual_sort(t_list **a);
+void			sort4(t_list **a, t_list **b);
+void			sort5(t_list **a, t_list **b);
+void			manual_sort(t_list **a, t_list **b);
 // Radix sort
-void			push_back(t_list **a, t_list **b);
+int				get_max(t_list **b);
 int				get_number(int x);
-void			radix_sort(t_list **a);
+void			radix_sort(t_list **a, t_list **b);
 // Chunk sort
 int				find_max_min(t_list **a, int max, int min);
 int				find_max(t_list **b);
 void			send_back(t_list **a, t_list **b);
 int				get_max_min(t_list **a, int x, int min, int max);
 int				find_chunk(t_list **a, int size, int chunk_size);
-void			chunk_sort(t_list **a, int size, int n);
+void			chunk_sort(t_list **a, t_list **b, int size, int n);
 // Controlli
 int				has_duplicates(t_list **a);
 int				is_in_order(t_list **a);
@@ -90,6 +90,6 @@ unsigned int	ft_strlcpy(char *dest, const char *src, size_t size);
 int				*order(int *b, int i);
 int				*fill_array(int *b, t_list **a);
 void			set_index(t_list **a, int i);
-int				man_rad_chun(t_list **a, int i);
+int				man_rad_chun(t_list **a, t_list **b, int i);
 int				main(int argc, char **argv);
 #endif

@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 10:16:04 by ribresci          #+#    #+#             */
-/*   Updated: 2026/03/09 17:27:26 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/03/10 15:38:56 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ int	is_in_order(t_list **a)
 	t_list	*b;
 	t_list	*c;
 
+	if (!a || !*a)
+		return (1);
 	b = *a;
 	c = b->next;
 	while (c)

@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 10:14:44 by ribresci          #+#    #+#             */
-/*   Updated: 2026/03/09 16:40:48 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/03/10 18:26:45 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,14 +89,14 @@ void	set_index(t_list **a, int i)
 
 // A seconda del numero di elementi verra' usato un algoritmo di ordinamento
 // oppure un altro
-int	man_rad_chun(t_list **a, int i)
+int	man_rad_chun(t_list **a, t_list **b, int i)
 {
 	if (i >= 2 && i <= 5)
-		manual_sort(a);
+		manual_sort(a, b);
 	if (i > 5 && i <= 100)
-		chunk_sort(a, i, 5);
+		chunk_sort(a, b, i, 5);
 	if (i > 100)
-		radix_sort(a);
+		radix_sort(a, b);
 	return (0);
 }
 
@@ -105,9 +105,11 @@ int	man_rad_chun(t_list **a, int i)
 int	main(int argc, char **argv)
 {
 	t_list	*a;
+	t_list	*b;
 	int		e;
 
 	e = 1;
+	b = NULL;
 	if (argc == 1)
 		return (0);
 	if (argc == 2)
@@ -120,13 +122,11 @@ int	main(int argc, char **argv)
 	}
 	set_index(&a, ft_lstsize(a));
 	if (has_duplicates(&a))
-	{
-		ft_printf("Error\n");
-		return (0);
-	}
+		return (ft_printf("Error\n", 0));
 	if (is_in_order(&a) || ft_lstsize(a) < 2)
 		return (0);
-	man_rad_chun(&a, ft_lstsize(a));
+	man_rad_chun(&a, &b, ft_lstsize(a));
 	ft_lstclear(&a);
+	ft_lstclear(&b);
 	return (0);
 }

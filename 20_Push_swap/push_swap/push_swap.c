@@ -108,9 +108,7 @@ int	main(int argc, char **argv)
 
 	e = 1;
 	b = NULL;
-	if (!is_valid(argv, argc))
-		return (0);
-	if (argc == 1)
+	if (!is_valid(argv, argc) || argc == 1)
 		return (0);
 	if (argc == 2)
 		a = convert_str(argv[1]);

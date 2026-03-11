@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 17:06:49 by ribresci          #+#    #+#             */
-/*   Updated: 2026/03/10 18:50:47 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/03/11 09:47:24 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,11 @@ void	radix_sort(t_list **a, t_list **b)
 
 	if (ft_lstsize(*a) <= 1)
 		return ;
-	e = get_number(get_max(*a));
+	e = get_number(get_max(a));
 	n = 0;
 	while (e--)
 	{
-		i = ft_lstsize(a);
+		i = ft_lstsize(*a);
 		while (i--)
 		{
 			x = (*a)->index;

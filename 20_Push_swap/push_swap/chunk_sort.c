@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/09 15:14:40 by ribresci          #+#    #+#             */
-/*   Updated: 2026/03/10 17:37:30 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/03/11 09:45:26 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int	find_max_min(t_list **a, int max, int min)
 
 // Trova il primo elemento appartenente al chunk tra max e min e decide se 
 // usare ra o rra per portare quell'elemento in cima alla lista.
-int	find_chunk(t_list **a, int size, int chunk_size)
+int	find_chunk(t_list **a, t_list **b, int size, int chunk_size)
 {
 	int		max;
 	int		min;
@@ -113,6 +113,7 @@ int	find_chunk(t_list **a, int size, int chunk_size)
 	else
 		while (i--)
 			rotate(a, NULL, 0);
+	push(b, a, 1);
 	return (1);
 }
 
@@ -137,9 +138,8 @@ void	chunk_sort(t_list **a, t_list **b, int size, int n)
 		chunk_size2 = chunk_size;
 		while (chunk_size > 0)
 		{
-			if (!find_chunk(a, size2, chunk_size2))
+			if (!find_chunk(a, b, size2, chunk_size2))
 				break ;
-			push(b, a, 1);
 			if (*b && (*b)->index <= size2 - (chunk_size2 / 2)
 				&& (*b)->index >= size2 - chunk_size2 + 1)
 				rotate(NULL, b, 1);

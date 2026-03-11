@@ -14,7 +14,8 @@ all:	$(NAME)
 
 # Crea e/o aggiorna la libreria statica(ar rcs) e ci associa tutti i file oggetto creati dal comando sotto
 $(NAME): $(OBJ)
-		ar rcs $(NAME) $(OBJ)
+	$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
+	chmod +x $(NAME)
 # Prende tutti i file .c($<), li compila in file oggetto(-o) e gli rimette lo stesso nome($@)
 %.o: %.c
 		$(CC) $(CFLAGS) -c $< -o $@

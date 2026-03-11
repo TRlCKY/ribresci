@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 12:31:19 by ribresci          #+#    #+#             */
-/*   Updated: 2026/03/10 12:21:30 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/03/11 11:24:33 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,17 @@ void	sort4(t_list **a, t_list **b)
 		push(b, a, 1);
 	else
 	{
-		if (e == 3)
-			reverse_rotate(a, NULL, 0);
-		while (e--)
-			rotate(a, NULL, 0);
+		if (e >= 2)
+		{
+			while (e < 4)
+			{
+				reverse_rotate(a, NULL, 0);
+				e++;
+			}
+		}
+		else
+			while (e--)
+				rotate(a, NULL, 0);
 		push(b, a, 1);
 	}
 	sort3(a);
@@ -78,15 +85,17 @@ void	sort5(t_list **a, t_list **b)
 		push(b, a, 1);
 	else
 	{
-		if (e == 3)
+		if (e >= 2)
 		{
-			reverse_rotate(a, NULL, 0);
-			e++;
+			while (e < 5)
+			{
+				reverse_rotate(a, NULL, 0);
+				e++;
+			}
 		}
-		if (e == 4)
-			reverse_rotate(a, NULL, 0);
-		while (e--)
-			rotate(a, NULL, 0);
+		else
+			while (e--)
+				rotate(a, NULL, 0);
 		push(b, a, 1);
 	}
 	sort4(a, b);

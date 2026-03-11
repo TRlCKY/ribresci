@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 12:40:35 by ribresci          #+#    #+#             */
-/*   Updated: 2026/03/07 11:22:43 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/03/11 16:32:34 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,4 +35,18 @@ int	find_min(t_list **a)
 		i++;
 	}
 	return (e);
+}
+
+// Resituisce la lunghezza della stringa
+int	ft_strlen(const char *str)
+{
+	int	i;
+
+	i = 0;
+	if (str)
+	{
+		while (str[i])
+			i++;
+	}
+	return (i);
 }

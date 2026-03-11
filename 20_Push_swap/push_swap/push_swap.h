@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 11:00:22 by ribresci          #+#    #+#             */
-/*   Updated: 2026/03/10 18:41:04 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/03/11 18:53:18 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,12 +69,16 @@ int				find_max_min(t_list **a, int max, int min);
 int				find_max(t_list **b);
 void			send_back(t_list **a, t_list **b);
 int				get_max_min(t_list **a, int x, int min, int max);
-int				find_chunk(t_list **a, int size, int chunk_size);
+int				find_chunk(t_list **a, t_list **b, int size, int chunk_size);
 void			chunk_sort(t_list **a, t_list **b, int size, int n);
 // Controlli
+int				check_list(t_list **a, char **argv);
+int				check_arg(char *s);
+int				is_valid(char **argv, int argc);
 int				has_duplicates(t_list **a);
 int				is_in_order(t_list **a);
 int				ft_strlen(const char *str);
+int				error(void);
 // Split
 void			freeall(char **mtx);
 int				count_x(char const *s, char c);
@@ -82,8 +86,8 @@ int				go(char const *s, int i, char c, int *y);
 char			**ft_split(char const *s, char c);
 t_list			*convert_str(char *argv);
 // Atoi
-int				check_limit(const char *str, int sign);
-int				ft_atoi(const char *str);
+int				check_limit(char *str, int sign);
+int				ft_atoi(char *str);
 int				ft_strncmp(const char *s1, const char *s2, size_t n);
 unsigned int	ft_strlcpy(char *dest, const char *src, size_t size);
 // Main

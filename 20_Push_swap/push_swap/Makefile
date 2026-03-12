@@ -3,7 +3,7 @@ CC = cc
 # Flags per compilare
 CFLAGS = -Wall -Wextra -Werror
 # File sorgenti
-SRC = checks.c push_swap.c manual_sort.c manual_sort_utils.c operations.c operations2.c chunk_sort.c radix_sort.c list_utils1.c list_utils2.c split.c atoi.c printf_utils.c printf_utils1.c printf_utils2.c
+SRC = checks.c checks2.c push_swap.c manual_sort.c manual_sort_utils.c operations.c operations2.c chunk_sort.c radix_sort.c list_utils1.c list_utils2.c split.c atoi.c printf_utils.c printf_utils1.c printf_utils2.c
 # Cambia da .c in .o per il comando nel terminale
 OBJ = $(SRC:.c=.o)
 # Nome del programma

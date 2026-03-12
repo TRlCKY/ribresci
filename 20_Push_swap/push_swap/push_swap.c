@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 10:14:44 by ribresci          #+#    #+#             */
-/*   Updated: 2026/03/11 18:52:10 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/03/12 12:48:21 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,18 +108,13 @@ int	main(int argc, char **argv)
 
 	e = 1;
 	b = NULL;
-	if (!is_valid(argv, argc) || argc == 1)
+	if (argc <= 2 || !is_valid(argv) || check_list(argv))
 		return (0);
-	if (argc == 2)
-		a = convert_str(argv[1]);
-	else
-	{
-		a = ft_lstnew(ft_atoi(argv[e++]));
-		while (argv[e])
-			ft_lstadd_back(&a, ft_lstnew(ft_atoi(argv[e++])));
-	}
+	a = ft_lstnew(ft_atoi(argv[e++]));
+	while (argv[e])
+		ft_lstadd_back(&a, ft_lstnew(ft_atoi(argv[e++])));
 	set_index(&a, ft_lstsize(a));
-	if (has_duplicates(&a) || ft_lstsize(a) == 1 || check_list(a, argv))
+	if (has_duplicates(&a) || ft_lstsize(a) == 1)
 		return (ft_lstclear(&a), error());
 	if (is_in_order(&a) || ft_lstsize(a) < 2)
 		return (ft_lstclear(&a), 0);

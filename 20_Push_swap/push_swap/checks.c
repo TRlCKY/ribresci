@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 10:16:04 by ribresci          #+#    #+#             */
-/*   Updated: 2026/03/11 18:52:50 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/03/12 12:49:32 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	check_arg(char *s)
 	while (s[i])
 	{
 		if (s[i] < '0' || s[i] > '9')
-			return (error());
+			return (error(), 0);
 		i++;
 	}
 	return (1);
@@ -54,24 +54,10 @@ int	check_arg(char *s)
 
 // Controlla che tutti gli elementi siano validi (no caratteri diversi da
 // numeri, solo un + o -...)
-int	is_valid(char **argv, int argc)
+int	is_valid(char **argv)
 {
 	int		i;
-	char	**str;
 
-	if (argc == 2)
-	{
-		if (!argv[1][0])
-			return (error());
-		str = ft_split(argv[1], ' ');
-		if (!str || !str[0])
-			return (freeall(str), error());
-		i = -1;
-		while (str[++i])
-			if (!check_arg(str[i]))
-				return (freeall(str), 0);
-		return (freeall(str), 1);
-	}
 	i = 1;
 	while (argv[i])
 	{
@@ -104,7 +90,31 @@ int	is_in_order(t_list **a)
 }
 
 // Controlla che i numeri siano gli stessi a quelli della lista
-int	check_list(t_list **a, char **argv)
+int	check_list(char **argv)
 {
+	int	n;
+	int	x;
+	int	i;
+
+	x = 0;
+	i = 1;
+	while (argv[x])
+		x++;
+	x--;
+	while (x--)
+	{
+		n = ft_atoi(argv[i]);
+		if (n < 0)
+		{
+			if (ft_strlen(argv[i]) != numblen(n) + 1)
+				return (error(), 1);
+		}
+		else
+		{
+			if (ft_strlen(argv[i]) != numblen(n))
+				return (error(), 1);
+		}
+		i++;
+	}
 	return (0);
 }

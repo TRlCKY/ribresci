@@ -6,18 +6,12 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 16:46:39 by ribresci          #+#    #+#             */
-/*   Updated: 2026/03/11 18:51:12 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/03/12 12:38:30 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "push_swap.h"
-
-int	error(void)
-{
-	write(2, "Error\n", 6);
-	return (0);
-}
 
 unsigned int	ft_strlcpy(char *dest, const char *src, size_t size)
 {
@@ -94,9 +88,9 @@ int	check_limit(char *str, int sign)
 // e che sia valido
 int	ft_atoi(char *str)
 {
-	int			i;
-	long long	n;
-	int			sign;
+	int	i;
+	int	n;
+	int	sign;
 
 	i = 0;
 	n = 0;

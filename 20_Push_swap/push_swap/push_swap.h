@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 11:00:22 by ribresci          #+#    #+#             */
-/*   Updated: 2026/03/11 18:53:18 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/03/12 12:36:11 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <limits.h>
 # include <stdarg.h>
 # include <string.h>
+# include <stdio.h>
 
 typedef struct s_list
 {
@@ -72,9 +73,10 @@ int				get_max_min(t_list **a, int x, int min, int max);
 int				find_chunk(t_list **a, t_list **b, int size, int chunk_size);
 void			chunk_sort(t_list **a, t_list **b, int size, int n);
 // Controlli
-int				check_list(t_list **a, char **argv);
+int				numblen(int n);
+int				check_list(char **argv);
 int				check_arg(char *s);
-int				is_valid(char **argv, int argc);
+int				is_valid(char **argv);
 int				has_duplicates(t_list **a);
 int				is_in_order(t_list **a);
 int				ft_strlen(const char *str);

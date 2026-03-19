@@ -1,14 +1,18 @@
+#!/usr/bin/env python3
 def ft_garden_intro():
-    Name = "Rose"
-    Height = "25cm"
-    Age = "30 days"
+    name = "Rose"
+    height = "25cm"
+    age = "30 days"
     print("=== Welcome to My Garden ===")
-    print(f"Plant: {Name}")
-    print(f"Height: {Height}")
-    print(f"Age: {Age}")
+    print(f"Plant: {name}")
+    print(f"Height: {height}")
+    print(f"Age: {age}")
     print()
     print("=== End of Program ===")
 
 
 if __name__ == "__main__":
     ft_garden_intro()
+
+# chmod +x ft_garden_intro.py
+# ./ft_garden_intro.py

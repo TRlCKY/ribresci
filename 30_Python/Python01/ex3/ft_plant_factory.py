@@ -10,12 +10,15 @@ GardenData = [Plant("Rose", 25, 30), Plant("Sunflower", 80, 45),
               Plant("Bamboo", 50, 12)]
 
 
+def show(self):
+    print(f"{self.name}: {round(self.height, 1)}cm, {self.age} days old")
+
+
 def ft_plant_factory():
     print("=== Plant Factory Output ===")
     for i in range(5):
         plant = GardenData[i]
-        print(f"Created: {plant.name} ({plant.height}cm, {plant.age} days)")
-    print(f"Total plants created: {i + 1}")
+        show(plant)
 
 
 if __name__ == "__main__":

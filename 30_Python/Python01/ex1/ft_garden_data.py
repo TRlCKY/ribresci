@@ -1,19 +1,23 @@
 class Plant:
-    def __init__(self, Name: str, Height: int, Age: int):
-        self.Name = Name
-        self.Height = Height
-        self.Age = Age
+    def __init__(self, name: str, height: int, age: int):
+        self.name = name
+        self.height = height
+        self.age = age
 
 
 GardenData = [Plant("Rose", 25, 30), Plant("Sunflower", 80, 45),
               Plant("Cactus", 15, 120)]
 
 
+def show(self):
+    print(f"{self.name}: {round(self.height, 1)}cm, {self.age} days old")
+
+
 def ft_garden_data():
     print("=== Garden Plant Registry ===")
     for i in range(3):
         plant = GardenData[i]
-        print(f"{plant.Name}: {plant.Height}cm, {plant.Age} days old")
+        show(plant)
 
 
 if __name__ == "__main__":

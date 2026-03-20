@@ -18,14 +18,28 @@ class Plant():
     def get_age(self) -> int:
         return self.__age
 
+    def show(self):
+        print(f"{self.name}: {self.get_height():.1f}cm, {self.get_age()}"
+              " days old")
+
 
 class Flower(Plant):
     def __init__(self, name: str, height: int, age: int, color: str):
         super().__init__(name, height, age)
         self.color = color
 
+    def show(self):
+        print(f"{self.name}: {self.get_height():.1f}cm, {self.get_age()}"
+              " days old")
+        print(f" Color: {self.color}")
+
     def bloom(self):
-        print(f"{self.name} is blooming!")
+        self.show()
+        print(f" {self.name} has not bloomed yet")
+        print(f"[asking the {self.name} to bloom]")
+        self.show()
+        print(f" {self.name} is blooming beutifully!")
+        print()
 
 
 class Tree(Plant):
@@ -33,52 +47,64 @@ class Tree(Plant):
         super().__init__(name, height, age)
         self.trunk_diameter = trunk_diameter
 
+    def show(self):
+        print(f"{self.name}: {self.get_height():.1f}cm, {self.get_age()}"
+              " days old")
+        print(f" Trunk diameter: {self.trunk_diameter:.1f}cm")
+
     def produce_shade(self):
-        shade = self.get_height() * self.trunk_diameter
-        print(f"{self.name} is producing {shade} square "
-              "meters of shade")
+        self.show()
+        print(f"[asking the {self.name} to produce shade]")
+        print(f"Tree {self.name} now produces a shade of "
+              f"{self.get_height():.1f}cm "
+              f"long and {self.trunk_diameter:.1f}cm wide.")
+        print()
 
 
 class Vegetable(Plant):
     def __init__(self, name: str, height: int, age: int, harvest_season: str,
-                 nutritional_value: str):
+                 nutritional_value: int):
         super().__init__(name, height, age)
         self.harvest_season = harvest_season
         self.nutritional_value = nutritional_value
 
+    def show(self):
+        print(f"{self.name}: {self.get_height():.1f}cm, {self.get_age()}"
+              " days old")
+        print(f" Harvest season: {self.harvest_season}")
+        print(f" Nutritional value: {self.nutritional_value}")
+
+    def grow(self, days: int):
+        self.show()
+        print(f"[make {self.name} grow and age for {days} days]")
+        new_age = self.get_age()
+        new_height = self.get_height()
+        new_age = new_age + days
+        for i in range(days):
+            new_height = new_height + 2.1
+        self.set_height(new_height)
+        self.set_age(new_age)
+        self.show()
+        print()
+
 
 def ft_plant_types():
-    rose = Flower("Rose", 20, 12, "red")
+    rose = Flower("Rose", 15, 10, "red")
     orchid = Flower("Orchid", 10, 35, "white")
-    oak = Tree("Oak", 500, 1825, 50)
+    oak = Tree("Oak", 200, 365, 5)
     birch = Tree("Birch", 348, 689, 69)
-    tomato = Vegetable("Tomato", 80, 90, "summer", "vitamin C")
-    carrot = Vegetable("Carrot", 35, 23, "spring", "vitamin A")
+    tomato = Vegetable("Tomato", 5, 10, "April", 0)
+    carrot = Vegetable("Carrot", 35, 23, "May", 20)
     print("=== Garden Plant Types ===")
-    print()
-    print(f"{rose.name} (Flower): {rose.get_height()}cm,"
-          f" {rose.get_age()} days, {rose.color} color")
+    print("=== Flower")
     rose.bloom()
-    print()
-    print(f"{orchid.name} (Flower): {orchid.get_height()}cm,"
-          f" {orchid.get_age()} days, {orchid.color} color")
     orchid.bloom()
-    print()
-    print(f"{oak.name} (Tree): {oak.get_height()}cm,"
-          f" {oak.get_age()} days, {oak.trunk_diameter}cm diameter")
+    print("=== Tree")
     oak.produce_shade()
-    print()
-    print(f"{birch.name} (Tree): {birch.get_height()}cm,"
-          f" {birch.get_age()} days, {birch.trunk_diameter}cm diameter")
     birch.produce_shade()
-    print()
-    print(f"{tomato.name} (Vegetable): {tomato.get_height()}cm,"
-          f" {tomato.get_age()} days, {tomato.harvest_season} harvest")
-    print(f"{tomato.name} is rich in {tomato.nutritional_value}")
-    print()
-    print(f"{carrot.name} (Vegetable): {carrot.get_height()}cm,"
-          f" {carrot.get_age()} days, {carrot.harvest_season} harvest")
-    print(f"{carrot.name} is rich in {carrot.nutritional_value}")
+    print("=== Vegetable")
+    tomato.grow(20)
+    carrot.grow(5)
 
 
 if __name__ == "__main__":

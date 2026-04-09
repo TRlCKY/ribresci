@@ -1,8 +1,12 @@
 class Plant():
-    def __init__(self, name: str, height: int, age: int):
+    def __init__(self, name: str, height: int, age: int, n_grow: int,
+                 n_age: int, n_show: int):
         self.name = name
         self.set_height(height)
         self.set_age(age)
+        self.n_grow = 0
+        self.n_age = 0
+        self.n_show = 0
 
     def set_height(self, height: int):
         if height >= 0:
@@ -21,6 +25,7 @@ class Plant():
     def show(self):
         print(f"{self.name}: {self.get_height():.1f}cm, {self.get_age()}"
               " days old")
+        self.n_show = self.n_show + 1
 
     @staticmethod
     def check_age(age):
@@ -59,8 +64,7 @@ class Flower(Plant):
         else:
             print(f" {self.name} is blooming beautifully!")
         print(f" Seeds: {self.seed_number}")
-        print(f"[statistics for {self.name}]")
-        print("Stats")
+        self.n_show = self.n_show + 1
 
 
 class Seed(Flower):
@@ -79,6 +83,7 @@ class Seed(Flower):
         else:
             print(f" {self.name} is blooming beautifully!")
         print(f" Seeds: {self.seed_number}")
+        self.n_show = self.n_show + 1
 
     def grow(self, days: int):
         new_height = self.get_height()
@@ -150,6 +155,7 @@ def ft_garden_analytics():
     print("=== Flower")
     rose = Flower("Rose", 15, 10, "red")
     rose.show()
+    print()
 
 
 if __name__ == "__main__":

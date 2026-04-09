@@ -22,15 +22,16 @@ def show(self):
 def ft_plant_growth():
     print("=== Garden Plant Growth ===")
     plant = Plant("Rose", 25, 30)
-    total_growth = -1
+    show(plant)
+    total_growth = 0
     day = 1
     for i in range(7):
         print(f"=== Day {day} ===")
         day = day + 1
-        show(plant)
         plant.height = grow(plant.height)
         plant.age = age(plant.age)
-        total_growth = total_growth + 1
+        total_growth = total_growth + 0.8
+        show(plant)
     print(f"Growth this week: {total_growth}cm")
 
 

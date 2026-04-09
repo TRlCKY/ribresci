@@ -80,10 +80,13 @@ class Vegetable(Plant):
         new_age = self.get_age()
         new_height = self.get_height()
         new_age = new_age + days
+        new_value = self.nutritional_value
         for i in range(days):
             new_height = new_height + 2.1
+            new_value = new_value + 1
         self.set_height(new_height)
         self.set_age(new_age)
+        self.nutritional_value = new_value
         self.show()
         print()
 

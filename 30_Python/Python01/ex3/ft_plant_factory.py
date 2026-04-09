@@ -11,7 +11,7 @@ GardenData = [Plant("Rose", 25, 30), Plant("Sunflower", 80, 45),
 
 
 def show(self):
-    print(f"{self.name}: {round(self.height, 1)}cm, {self.age} days old")
+    print(f"Created: {self.name}: {self.height:.1f}cm, {self.age} days old")
 
 
 def ft_plant_factory():

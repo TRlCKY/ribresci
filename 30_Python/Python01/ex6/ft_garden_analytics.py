@@ -79,9 +79,7 @@ class Plant():
 
     @classmethod
     def anonymous_plant(cls, name: str, height: float, age: int):
-        cls.name = name
-        cls.height = height
-        cls.age = age
+        return cls(name, height, age)
 
 
 class Flower(Plant):
@@ -118,7 +116,7 @@ class Flower(Plant):
 
 class Seed(Flower):
     def __init__(self, name: str, height: float, age: int, color: str,
-                 seed_number: int, bloom: int):
+                 seed_number: int, bloom: bool):
         super().__init__(name, height, age, color, bloom)
         self.set_seed_number(seed_number)
         self.set_bloom(bloom)
@@ -239,7 +237,7 @@ def ft_garden_analytics():
     show_stats(sunflower._stats, 0)
     print()
     print("=== Anonymous")
-    p3 = Plant("Unknown plant", 0.0, 0)
+    p3 = Plant.anonymous_plant("Unknown plant", 0.0, 0)
     p3.show()
     print(f"[statistics for {p3.name}]")
     show_stats(p3._stats, 0)

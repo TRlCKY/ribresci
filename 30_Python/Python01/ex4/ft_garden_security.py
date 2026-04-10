@@ -5,18 +5,18 @@ class SecurePlant:
         self.set_age(age)
 
     def get_height(self) -> int:
-        return self.__height
+        return self._height
 
     def get_age(self) -> int:
-        return self.__age
+        return self._age
 
     def set_height(self, height: int):
         if height >= 0:
-            self.__height = height
+            self._height = height
 
     def set_age(self, age: int):
         if age >= 0:
-            self.__age = age
+            self._age = age
 
 
 def check_values(self, height: int, age: int):

@@ -1,37 +1,37 @@
 class Plant():
-    def __init__(self, name: str, height: float, starting_age: int):
+    def __init__(self, name: str, height: float, age: int):
         self.name = name
         self.set_height(height)
-        self.set_starting_age(starting_age)
+        self.set_age(age)
 
     def set_height(self, height: float):
         if height >= 0:
             self._height = height
 
-    def set_starting_age(self, starting_age: int):
-        if starting_age >= 0:
-            self._starting_age = starting_age
+    def set_age(self, age: int):
+        if age >= 0:
+            self._age = age
 
     def get_height(self) -> float:
         return self._height
 
-    def get_starting_age(self) -> int:
-        return self._starting_age
+    def get_age(self) -> int:
+        return self._age
 
     def show(self):
         print(f"{self.name}: {self.get_height():.1f}cm,"
-              f" {self.get_starting_age()} days old")
+              f" {self.get_age()} days old")
 
 
 class Flower(Plant):
-    def __init__(self, name: str, height: float, starting_age: int,
+    def __init__(self, name: str, height: float, age: int,
                  color: str):
-        super().__init__(name, height, starting_age)
+        super().__init__(name, height, age)
         self.color = color
 
     def show(self):
         print(f"{self.name}: {self.get_height():.1f}cm,"
-              f" {self.get_starting_age()} days old")
+              f" {self.get_age()} days old")
         print(f" Color: {self.color}")
 
     def bloom(self):
@@ -44,9 +44,9 @@ class Flower(Plant):
 
 
 class Tree(Plant):
-    def __init__(self, name: str, height: float, starting_age: int,
+    def __init__(self, name: str, height: float, age: int,
                  trunk_diameter: int):
-        super().__init__(name, height, starting_age)
+        super().__init__(name, height, age)
         self.set_trunk_diameter(trunk_diameter)
 
     def get_trunk_diameter(self) -> int:
@@ -58,7 +58,7 @@ class Tree(Plant):
 
     def show(self):
         print(f"{self.name}: {self.get_height():.1f}cm,"
-              f" {self.get_starting_age()} days old")
+              f" {self.get_age()} days old")
         print(f" Trunk diameter: {self.get_trunk_diameter():.1f}cm")
 
     def produce_shade(self):
@@ -71,9 +71,9 @@ class Tree(Plant):
 
 
 class Vegetable(Plant):
-    def __init__(self, name: str, height: float, starting_age: int,
+    def __init__(self, name: str, height: float, age: int,
                  harvest_season: str, nutritional_value: int):
-        super().__init__(name, height, starting_age)
+        super().__init__(name, height, age)
         self.harvest_season = harvest_season
         self.set_nutritional_value(nutritional_value)
 
@@ -86,7 +86,7 @@ class Vegetable(Plant):
 
     def show(self):
         print(f"{self.name}: {self.get_height():.1f}cm,"
-              f" {self.get_starting_age()} days old")
+              f" {self.get_age()} days old")
         print(f" Harvest season: {self.harvest_season}")
         print(f" Nutritional value: {self.get_nutritional_value()}")
 
@@ -100,9 +100,9 @@ class Vegetable(Plant):
         self.set_nutritional_value(new_value)
 
     def age(self, days: int):
-        new_starting_age = self.get_starting_age()
-        new_starting_age = new_starting_age + days
-        self.set_starting_age(new_starting_age)
+        new_age = self.get_age()
+        new_age = new_age + days
+        self.set_age(new_age)
 
 
 def ft_plant_types():

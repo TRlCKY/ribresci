@@ -10,13 +10,14 @@ def input_temperature(temp_str: str) -> int:
         if int_value >= 0 and int_value <= 40:
             return int_value
         elif int_value < 0:
-            print(f"Caught input_temperature error: {int_value}°C is too cold"
-                  " for plants (min 0°C)")
+            raise Exception(f"Caught input_temperature error: {int_value}°C is"
+                            " too cold for plants (min 0°C)")
         else:
-            print(f"Caught input_temperature error: {int_value}°C is too hot"
-                  " for plants (max 40°C)")
+            raise Exception(f"Caught input_temperature error: {int_value}°C is"
+                            "too hot for plants (max 40°C)")
     except Exception as e:
         print(f"Caught input_temperature error: {e}")
+    return 0
 
 
 def test_temperature():

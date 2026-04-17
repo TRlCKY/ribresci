@@ -10,6 +10,7 @@ def input_temperature(temp_str: str) -> int:
         return int_value
     except Exception as e:
         print(f"Caught input_temperature error: {e}")
+    return 0
 
 
 def test_temperature():

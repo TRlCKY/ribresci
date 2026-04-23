@@ -18,7 +18,7 @@ def get_player_pos() -> tuple:
             x = 1
         except Exception:
             print("Invalid Syntax")
-        return tuple0
+    return tuple0
 
 
 def main():

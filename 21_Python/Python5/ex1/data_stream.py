@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, typing
 from abc import ABC, abstractmethod
 
 
@@ -125,65 +125,70 @@ class LogProcessor(DataProcessor):
             raise Exception("Improper log data")
 
 
+class DataStream(DataProcessor):
+    def __init__(self):
+        super().__init__()
+        self.reg_proc = list[DataProcessor]
+        self.tot_num = 0
+        self.tot_txt = 0
+        self.tot_log = 0
+        self.rem_num = 0
+        self.rem_txt = 0
+        self.rem_log = 0
+
+    # metodo che registra i processori che potranno gestire i dati in
+    # process_stream
+    def register_processor(self, proc: DataProcessor) -> None:
+        if isinstance(proc, DataProcessor):
+            self.reg_proc.append(proc)
+            print(f"{proc.capitalize()} has been regitered")
+        else:
+            print(f"Error. {proc} is not a processor")
+
+    # metodo che analizza gli elementi in stream e decide a quale
+    # processore in register_processor inviare quei dati. con un messaggio
+    # di errore se nessuno di loro puo
+    def process_stream(self, stream: list[typing.Any]) -> None:
+        if len(stream) == 0:
+            raise Exception("No elements in the data stream")
+        else:
+            x = len(stream)
+            for i in range(x):
+                print()
+                # controlla la lista di processori se possono fare ingest
+                # e se nessuno puo manda un errore
+
+    def print_processors_stats(self) -> None:
+        print("== DataStream statistics ==")
+        if not self.data:
+            print("No processor found, no data")
+        else:
+            if self.tot_num > 0:
+                print(f"Numeric Processor: total {self.tot_num},"
+                      f"remaining {self.rem_num} on processor")
+            if self.tot_txt > 0:
+                print(f"Text Processor: total {self.tot_txt},"
+                      f"remaining {self.rem_txt} on processor")
+            if self.tot_log > 0:
+                print(f"Log Processor: total {self.tot_log},"
+                      f"remaining {self.rem_log} on processor")
+
+
 def main():
-    print("=== Code Nexus - Data Processor ===\n")
-    num = NumericProcessor()
-    txt = TextProcessor()
-    log = LogProcessor()
-    print("Testing Numeric Processor...")
-    data = 42
-    print(f" Trying to validate input '{data}': {num.validate(data)}")
-    data = "Hello"
-    print(f" Trying to validate input '{data}': {num.validate(data)}")
-    data = "foo"
-    print(f" Test invalid ingestion of string '{data}' without prior"
-          " validation:")
-    try:
-        num.ingest(data)
-    except Exception as e:
-        print(f" Got error: {e}")
-    try:
-        array = [1, 2, 3, 4, 5]
-        print(f" Processind data: {array}")
-        num.ingest(array)
-    except Exception as e:
-        print(f" Got error: {e}")
-    print(" Extracting 3 values...")
-    for _ in range(3):
-        tuple0 = num.output()
-        print(f" Numeric value {tuple0[0]}: {tuple0[1]}")
+    print("=== Code Nexus - Data Stream ===")
+    print("Initialize Data Stream...")
+    data_stream = DataStream()
+    data_stream.printrocessors_stats()
     print()
-    print("Testing Text Processor...")
-    data = 42
-    print(f" Trying to validate input '{data}': {txt.validate(data)}")
-    data = "Hello"
-    print(f" Trying to validate input '{data}': {txt.validate(data)}")
-    try:
-        array = ["Hello", "Nexus", "World"]
-        print(f" Processing data: {array}")
-        txt.ingest(array)
-    except Exception as e:
-        print(f" Got error: {e}")
-    print(" Extracting 1 value...")
-    tuple0 = txt.output()
-    print(f" Text value {tuple0[0]}: {tuple0[1]}")
-    print()
-    print("Testing Log Processor...")
-    data = "Hello"
-    print(f" Trying to validate input '{data}': {log.validate(data)}")
-    try:
-        array = [{"log_level": "NOTICE",
-                  "log_message": "Connection to server"},
-                 {"log_level": "ERROR",
-                  "log_message": "Unauthorized access!"}]
-        print(f" Processing data: {array}")
-        log.ingest(array)
-    except Exception as e:
-        print(f" Got error: {e}")
-    print(" Extracting 2 values...")
-    for _ in range(2):
-        dict0 = log.output()
-        print(f" Log entry {dict0[0]}: {dict0[1]}")
+    print("Registering Numeric Processor")
+    num_p = NumericProcessor()
+    data_stream.register_processor(num_p)
+    data = [[{'log_level': 'WARNING',
+              'log_message': 'Telnet access! Use ssh instead'},
+            {'log_level': 'INFO', 'log_message': 'User wil is connected'}],
+             "Hello world", [3.14, -1, 2.71], 42, ['Hi', 'five']]
+    for i in range(len(data)):
+        data_stream.process_stream(data)
 
 
 if __name__ == "__main__":

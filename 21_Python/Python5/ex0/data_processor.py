@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Union
 from abc import ABC, abstractmethod
 
 
@@ -27,12 +27,13 @@ class NumericProcessor(DataProcessor):
     def __init__(self):
         super().__init__()
 
-    def validate(self, data: int | float | list) -> bool:
-        if isinstance(data, int) or isinstance(data, float):
+    def validate(self, data: Any) -> bool:
+        dt = data
+        if isinstance(dt, int) or isinstance(dt, float):
             return True
-        elif isinstance(data, list):
-            for i in range(len(data)):
-                if not isinstance(data[i], int) or isinstance(data[i], float):
+        elif isinstance(dt, list):
+            for i in range(len(dt)):
+                if not isinstance(dt[i], int) and not isinstance(dt[i], float):
                     return False
             return True
         else:
@@ -61,7 +62,7 @@ class TextProcessor(DataProcessor):
     def __init__(self):
         super().__init__()
 
-    def validate(self, data: str | list) -> bool:
+    def validate(self, data: Any) -> bool:
         if isinstance(data, str):
             return True
         elif isinstance(data, list):
@@ -95,7 +96,7 @@ class LogProcessor(DataProcessor):
     def __init__(self):
         super().__init__()
 
-    def validate(self, data: list | dict) -> bool:
+    def validate(self, data: Any) -> bool:
         if isinstance(data, dict):
             return True
         elif isinstance(data, list):
@@ -131,15 +132,12 @@ def main():
     txt = TextProcessor()
     log = LogProcessor()
     print("Testing Numeric Processor...")
-    data = 42
-    print(f" Trying to validate input '{data}': {num.validate(data)}")
-    data = "Hello"
-    print(f" Trying to validate input '{data}': {num.validate(data)}")
-    data = "foo"
-    print(f" Test invalid ingestion of string '{data}' without prior"
-          " validation:")
+    print(f" Trying to validate input '42': {num.validate(42)}")
+    print(f" Trying to validate input 'Hello': {num.validate('Hello')}")
+    print(f" Test invalid ingestion of string 'foo' without prior"
+           " validation:")
     try:
-        num.ingest(data)
+        num.ingest("foo")
     except Exception as e:
         print(f" Got error: {e}")
     try:

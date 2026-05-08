@@ -182,6 +182,17 @@ class DataStream():
                       f"remaining {self.reg_proc[i].rem} on processor")
                 # print(self.reg_proc[i].data)
 
+    def output_pipeline(self, nb: int, plugin: ExportPlugin) -> None:
+        print()
+
+
+class ExportPlugin(Protocol):
+    def __init__(self):
+        super.__init__()
+
+    def process_output(self, data: list[tuple[int, str]]) -> None:
+        print()
+
 
 def main():
     print("=== Code Nexus - Data Stream ===")

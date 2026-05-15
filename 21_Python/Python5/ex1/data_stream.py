@@ -5,8 +5,8 @@ from abc import ABC, abstractmethod
 
 class DataProcessor(ABC):
     def __init__(self):
-        self.rank = list()
-        self.data = list()
+        self.rank = 0
+        self.data: list[Any] = []
         self.tot = 0
         self.rem = 0
         self.name = ""
@@ -20,11 +20,11 @@ class DataProcessor(ABC):
         pass
 
     def output(self) -> tuple[int, str]:
-        rank0 = self.rank[0]
         data0 = self.data[0]
-        del self.rank[0]
         del self.data[0]
         self.rem -= 1
+        rank0 = self.rank
+        self.rank += 1
         return (rank0, str(data0))
 
 
@@ -33,7 +33,7 @@ class NumericProcessor(DataProcessor):
         super().__init__()
         self.name = "Numeric processor"
 
-    def validate(self, dt: int | float | list) -> bool:
+    def validate(self, dt: int | float | list[int] | list[float]) -> bool:
         if isinstance(dt, int) or isinstance(dt, float):
             return True
         elif isinstance(dt, list):
@@ -44,23 +44,17 @@ class NumericProcessor(DataProcessor):
         else:
             return False
 
-    def ingest(self, data: int | float | list) -> None:
+    def ingest(self, data: int | float | list[int] | list[float]) -> None:
         if self.validate(data):
             if isinstance(data, list):
                 new_data = list()
-                new_rank = list()
                 for i in range(len(data)):
                     new_data.append(str(data[i]))
-                    x = i + len(self.data)
-                    new_rank.append(x)
                     self.tot += 1
                     self.rem += 1
                 self.data.extend(new_data)
-                self.rank.extend(new_rank)
             else:
-                x = len(self.data)
                 self.data.append(str(data))
-                self.rank.append(x)
                 self.tot += 1
                 self.rem += 1
         else:
@@ -72,7 +66,7 @@ class TextProcessor(DataProcessor):
         super().__init__()
         self.name = "Text processor"
 
-    def validate(self, data: str | list) -> bool:
+    def validate(self, data: str | list[str]) -> bool:
         if isinstance(data, str):
             return True
         elif isinstance(data, list):
@@ -83,23 +77,17 @@ class TextProcessor(DataProcessor):
         else:
             return False
 
-    def ingest(self, data: str | list) -> None:
+    def ingest(self, data: str | list[str]) -> None:
         if self.validate(data):
             if isinstance(data, list):
                 new_data = list()
-                new_rank = list()
                 for i in range(len(data)):
                     new_data.append(data[i])
-                    x = i + len(self.data)
-                    new_rank.append(x)
                     self.tot += 1
                     self.rem += 1
                 self.data.extend(new_data)
-                self.rank.extend(new_rank)
             else:
-                x = len(self.data)
                 self.data.append(str(data))
-                self.rank.append(x)
                 self.tot += 1
                 self.rem += 1
         else:
@@ -126,19 +114,13 @@ class LogProcessor(DataProcessor):
         if self.validate(data):
             if isinstance(data, list):
                 new_data = list()
-                new_rank = list()
                 for i in range(len(data)):
                     new_data.append(data[i])
-                    x = i + len(self.data)
-                    new_rank.append(x)
                     self.tot += 1
                     self.rem += 1
                 self.data.extend(new_data)
-                self.rank.extend(new_rank)
             else:
-                x = len(self.data)
                 self.data.append(data)
-                self.rank.append(x)
                 self.tot += 1
                 self.rem += 1
         else:

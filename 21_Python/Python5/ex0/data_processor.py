@@ -1,11 +1,11 @@
-from typing import Any, Union
+from typing import Any
 from abc import ABC, abstractmethod
 
 
 class DataProcessor(ABC):
     def __init__(self):
-        self.rank = list()
-        self.data = list()
+        self.data: list[Any] = []
+        self.rank = 0
 
     @abstractmethod
     def validate(self, data: Any) -> bool:
@@ -16,10 +16,10 @@ class DataProcessor(ABC):
         pass
 
     def output(self) -> tuple[int, str]:
-        rank0 = self.rank[0]
         data0 = self.data[0]
-        del self.rank[0]
         del self.data[0]
+        rank0 = self.rank
+        self.rank += 1
         return (rank0, str(data0))
 
 
@@ -39,21 +39,15 @@ class NumericProcessor(DataProcessor):
         else:
             return False
 
-    def ingest(self, data: int | float | list) -> None:
+    def ingest(self, data: int | float | list[int] | list[float]) -> None:
         if self.validate(data):
             if isinstance(data, list):
                 new_data = list()
-                new_rank = list()
                 for i in range(len(data)):
-                    new_data.append(str(data[i]))
-                    x = i + len(self.data)
-                    new_rank.append(x)
+                    new_data.append(data[i])
                 self.data.extend(new_data)
-                self.rank.extend(new_rank)
             else:
-                self.data.append(str(data))
-                x = len(self.data)
-                self.rank.append(x)
+                self.data.append(data)
         else:
             raise Exception("Improper numeric data")
 
@@ -73,21 +67,15 @@ class TextProcessor(DataProcessor):
         else:
             return False
 
-    def ingest(self, data: str | list) -> None:
+    def ingest(self, data: str | list[str]) -> None:
         if self.validate(data):
             if isinstance(data, list):
                 new_data = list()
-                new_rank = list()
                 for i in range(len(data)):
                     new_data.append(data[i])
-                    x = i + len(self.data)
-                    new_rank.append(x)
                 self.data.extend(new_data)
-                self.rank.extend(new_rank)
             else:
                 self.data.append(str(data))
-                x = len(self.data)
-                self.rank.append(x)
         else:
             raise Exception("Improper text data")
 
@@ -107,21 +95,15 @@ class LogProcessor(DataProcessor):
         else:
             return False
 
-    def ingest(self, data: list | dict) -> None:
+    def ingest(self, data: list[dict] | dict) -> None:
         if self.validate(data):
             if isinstance(data, list):
                 new_data = list()
-                new_rank = list()
                 for i in range(len(data)):
                     new_data.append(data[i])
-                    x = i + len(self.data)
-                    new_rank.append(x)
                 self.data.extend(new_data)
-                self.rank.extend(new_rank)
             else:
                 self.data.append(data)
-                x = len(self.data)
-                self.rank.append(x)
         else:
             raise Exception("Improper log data")
 
@@ -134,16 +116,16 @@ def main():
     print("Testing Numeric Processor...")
     print(f" Trying to validate input '42': {num.validate(42)}")
     print(f" Trying to validate input 'Hello': {num.validate('Hello')}")
-    print(f" Test invalid ingestion of string 'foo' without prior"
-           " validation:")
+    print(" Test invalid ingestion of string 'foo' without prior"
+          " validation:")
     try:
         num.ingest("foo")
     except Exception as e:
         print(f" Got error: {e}")
     try:
-        array = [1, 2, 3, 4, 5]
-        print(f" Processind data: {array}")
-        num.ingest(array)
+        array_num = [1, 2, 3, 4, 5]
+        print(f" Processind data: {array_num}")
+        num.ingest(array_num)
     except Exception as e:
         print(f" Got error: {e}")
     print(" Extracting 3 values...")
@@ -152,14 +134,12 @@ def main():
         print(f" Numeric value {tuple0[0]}: {tuple0[1]}")
     print()
     print("Testing Text Processor...")
-    data = 42
-    print(f" Trying to validate input '{data}': {txt.validate(data)}")
-    data = "Hello"
-    print(f" Trying to validate input '{data}': {txt.validate(data)}")
+    print(f" Trying to validate input '{42}': {txt.validate(42)}")
+    print(f" Trying to validate input '{'Hello'}': {txt.validate('Hello')}")
     try:
-        array = ["Hello", "Nexus", "World"]
-        print(f" Processing data: {array}")
-        txt.ingest(array)
+        array_str = ["Hello", "Nexus", "World"]
+        print(f" Processing data: {array_str}")
+        txt.ingest(array_str)
     except Exception as e:
         print(f" Got error: {e}")
     print(" Extracting 1 value...")

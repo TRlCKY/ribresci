@@ -1,12 +1,12 @@
 import typing
-from typing import Any
+from typing import Any, Protocol
 from abc import ABC, abstractmethod
 
 
 class DataProcessor(ABC):
     def __init__(self):
-        self.rank = list()
-        self.data = list()
+        self.rank = 0
+        self.data: list[Any] = []
         self.tot = 0
         self.rem = 0
         self.name = ""
@@ -20,12 +20,51 @@ class DataProcessor(ABC):
         pass
 
     def output(self) -> tuple[int, str]:
-        rank0 = self.rank[0]
+        rank0 = self.rank
         data0 = self.data[0]
-        del self.rank[0]
+        self.rank += 1
         del self.data[0]
         self.rem -= 1
         return (rank0, str(data0))
+
+
+class ExportPlugin(Protocol):
+    def __init__(self):
+        super().__init__()
+
+    # gestisce la lista ricevuta stampandola nei formati CSV e JSON
+    @abstractmethod
+    def process_output(self, data: list[tuple[int, str]]) -> None:
+        pass
+
+
+class CSV(ExportPlugin):
+    def __init__(self):
+        super().__init__()
+
+    def process_output(self, data: list[tuple[int, str]]):
+        print("CSV Output:")
+        csv_output = ""
+        i = 0
+        for element in data:
+            csv_output += f"{element[1]}"
+            if i != len(data) - 1:
+                csv_output += ","
+            i += 1
+        print(csv_output)
+
+
+class JSON(ExportPlugin):
+    def __init__(self):
+        super().__init__()
+
+    def process_output(self, data: list[tuple[int, str]]):
+        print("JSON Output")
+        json_output = dict()
+        for element in data:
+            dict0 = {"item_" + str(element[0]): element[1]}
+            json_output.update(dict0)
+        print(json_output)
 
 
 class NumericProcessor(DataProcessor):
@@ -48,19 +87,13 @@ class NumericProcessor(DataProcessor):
         if self.validate(data):
             if isinstance(data, list):
                 new_data = list()
-                new_rank = list()
                 for i in range(len(data)):
                     new_data.append(str(data[i]))
-                    x = i + len(self.data)
-                    new_rank.append(x)
                     self.tot += 1
                     self.rem += 1
                 self.data.extend(new_data)
-                self.rank.extend(new_rank)
             else:
-                x = len(self.data)
                 self.data.append(str(data))
-                self.rank.append(x)
                 self.tot += 1
                 self.rem += 1
         else:
@@ -87,19 +120,13 @@ class TextProcessor(DataProcessor):
         if self.validate(data):
             if isinstance(data, list):
                 new_data = list()
-                new_rank = list()
                 for i in range(len(data)):
                     new_data.append(data[i])
-                    x = i + len(self.data)
-                    new_rank.append(x)
                     self.tot += 1
                     self.rem += 1
                 self.data.extend(new_data)
-                self.rank.extend(new_rank)
             else:
-                x = len(self.data)
                 self.data.append(str(data))
-                self.rank.append(x)
                 self.tot += 1
                 self.rem += 1
         else:
@@ -126,19 +153,13 @@ class LogProcessor(DataProcessor):
         if self.validate(data):
             if isinstance(data, list):
                 new_data = list()
-                new_rank = list()
                 for i in range(len(data)):
                     new_data.append(data[i])
-                    x = i + len(self.data)
-                    new_rank.append(x)
                     self.tot += 1
                     self.rem += 1
                 self.data.extend(new_data)
-                self.rank.extend(new_rank)
             else:
-                x = len(self.data)
                 self.data.append(data)
-                self.rank.append(x)
                 self.tot += 1
                 self.rem += 1
         else:
@@ -182,60 +203,60 @@ class DataStream():
                       f"remaining {self.reg_proc[i].rem} on processor")
                 # print(self.reg_proc[i].data)
 
+    # crea la lista di tuple da mandare a process_output
     def output_pipeline(self, nb: int, plugin: ExportPlugin) -> None:
-        print()
-
-
-class ExportPlugin(Protocol):
-    def __init__(self):
-        super.__init__()
-
-    def process_output(self, data: list[tuple[int, str]]) -> None:
-        print()
+        tuple_list = []
+        for x in self.reg_proc:
+            for _ in range(nb):
+                if not x.data:
+                    break
+                tuple0 = x.output()
+                tuple_list.append(tuple0)
+            plugin.process_output(tuple_list)
+            tuple_list.clear()
 
 
 def main():
-    print("=== Code Nexus - Data Stream ===")
-    print("Initialize Data Stream...")
+    print("=== Code Nexus - Data Pipeline ===")
+    print("Inizialize Data Stream...\n")
+    print("Registering Processors\n")
     data_stream = DataStream()
     data_stream.print_processors_stats()
+    num = NumericProcessor()
+    txt = TextProcessor()
+    log = LogProcessor()
+    data_stream.register_processor(num)
+    data_stream.register_processor(txt)
+    data_stream.register_processor(log)
     print()
-    print("Registering Numeric Processor")
-    num_p = NumericProcessor()
-    data_stream.register_processor(num_p)
-    print()
-    data = [[{'log_level': 'WARNING',
-              'log_message': 'Telnet access! Use ssh instead'},
-             {'log_level': 'INFO', 'log_message': 'User wil is connected'}],
-            "Hello world", [3.14, -1, 2.71], 42, ['Hi', 'five']]
-    # print(f"\n{data}\n")
-    print(f"Send first batch of data on stream: {data}")
+    data = ['Hello world', [3.14, -1, 2.71], [
+           {'log_level': 'WARNING',
+            'log_message': 'Telnet access! Use ssh instead'},
+           {'log_level': 'INFO', 'log_message': 'User wil is connected'}],
+            42, ['Hi', 'five']]
+    print(f"Send first batch of data on stream {data}\n")
     data_stream.process_stream(data)
-    print()
-    print("Registering other data processor: 1 Text and 1 Log processor")
-    txt_p = TextProcessor()
-    log_p = LogProcessor()
-    data_stream.register_processor(txt_p)
-    data_stream.register_processor(log_p)
-    print()
     data_stream.print_processors_stats()
     print()
-    print("Send the same batch again")
-    data = [[{'log_level': 'WARNING',
-              'log_message': 'Telnet access! Use ssh instead'},
-             {'log_level': 'INFO', 'log_message': 'User wil is connected'}],
-            "Hello world", [3.14, -1, 2.71], 42, ['Hi', 'five']]
-    data_stream.process_stream(data)
+    print("Send 3 pocessed data from each processor to a CSV plugin:")
+    csv = CSV()
+    data_stream.output_pipeline(3, csv)
     print()
     data_stream.print_processors_stats()
+    data = [21, ['Bruh', 'LLMs are wonderful', 'Stay healthy'], [
+          {'log_level': 'ERROR', 'log_message': '500 server crash'},
+          {'log_level': 'NOTICE',
+           'log_message': 'Certificate expires in 10 days'}],
+           [32, 42, 64, 84, 128, 168], 'World hello']
     print()
-    print("Consume some elements from the data processors: "
-          "3 Numeric, 2 Text, 1 Log")
-    for _ in range(3):
-        data_stream.reg_proc[0].output()
-    for _ in range(2):
-        data_stream.reg_proc[1].output()
-    data_stream.reg_proc[2].output()
+    print(f"Send another batch of data: {data}\n")
+    json = JSON()
+    data_stream.process_stream(data)
+    data_stream.print_processors_stats()
+    print()
+    print("Send 5 pocessed data from each processor to a JSON plugin:")
+    data_stream.output_pipeline(5, json)
+    print()
     data_stream.print_processors_stats()
 
 

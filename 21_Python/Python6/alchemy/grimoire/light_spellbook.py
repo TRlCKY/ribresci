@@ -3,10 +3,10 @@ def light_spell_allowed_ingredients() -> list[str]:
 
 
 def light_spell_record(spell_name: str, ingredients: str) -> str:
-    from light_validator import validate_ingredients
+    from alchemy.grimoire.light_validator import validate_ingredients
     valid = validate_ingredients(ingredients)
     if valid == "VALID":
-        return f"Spell recorded: {spell_name} :{ingredients}"
+        return f"Spell recorded: {spell_name} :{ingredients} - {valid}"
     elif valid == "INVALID":
         return "Invalid spell, can't be recorded"
     else:

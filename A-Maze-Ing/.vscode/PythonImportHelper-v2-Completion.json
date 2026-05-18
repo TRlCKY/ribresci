@@ -1,0 +1,79 @@
+[
+    {
+        "label": "random",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "random",
+        "description": "random",
+        "detail": "random",
+        "documentation": {}
+    },
+    {
+        "label": "MazeGenerator",
+        "importPath": "mazegenerator.generator",
+        "description": "mazegenerator.generator",
+        "isExtraImport": true,
+        "detail": "mazegenerator.generator",
+        "documentation": {}
+    },
+    {
+        "label": "MazeGenerator",
+        "importPath": "mazegenerator",
+        "description": "mazegenerator",
+        "isExtraImport": true,
+        "detail": "mazegenerator",
+        "documentation": {}
+    },
+    {
+        "label": "output_file",
+        "importPath": "renderer",
+        "description": "renderer",
+        "isExtraImport": true,
+        "detail": "renderer",
+        "documentation": {}
+    },
+    {
+        "label": "print_labyrinth",
+        "importPath": "renderer",
+        "description": "renderer",
+        "isExtraImport": true,
+        "detail": "renderer",
+        "documentation": {}
+    },
+    {
+        "label": "MazeGenerator",
+        "kind": 6,
+        "importPath": "mazegenerator.generator",
+        "description": "mazegenerator.generator",
+        "peekOfCode": "class MazeGenerator():\n    def __init__(self, DATA: dict):\n        self.WIDTH = DATA['WIDTH']\n        self.HEIGHT = DATA['HEIGHT']\n        self.ENTRY = DATA['ENTRY']\n        self.EXIT = DATA['EXIT']\n        self.PERFECT = DATA['PERFECT']\n        self.grill = []\n        self.list_candidates = []\n    def generate(self):",
+        "detail": "mazegenerator.generator",
+        "documentation": {}
+    },
+    {
+        "label": "output_file",
+        "kind": 2,
+        "importPath": "renderer.output_file_renderer",
+        "description": "renderer.output_file_renderer",
+        "peekOfCode": "def output_file(lib: MazeGenerator) -> None:\n    if not lib:\n        raise (\"Error not exits labyrinth!\")\n    try:\n        file = open(\"renderer/data.txt\", \"w\")\n        for row in lib.grill:\n            for cell in row:\n                txt = (f\"{cell['x']},{cell['y']},{str(int(cell['N']))},\"\n                       f\"{str(int(cell['E']))},\"\n                       f\"{str(int(cell['S']))},{str(int(cell['W']))}\\n\")",
+        "detail": "renderer.output_file_renderer",
+        "documentation": {}
+    },
+    {
+        "label": "print_labyrinth",
+        "kind": 2,
+        "importPath": "renderer.output_file_renderer",
+        "description": "renderer.output_file_renderer",
+        "peekOfCode": "def print_labyrinth(lib: MazeGenerator) -> None:\n    coordinates_entry = lib.ENTRY.split(\".\")\n    coordinates_exit = lib.EXIT.split(\".\")\n    for y in range(lib.HEIGHT):\n        top = \"\"\n        for x in range(lib.WIDTH):\n            top += \"█\" + (\"███\" if lib.grill[y][x][\"N\"] else \"   \")\n        top += \"█\"\n        print(top)\n        middle = \"\"",
+        "detail": "renderer.output_file_renderer",
+        "documentation": {}
+    },
+    {
+        "label": "reding_input",
+        "kind": 2,
+        "importPath": "a_maze_ing",
+        "description": "a_maze_ing",
+        "peekOfCode": "def reding_input(fd: str) -> dict:\n    data = {}\n    with open(fd, \"r\") as vault:\n        for variable in vault:\n            value = variable.split(\"=\")\n            if value[0] == \"WIDTH\" or value[0] == \"HEIGHT\":\n                data.update({value[0]: int(value[1])})\n            if value[0] == \"ENTRY\" or value[0] == \"EXIT\":\n                data.update({value[0]: str(value[1].replace(',', '.'))})\n            if value[0] == \"PERFECT\":",
+        "detail": "a_maze_ing",
+        "documentation": {}
+    }
+]

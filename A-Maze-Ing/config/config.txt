@@ -1,0 +1,22 @@
+WIDTH=50
+HEIGHT=20
+# HEIGHT=34
+ENTRY=19,10
+EXIT=1,3
+OUTPUT_FILE=maze.txt
+PERFECT=True
+
+├── a_maze_ing.py
+├── mazegen/
+│   ├── __init__.py
+│   ├── generator.py
+│   ├── solver.py
+│   ├── utils.py
+│   └── pyproject.toml
+├── renderer/
+│   ├── ascii_renderer.py
+│   ├── mlx_renderer.py   (opzionale)
+├── config/
+│   └── default_config.txt
+├── Makefile
+└── README.md

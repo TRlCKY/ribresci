@@ -29,10 +29,80 @@ class MazeGenerator():
                         } for col in range(self.WIDTH)] for row in range(
                             self.HEIGHT)]
 
-    def _prim_algorithm(self):
-        coordinates = self.ENTRY.split(".")
-        current_cell = self.grill[int(coordinates[1])][int(coordinates[0])]
+    def _gen_42(self):
+        middle = self.grill[int(self.HEIGHT / 2)][int(self.WIDTH / 2)]
+        nw = self.grill[middle['y'] - 2][middle['x'] - 3]
+        # ne = self.grill[middle['y'] - 2][middle['x'] + 3]
+        # sw = self.grill[middle['y'] + 2][middle['x'] - 3]
+        se = self.grill[middle['y'] + 2][middle['x'] + 3]
+        nw['visited'] = True
+        nw['value'] = 42
+        # ne['visited'] = True
+        se['visited'] = True
+        se['value'] = 42
+        # sw['visited'] = True
+        # Crea il 4
+        current_cell = self.grill[nw['y'] + 1][nw['x']]
         current_cell['visited'] = True
+        current_cell['value'] = 42
+        current_cell = self.grill[current_cell['y'] + 1][current_cell['x']]
+        current_cell['visited'] = True
+        current_cell['value'] = 42
+        current_cell = self.grill[current_cell['y']][current_cell['x'] + 1]
+        current_cell['visited'] = True
+        current_cell['value'] = 42
+        current_cell = self.grill[current_cell['y']][current_cell['x'] + 1]
+        current_cell['visited'] = True
+        current_cell['value'] = 42
+        current_cell = self.grill[current_cell['y'] + 1][current_cell['x']]
+        current_cell['visited'] = True
+        current_cell['value'] = 42
+        current_cell = self.grill[current_cell['y'] + 1][current_cell['x']]
+        current_cell['visited'] = True
+        current_cell['value'] = 42
+        # Crea il 2
+        current_cell = self.grill[se['y']][se['x'] - 1]
+        current_cell['visited'] = True
+        current_cell['value'] = 42
+        current_cell = self.grill[current_cell['y']][current_cell['x'] - 1]
+        current_cell['visited'] = True
+        current_cell['value'] = 42
+        current_cell = self.grill[current_cell['y'] - 1][current_cell['x']]
+        current_cell['visited'] = True
+        current_cell['value'] = 42
+        current_cell = self.grill[current_cell['y'] - 1][current_cell['x']]
+        current_cell['visited'] = True
+        current_cell['value'] = 42
+        current_cell = self.grill[current_cell['y']][current_cell['x'] + 1]
+        current_cell['visited'] = True
+        current_cell['value'] = 42
+        current_cell = self.grill[current_cell['y']][current_cell['x'] + 1]
+        current_cell['visited'] = True
+        current_cell['value'] = 42
+        current_cell = self.grill[current_cell['y'] - 1][current_cell['x']]
+        current_cell['visited'] = True
+        current_cell['value'] = 42
+        current_cell = self.grill[current_cell['y'] - 1][current_cell['x']]
+        current_cell['visited'] = True
+        current_cell['value'] = 42
+        current_cell = self.grill[current_cell['y']][current_cell['x'] - 1]
+        current_cell['visited'] = True
+        current_cell['value'] = 42
+        current_cell = self.grill[current_cell['y']][current_cell['x'] - 1]
+        current_cell['visited'] = True
+        current_cell['value'] = 42
+
+    def _prim_algorithm(self):
+        self._gen_42()
+        entry_coordinates = self.ENTRY.split(".")
+        exit_coordinates = self.EXIT.split(".")
+        current_cell = (self.grill[int(entry_coordinates[1])]
+                        [int(entry_coordinates[0])])
+        exit_cell = (self.grill[int(exit_coordinates[1])]
+                     [int(exit_coordinates[0])])
+        current_cell['visited'] = True
+        if current_cell['value'] == 42 or exit_cell == 42:
+            raise Exception("Entry or exit is inside 42")
         self._add_walls_of_cell(current_cell['x'], current_cell['y'])
         while self.list_candidates:
             muro = random.choice(self.list_candidates)
@@ -77,6 +147,7 @@ class MazeGenerator():
                         self.list_candidates.remove(muro)
                     else:
                         self.list_candidates.remove(muro)
+        self.reset()
 
     def _add_walls_of_cell(self, x, y):
         if (y > 0 and self.grill[y][x]['N'] and
@@ -105,3 +176,15 @@ class MazeGenerator():
         cellA[muro] = False
         cellB[opposite_wall] = False
         cellB['visited'] = True
+
+    def reset(self):
+        i = 0
+        e = 0
+        while i < self.WIDTH:
+            e = 0
+            while e < self.HEIGHT:
+                current = self.grill[e][i]
+                if current['value'] != 42:
+                    current['visited'] = False
+                e += 1
+            i += 1

@@ -28,7 +28,11 @@ def print_labyrinth(lib: MazeGenerator) -> None:
 
         middle = ""
         for x in range(lib.WIDTH):
-            if y == int(coordinates_entry[1]) and x == int(
+            z = lib.grill[y][x]
+            if z['value'] == 42:
+                middle += ("█" if lib.grill[y][x]["W"] else " ")
+                middle += "\033[34m" + "███" + "\033[0m"
+            elif y == int(coordinates_entry[1]) and x == int(
                     coordinates_entry[0]):
                 middle += ("█" if lib.grill[y][x]["W"] else " ")
                 middle += "\033[31m" + "███" + "\033[0m"
@@ -47,4 +51,3 @@ def print_labyrinth(lib: MazeGenerator) -> None:
         bottom += "█" + ("███" if lib.grill[lib.HEIGHT-1][x]["S"] else "   ")
     bottom += "█"
     print(bottom)
-

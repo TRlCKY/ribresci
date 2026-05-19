@@ -1,5 +1,6 @@
 from mazegenerator import MazeGenerator
 from renderer import output_file, print_labyrinth
+from mazegenerator import solver
 
 
 def reding_input(fd: str) -> dict:
@@ -27,3 +28,4 @@ if __name__ == "__main__":
     print("")
     output_file(maze)
     print_labyrinth(maze)
+    solver.solve_maze(maze)

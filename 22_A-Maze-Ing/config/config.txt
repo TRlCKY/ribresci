@@ -1,8 +1,8 @@
 WIDTH=30
 HEIGHT=20
 # HEIGHT=34
-ENTRY=19,9
-EXIT=1,3
+EXIT=29,19
+ENTRY=0,0
 OUTPUT_FILE=maze.txt
 PERFECT=True
 
@@ -15,7 +15,6 @@ PERFECT=True
 │   └── pyproject.toml
 ├── renderer/
 │   ├── ascii_renderer.py
-│   ├── mlx_renderer.py   (opzionale)
 ├── config/
 │   └── default_config.txt
 ├── Makefile

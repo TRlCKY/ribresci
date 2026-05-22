@@ -1,4 +1,5 @@
 import random
+from typing import Any
 
 
 class MazeGenerator():
@@ -8,8 +9,9 @@ class MazeGenerator():
         self.ENTRY = DATA['ENTRY']
         self.EXIT = DATA['EXIT']
         self.PERFECT = DATA['PERFECT']
-        self.grill = []
-        self.list_candidates = []
+        self.solution = ""
+        self.grill: list[list[dict[str, Any]]] = []
+        self.list_candidates: list[tuple] = []
 
     def generate(self):
         self._init_grid()

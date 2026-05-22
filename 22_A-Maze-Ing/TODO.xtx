@@ -1,11 +1,10 @@
-algortimo di risoluzione:
-- visited resettati a false, tranne 42
-- modificare value = 1 per quelli giusti
-colori labirinto:
-- 42 monocolore
-- colore diverso per soluzione
-menu:
-- rigenera labirinto
-- op2
-- op3
-labirinto ascii
+Makefile
+
+README
+
+labirinto:
+- Perfect/non perfect
+- seed
+
+Usage:
+- Prendere il config da linea di comando

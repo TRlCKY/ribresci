@@ -10,7 +10,7 @@ class Creature(ABC):
     def attack(self):
         pass
 
-    def describe(self):
+    def describe(self) -> str:
         return f"{self.name}: {self.type} creature"
 
 

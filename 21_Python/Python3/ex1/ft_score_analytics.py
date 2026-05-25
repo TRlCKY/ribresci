@@ -19,7 +19,7 @@ def main():
                             x = 1
                             break
             if x == 1:
-                raise Exception("No scores provided."
+                raise Exception("No scores provided.\n"
                                 f" Usage: {sys.argv[0]}")
             array_lenght = len(sys.argv) - 1
             array = [0] * array_lenght
@@ -30,7 +30,7 @@ def main():
             print(f"Scores processed: {array}")
             print(f"Total players: {len(array)}")
             print(f"Total score: {sum(array)}")
-            print(f"Average score: {avg / array_lenght}")
+            print(f"Average score: {(avg / array_lenght):.2f}")
             print(f"High score: {max(array)}")
             print(f"Low score: {min(array)}")
             print(f"Score range: {max(array) - min(array)}")

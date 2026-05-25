@@ -189,7 +189,7 @@ class Tree(Plant):
         self._stats.add_shade()
 
 
-def show_stats(stats, check: int):
+def show_stats(stats: Plant.Stats, check: int):
     print(f"Stats: {stats.get_n_grow()} grow, {stats.get_n_age()}"
           f" age, {stats.get_n_show()} show")
     if check == 1:

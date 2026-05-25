@@ -35,37 +35,25 @@ def main():
     unique1 = unique1.difference(achiev2)
     unique1 = unique1.difference(achiev3)
     unique1 = unique1.difference(achiev4)
-    if len(unique1) == 0:
-        print(f"Only {name1} has: set()")
-    else:
-        print(f"Only {name1} has: {unique1}")
+    print(f"Only {name1} has: {unique1}")
     unique2 = set()
     unique2 = unique2.union(achiev2)
     unique2 = unique2.difference(achiev1)
     unique2 = unique2.difference(achiev3)
     unique2 = unique2.difference(achiev4)
-    if len(unique2) == 0:
-        print(f"Only {name2} has: set()")
-    else:
-        print(f"Only {name2} has: {unique2}")
+    print(f"Only {name2} has: {unique2}")
     unique3 = set()
     unique3 = unique3.union(achiev3)
     unique3 = unique3.difference(achiev2)
     unique3 = unique3.difference(achiev1)
     unique3 = unique3.difference(achiev4)
-    if len(unique3) == 0:
-        print(f"Only {name3} has: set()")
-    else:
-        print(f"Only {name3} has: {unique3}")
+    print(f"Only {name3} has: {unique3}")
     unique4 = set()
     unique4 = unique4.union(achiev4)
     unique4 = unique4.difference(achiev2)
     unique4 = unique4.difference(achiev3)
     unique4 = unique4.difference(achiev1)
-    if len(unique4) == 0:
-        print(f"Only {name4} has: set()")
-    else:
-        print(f"Only {name4} has: {unique4}")
+    print(f"Only {name4} has: {unique4}")
     print()
     all_achiev = {"They grow so fast", "Isn't it an iron pick?",
                   "The end?", "Stone age", "Cover me with diamonds",

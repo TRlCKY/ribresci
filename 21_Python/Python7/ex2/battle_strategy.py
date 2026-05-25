@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from typing import Any
 from ex2.creatures import Creature, TransformCapability, HealCapability
 
 
@@ -7,11 +8,11 @@ class BattleStrategy(ABC):
         self.name = ""
 
     @abstractmethod
-    def is_valid(self, creature: Creature) -> bool:
+    def is_valid(self, creature: Any) -> bool:
         pass
 
     @abstractmethod
-    def act(self, creature: Creature):
+    def act(self, creature: Any):
         pass
 
 
@@ -35,12 +36,12 @@ class AggressiveStrategy(BattleStrategy):
     def __init__(self):
         self.name = "Aggressive Strategy"
 
-    def is_valid(self, creature: Creature) -> bool:
+    def is_valid(self, creature: TransformCapability) -> bool:
         if isinstance(creature, TransformCapability):
             return True
         return False
 
-    def act(self, creature: Creature):
+    def act(self, creature: TransformCapability):
         if self.is_valid(creature):
             print(creature.transform())
             print(creature.attack())
@@ -53,12 +54,12 @@ class DefensiveStrategy(BattleStrategy):
     def __init__(self):
         self.name = "Defensive Strategy"
 
-    def is_valid(self, creature: Creature) -> bool:
+    def is_valid(self, creature: HealCapability) -> bool:
         if isinstance(creature, HealCapability):
             return True
         return False
 
-    def act(self, creature: Creature):
+    def act(self, creature: HealCapability):
         if self.is_valid(creature):
             print(creature.attack())
             print(creature.heal("itself"))

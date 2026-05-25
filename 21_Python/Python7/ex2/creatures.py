@@ -83,12 +83,26 @@ class AquaFactory(CreatureFactory):
 
 
 class HealCapability(ABC):
+    def __init__(self):
+        self.name = ""
+
+    @abstractmethod
+    def attack(self):
+        pass
+
     @abstractmethod
     def heal(self, target: str):
         pass
 
 
 class TransformCapability(ABC):
+    def __init__(self):
+        self.name = ""
+
+    @abstractmethod
+    def attack(self):
+        pass
+
     @abstractmethod
     def transform(self):
         pass

@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mazegen"
+version = "1.0.0"
+description = "Reusable maze generation module for the 42 project"
+authors = [
+    { name = "fbinchi" },
+    { name = "ribresci" }
+]
+readme = "mazegen/README.md"
+requires-python = ">=3.10"
+
+[tool.setuptools]
+packages = ["mazegenerator"]
+
+[project.urls]
+Homepage = "https://github.com/git@vogsphere.42firenze.it:vogsphere/intra-uuid-562822c1-1a14-431b-8931-5c5be41374d9-7423316-ribresci"

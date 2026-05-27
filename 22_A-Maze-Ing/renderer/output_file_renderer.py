@@ -2,10 +2,11 @@ from mazegenerator.generator import MazeGenerator
 
 
 def output_file(lib: MazeGenerator) -> None:
+    name_file = "output_file/" + lib.OUTPUT_FILE
     if not lib:
         raise Exception("Error not exits labyrinth!")
     try:
-        file = open("output_maze.txt", "w")
+        file = open(name_file, "w")
         for row in lib.grill:
             output = ""
             for cell in row:
@@ -19,8 +20,8 @@ def output_file(lib: MazeGenerator) -> None:
             output += "\n"
             file.write(output)
         file.write("\n")
-        file.write(f"{lib.ENTRY.replace(".", ",")}")
-        file.write(f"{lib.EXIT.replace(".", ",")}")
+        file.write(f"{lib.ENTRY.replace('.', ',')}")
+        file.write(f"{lib.EXIT.replace('.', ',')}")
         file.write(lib.solution)
     except FileNotFoundError as e:
         print(f"Error output not create {e}")
@@ -76,26 +77,30 @@ def print_labyrinth(lib: MazeGenerator, n: int, color: str) -> None:
                 else:
                     middle += (f"{color}" + "█" + "\033[0m"
                                if lib.grill[y][x]["W"] else " ")
-                middle += "\033[34m" + "██" + "\033[0m"
+                if y == int(coordinates_entry[1]) and x == int(
+                            coordinates_entry[0]):
+                    middle += "\033[32m" + "██" + "\033[0m"
+                elif y == int(coordinates_exit[1]) and x == int(
+                              coordinates_exit[0]):
+                    middle += "\033[31m" + "██" + "\033[0m"
+                else:
+                    middle += "\033[34m" + "██" + "\033[0m"
             elif z['value'] == 42:
                 middle += "\033[93m" + "███" + "\033[0m"
-            elif y == int(coordinates_entry[1]) and x == int(
-                    coordinates_entry[0]):
-                middle += (f"{color}" + "█" + "\033[0m"
-                           if lib.grill[y][x]["W"] else " ")
-                middle += "\033[32m" + "██" + "\033[0m"
-            elif y == int(coordinates_exit[1]) and x == int(
-                    coordinates_exit[0]):
-                middle += (f"{color}" + "█" + "\033[0m"
-                           if lib.grill[y][x]["W"] else " ")
-                middle += "\033[31m" + "██" + "\033[0m"
             else:
                 if lib.grill[y][x - 1]['value'] == 42:
                     middle += ("\033[33m" + "█" + "\033[0m")
                 else:
                     middle += (f"{color}" + "█" + "\033[0m"
                                if lib.grill[y][x]["W"] else " ")
-                middle += "  "
+                if y == int(coordinates_entry[1]) and x == int(
+                            coordinates_entry[0]):
+                    middle += "\033[32m" + "██" + "\033[0m"
+                elif y == int(coordinates_exit[1]) and x == int(
+                              coordinates_exit[0]):
+                    middle += "\033[31m" + "██" + "\033[0m"
+                else:
+                    middle += "  "
         middle += (f"{color}" + "█" + "\033[0m"
                    if lib.grill[y][lib.WIDTH-1]["E"] else " ")
         print(middle)

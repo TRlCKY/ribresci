@@ -1,0 +1,12 @@
+[tool.poetry]
+name = "loading"
+version = "0.1.0"
+description = "Data analysis"
+authors = ["ribresci"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+numpy = "*"
+pandas = "*"
+matplotlib = "*"
+requests = "*"

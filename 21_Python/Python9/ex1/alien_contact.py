@@ -25,12 +25,15 @@ class AlienContact(BaseModel):
     def validate(self):
         if not self.contact_id.startswith("AC"):
             raise Exception("Contact ID must starts with 'AC'")
-        if self.contact_type == "PHYSICAL" and self.is_verified is False:
+        if (self.contact_type == ContactType.physical and
+                self.is_verified is False):
             raise Exception("Physical contact reports must be verified")
-        if self.contact_type == ContactType and self.witness_count < 3:
+        if (self.contact_type == ContactType.telepathic and
+                self.witness_count < 3):
             raise Exception("Telepathic contact requires at least 3 witnesses")
         if self.signal_strength > 7.0 and self.message_received is None:
             raise Exception("Strong signals (> 7.0) should include a message")
+        return self
 
 
 def main():
@@ -48,7 +51,6 @@ def main():
             message_received="Greetings from Zeta Reticuli",
             is_verified=True
         )
-        ac1.validate()
         print(f"ID: {ac1.contact_id}")
         print(f"Type: {ac1.contact_type}")
         print(f"Location: {ac1.location}")
@@ -71,7 +73,6 @@ def main():
             witness_count=1,
             message_received="Greetings from Zeta Reticuli"
         )
-        ac2.validate()
         print(f"ID: {ac2.contact_id}")
         print(f"Type: {ac2.contact_type}")
         print(f"Location: {ac2.location}")

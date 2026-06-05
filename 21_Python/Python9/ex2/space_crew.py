@@ -27,8 +27,8 @@ class SpaceMission(BaseModel):
     destination: str = Field(..., min_length=3, max_length=50)
     launch_date: datetime = Field(default_factory=datetime.utcnow)
     duration_days: int = Field(..., ge=1, le=3650)
-    crew: list[CrewMember] = Field(..., ge=1, le=12)
-    mission_status: str = Field(..., default="Planned")
+    crew: list[CrewMember] = Field(..., min_length=1, max_length=12)
+    mission_status: str = Field(default="Planned")
     budget_millions: float = Field(..., ge=1.0, le=10000.0)
 
     @model_validator(mode="after")
@@ -39,7 +39,8 @@ class SpaceMission(BaseModel):
         if not self.mission_id.startswith("M"):
             raise Exception("Mission ID must start with 'M'")
         for member in self.crew:
-            if member.rank == "CAPTAIN" or member.rank == "COMMANDER":
+            if (member.rank.value == "CAPTAIN"
+                    or member.rank.value == "COMMANDER"):
                 x += 1
         if x == 0:
             raise Exception("Mission must have at least one Commander"
@@ -58,7 +59,83 @@ class SpaceMission(BaseModel):
 
 
 def main():
-    print()
+    print("Space Mission Crew Validation")
+    try:
+        print("Creating crew members")
+        crew0 = CrewMember(
+            member_id="C00",
+            name="Cicciogamer89",
+            rank="CAPTAIN",
+            age=37,
+            specialization="Hamburger and Barber Shop",
+            years_experience=30,
+            is_active=True
+        )
+        crew1 = CrewMember(
+            member_id="C01",
+            name="Grax",
+            rank="COMMANDER",
+            age=25,
+            specialization="Hog Raider",
+            years_experience=25,
+            is_active=True
+        )
+        crew2 = CrewMember(
+            member_id="C02",
+            name="Poldo",
+            rank="CADET",
+            age=24,
+            specialization="Minecraft",
+            years_experience=43,
+            is_active=True
+        )
+    except Exception as e:
+        print(f"Got error: {e}")
+        exit()
+    crew_list = [crew0, crew1, crew2]
+    print("=========================================")
+    try:
+        print("Valid mission created:")
+        sm1 = SpaceMission(
+            mission_name="Mars Colony Establishment",
+            mission_id="M2024_MARS",
+            destination="Mars",
+            duration_days=900,
+            budget_millions=2500.0,
+            crew=crew_list
+        )
+        print(f"Mission: {sm1.mission_name}")
+        print(f"ID: {sm1.mission_id}")
+        print(f"Destination: {sm1.destination}")
+        print(f"Duration: {sm1.duration_days} days")
+        print(f"Budget: {sm1.budget_millions}M")
+        print(f"Crew size: {len(sm1.crew)}")
+        for member in sm1.crew:
+            print(f"- {member.name} ({member.rank.value}) - "
+                  f"{member.specialization}")
+    except Exception as e:
+        print(f"Got error: {e}")
+    print("=========================================")
+    try:
+        print("Invalid mission created:")
+        sm2 = SpaceMission(
+            mission_name="Mars Colony Establishment",
+            mission_id="INVALID",
+            destination="Mars",
+            duration_days=900,
+            budget_millions=2500.0,
+            crew=crew_list
+        )
+        print(f"Mission: {sm2.mission_name}")
+        print(f"ID: {sm2.mission_id}")
+        print(f"Destination: {sm2.destination}")
+        print(f"Duration: {sm2.duration_days} days")
+        print(f"Budget: {sm2.budget_millions}M")
+        print(f"Crew size: {len(sm2.crew)}")
+        for member in sm2.crew:
+            print(f"- {member.name} ({member.rank}) - {member.specialization}")
+    except Exception as e:
+        print(f"Got error: {e}")
 
 
 if __name__ == "__main__":

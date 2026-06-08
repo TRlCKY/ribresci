@@ -30,25 +30,37 @@ def main():
     a1 = {"name": "Useful Rock", "power": 10, "type": "More Rock"}
     a2 = {"name": "Mid Rock", "power": 5, "type": "Just Rock"}
     art_list = [a0, a1, a2]
-    print(f"Unsorted artifact list: {art_list}")
+    print("Unsorted artifact list:")
+    for art in art_list:
+        print(art)
     art_sorted_list = artifact_sorter(art_list)
-    print(f"Sorted artifact list by power: {art_sorted_list}")
+    print("Sorted artifact list by power:")
+    for art in art_sorted_list:
+        print(art)
     print()
     print("=== Mage Filter ===")
     print("Creating mages")
     m0 = {"name": "Kai", "power": 8, "element": "Fire"}
-    m1 = {"name": "LLoyd", "power": 10, "element": "Green"}
+    m1 = {"name": "Lloyd", "power": 10, "element": "Green"}
     m2 = {"name": "Jay", "power": 6, "element": "Lightning"}
     mage_list = [m0, m1, m2]
-    print(f"Unfiltered mage list: {mage_list}")
+    print("Unfiltered mage list:")
+    for mage in mage_list:
+        print(mage)
     mage_sorted_list = power_filter(mage_list, 8)
-    print(f"Filtered mage list by power: {mage_sorted_list}")
+    print("Filtered mage list by power:")
+    for mage in mage_sorted_list:
+        print(mage)
     print()
     print("=== Spell Transformer ===")
     print("Creating a spell list")
     spell_list = ["Fireball", "Thunderball", "GreenBall"]
+    for spell in spell_list:
+        print(spell)
     trans_spell_list = spell_transformer(spell_list)
-    print(f"Spell trasformed: {trans_spell_list}")
+    print("Spell trasformed:")
+    for spell in trans_spell_list:
+        print(spell)
     print()
     print("=== Mage Statistics ===")
     print("Calculating mage stats")

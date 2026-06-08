@@ -25,10 +25,10 @@ class SpaceMission(BaseModel):
     mission_id: str = Field(..., min_length=5, max_length=15)
     mission_name: str = Field(..., min_length=3, max_length=100)
     destination: str = Field(..., min_length=3, max_length=50)
-    launch_date: datetime = Field(default_factory=datetime.utcnow)
+    launch_date: datetime = Field(default_factory=datetime.now)
     duration_days: int = Field(..., ge=1, le=3650)
     crew: list[CrewMember] = Field(..., min_length=1, max_length=12)
-    mission_status: str = Field(default="Planned")
+    mission_status: str = Field(default="planned")
     budget_millions: float = Field(..., ge=1.0, le=10000.0)
 
     @model_validator(mode="after")
@@ -110,6 +110,7 @@ def main():
         print(f"Duration: {sm1.duration_days} days")
         print(f"Budget: {sm1.budget_millions}M")
         print(f"Crew size: {len(sm1.crew)}")
+        print(f"Mission status: {sm1.mission_status}")
         for member in sm1.crew:
             print(f"- {member.name} ({member.rank.value}) - "
                   f"{member.specialization}")

@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field, model_validator
 from enum import Enum
 from datetime import datetime
+from typing import Optional
 
 
 class ContactType(Enum):
@@ -12,13 +13,13 @@ class ContactType(Enum):
 
 class AlienContact(BaseModel):
     contact_id: str = Field(..., min_length=5, max_length=15)
-    timestamp: datetime = Field(default_factory=datetime.utcnow)
+    timestamp: datetime = Field(default_factory=datetime.now)
     location: str = Field(..., min_length=3, max_length=100)
     contact_type: ContactType
     signal_strength: float = Field(..., ge=0.0, le=10.0)
     duration_minutes: int = Field(..., ge=1, le=1440)
     witness_count: int = Field(..., ge=1, le=100)
-    message_received: str | None = Field(default=None, max_length=500)
+    message_received: Optional[str] = Field(default=None, max_length=500)
     is_verified: bool = False
 
     @model_validator(mode='after')
@@ -52,10 +53,10 @@ def main():
             is_verified=True
         )
         print(f"ID: {ac1.contact_id}")
-        print(f"Type: {ac1.contact_type}")
+        print(f"Type: {ac1.contact_type.value}")
         print(f"Location: {ac1.location}")
         print(f"Signal: {ac1.signal_strength}/10")
-        print(f"Duration: {ac1.duration_minutes}")
+        print(f"Duration: {ac1.duration_minutes} minutes")
         print(f"Witnesses: {ac1.witness_count}")
         print(f"Message: {ac1.message_received}")
     except Exception as e:
@@ -77,7 +78,7 @@ def main():
         print(f"Type: {ac2.contact_type}")
         print(f"Location: {ac2.location}")
         print(f"Signal: {ac2.signal_strength}/10")
-        print(f"Duration: {ac2.duration_minutes}")
+        print(f"Duration: {ac2.duration_minutes} minutes")
         print(f"Witnesses: {ac2.witness_count}")
         print(f"Message: {ac2.message_received}")
     except Exception as e:

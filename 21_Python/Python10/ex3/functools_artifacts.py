@@ -1,6 +1,5 @@
 from typing import Callable, Any
 import functools
-import operator
 
 
 def spell_reducer(spells: list[int], operation: str) -> int:
@@ -35,11 +34,23 @@ def memoized_fibonacci(n: int) -> int:
     return memoized_fibonacci(n - 1) + memoized_fibonacci(n - 2)
 
 
-@functools.singledispatch
 def spell_dispatcher() -> Callable[[Any], str]:
-    @spell_dispatcher.register(int)
-    def _(x):
-        return 
+    @functools.singledispatch
+    def function(x) -> str:
+        return "Unknow spell type"
+
+    @function.register(int)
+    def _(x) -> str:
+        return f"Damage spell: {x}"
+
+    @function.register(str)
+    def _(x) -> str:
+        return f"Echantment: {x}"
+
+    @function.register(list)
+    def _(x) -> str:
+        return f"Multicast: {len(x)} spells"
+    return function
 
 
 def main():
@@ -77,6 +88,15 @@ def main():
     print(f"Fibonacci number 15: {memoized_fibonacci(15)}")
     print()
     print("=== Spell Dispatcher ===")
+    try:
+        print("Testing spell dispatcher:")
+        dispatcher = spell_dispatcher()
+        print(dispatcher(42))
+        print(dispatcher("Fireball"))
+        print(dispatcher([0, 1, 2]))
+        print(dispatcher({"ciao": 20}))
+    except Exception as e:
+        print(f"Got error: {e}")
 
 
 if __name__ == "__main__":

@@ -1,7 +1,6 @@
 # Authorized: sys, os, site modules, print()
 import sys
 import os
-import site
 
 
 def construct():
@@ -23,6 +22,9 @@ def construct():
         print()
         print("Then run this program again.")
     else:
+        path = sys.executable
+        path = os.path.dirname(path)
+        path = os.path.dirname(path)
         print("MATRIX STATUS: Welcome to the construct")
         # Stampa l'eseguibile
         print(f"Current python: {sys.executable}")
@@ -35,8 +37,7 @@ def construct():
         print()
         print("Package installation path:")
         # Stampa il path per il package di installazione
-        for package in site.getsitepackages():
-            print(package)
+        print(path)
 
 
 if __name__ == "__main__":

@@ -35,6 +35,7 @@ def check_dependencies() -> bool:
     with open("requirements.txt") as r:
         lines = r.readlines()
     for line in lines:
+        line = line.strip()
         try:
             ver = version(line)
             print(f"[OK] {line} {ver}")
@@ -49,6 +50,9 @@ if __name__ == "__main__":
 
 # python3 -m venv <venv>
 # source <venv>/bin/activate
+# ** PARTE PIP **
+# pip install -f requirements.txt
+# ** PARTE PIP **
 # ** PARTE POETRY ** #
 # pip install poetry
 # poetry install(prende il toml)

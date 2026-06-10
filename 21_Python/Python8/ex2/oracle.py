@@ -29,8 +29,9 @@ def check() -> None:
 
 
 def oracle():
+    path = os.path.dirname(os.path.abspath(__file__))
     # Scarica le variabili nel file .env
-    load_dotenv()
+    load_dotenv(os.path.join(path, ".env"))
     # Controlla che ci siano tutti i valori
     try:
         check()

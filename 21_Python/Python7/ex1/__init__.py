@@ -1,6 +1,0 @@
-from ex1.creature_factories import CreatureFactory, HealingCreatureFactory
-from ex1.creature_factories import TransformCreatureFactory
-
-CreatureFactory
-HealingCreatureFactory
-TransformCreatureFactory

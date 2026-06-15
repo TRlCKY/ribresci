@@ -1,6 +1,6 @@
 # Authorized: map, filter, sorted, min, max, round, sum, len
 def artifact_sorter(artifacts: list[dict]) -> list[dict]:
-    new_list = list(sorted(artifacts, key=lambda x: x["power"]))
+    new_list = list(sorted(artifacts, key=lambda x: x["power"], reverse=True))
     return new_list
 
 
@@ -10,7 +10,7 @@ def power_filter(mages: list[dict], min_power: int) -> list[dict]:
 
 
 def spell_transformer(spells: list[str]) -> list[str]:
-    new_list = list(map(lambda x: "*" + x + "*", spells))
+    new_list = list(map(lambda x: "* " + x + " *", spells))
     return new_list
 
 

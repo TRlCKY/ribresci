@@ -26,9 +26,7 @@ def enchantment_factory(enchantment_type: str) -> Callable:
     enchantment0 = enchantment_type
 
     def function(item: str) -> str:
-        nonlocal enchantment0
-        enchantment0 += " " + item
-        return enchantment0
+        return enchantment0 + " " + item
     return function
 
 

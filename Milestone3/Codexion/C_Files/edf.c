@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <pthread.h>
 
 /*
 *
@@ -31,7 +32,27 @@
 * last_compile_start + time_to_burnout)
 *
 */
-void edf(int argc, char ** argv)
+int edf(int *array)
 {
+	int	n_code, burn_time, comp_time, debug_time, refactor_time, n_comp;
+	int	dongle_cooldown, i, *coders;
+	pthread_t *coders;
 
+	i = 0;
+	n_code = array[0];
+	burn_time = array[1];
+	comp_time = array[2];
+	debug_time = array[3];
+	refactor_time = array[4];
+	n_comp = array[5];
+	dongle_cooldown = array[6];
+	coders = malloc(sizeof(int) * n_code);
+	if (!coders)
+		return (1);
+	while (i != n_code)
+	{
+		coders[i] = pthread_create();
+		i++;
+	}
+	return (0);
 }

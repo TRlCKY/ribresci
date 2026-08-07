@@ -51,8 +51,7 @@ int fifo(int *array)
 		return (1);
 	while (i != n_code)
 	{
-		coders[i] = i;
+		coders[i] = pthread_create();
 		i++;
 	}
-	return (0);
 }

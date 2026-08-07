@@ -62,7 +62,7 @@ void check_burnout(int num, pthread_t thread, struct timeval time0, long deadlin
 		use_dongle(now, array[4], num, 4);
 	else
 		printf("%d %d burned out", now, num);
-	usleep(array[6])
+	usleep(array[6]);
 }
 
 int check_values(int argc, char **argv)

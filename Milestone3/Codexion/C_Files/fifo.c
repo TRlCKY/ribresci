@@ -36,7 +36,8 @@ int fifo(int *array)
 {
 	int	n_code, burn_time, comp_time, debug_time, refactor_time, n_comp;
 	int	dongle_cooldown, i;
-	int	*coders;
+	pthread_t	*coders;
+	pthread_t coder;
 
 	i = 0;
 	n_code = array[0];
@@ -51,7 +52,5 @@ int fifo(int *array)
 		return (1);
 	while (i != n_code)
 	{
-		coders[i] = pthread_create();
-		i++;
-	}
+		coders[i] = pthread_create(coder, NULL, function, NULL);
 }

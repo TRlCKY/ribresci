@@ -1,7 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   edf.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/09/01 12:20:16 by ribresci          #+#    #+#             */
+/*   Updated: 2026/09/01 12:49:44 by ribresci         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <pthread.h>
+#include "codexion.h"
 
 /*
 *
@@ -17,7 +30,7 @@
 *
 * Time to debug(The time a coder will spend debugging)
 *
-* Time to refactore( The time a coder will spend refactoring. After 
+* Time to refactor( The time a coder will spend refactoring. After 
 * completing the refactoring phase, the coder will immediately attempt to
 * acquire dongles and start compiling again.)
 *
@@ -32,27 +45,53 @@
 * last_compile_start + time_to_burnout)
 *
 */
-int edf(int *array)
+
+struct coder	*create_coders(int *array, struct coder *coders)
 {
-	int	n_code, burn_time, comp_time, debug_time, refactor_time, n_comp;
-	int	dongle_cooldown, i, *coders;
-	pthread_t *coders;
+	struct coder	cdr;
+	int				i;
 
 	i = 0;
-	n_code = array[0];
-	burn_time = array[1];
-	comp_time = array[2];
-	debug_time = array[3];
-	refactor_time = array[4];
-	n_comp = array[5];
-	dongle_cooldown = array[6];
-	coders = malloc(sizeof(int) * n_code);
-	if (!coders)
-		return (1);
-	while (i != n_code)
+	while (i != array[0])
 	{
-		coders[i] = pthread_create();
+		cdr.id = i + 1;
+		cdr.burnout = array[1];
+		cdr.compile = array[2];
+		cdr.debug = array[3];
+		cdr.refactor = array[4];
+		cdr.n_compile = array[5];
+		coders[i] = cdr;
 		i++;
 	}
+	return (coders);
+}
+
+struct dongle	*create_dongles(int *array, struct dongle *dongles)
+{
+	struct dongle	dngl;
+	int				i;
+
+	i = 0;
+	while (i != array[0])
+	{
+		dngl.id = i + 1;
+		dngl.cooldown = array[6];
+		dongles[i] = dngl;
+		i++;
+	}
+}
+
+int	edf(int *array)
+{
+	struct coder	*coders;
+	struct dongle	*dongles;
+
+	coders = malloc(sizeof(struct coder) * array[0]);
+	if (!coders)
+		return (1);
+	coders = create_coders(array, coders);
+	dongles = malloc(sizeof(struct dongle) * array[0]);
+	if (!dongles)
+		return (1);
 	return (0);
 }

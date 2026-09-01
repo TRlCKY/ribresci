@@ -5,10 +5,26 @@
 # include <unistd.h>
 # include <pthread.h>
 
-void	fifo(int *array);
-void	edf(int *array);
+struct dongle{
+	int	id;
+	int	cooldown;
+};
+
+struct coder{
+	int				id;
+	int				burnout;
+	int				compile;
+	int				debug;
+	int				refactor;
+	int				n_compile;
+	struct dongle	dx;
+	struct dongle	sx;
+};
+
+int		fifo(int *array);
+int		edf(int *array);
 int		check_values(int argc, char **argv);
-void	check_burnout(int num, pthread_t thread, struct timeval time0, long deadline, int *array);
+void	check_burnout(void);
 int		use_dongle(long now, long time, int num, int i);
-long	current_time(struct timeval time0);
-#endif
+void	current_time(void);
+#endif;

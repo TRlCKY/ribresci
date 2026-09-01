@@ -1,74 +1,56 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/09/01 12:15:14 by ribresci          #+#    #+#             */
+/*   Updated: 2026/09/01 12:35:06 by ribresci         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <pthread.h>
+#include <time.h>
 #include "codexion.h"
 
-// Dopo il controllo se c'è il burnout o meno a seconda del case viene effettuata l'azione e poi fatto passare il tempo
-int use_dongle(long now, long time, int num, int i)
+// Dopo il controllo se c'è il burnout o meno a seconda del case viene 
+// effettuata l'azione e poi fatto passare il tempo
+int	use_dongle(long now, long time, int num, int i)
 {
-	switch (i) {
-		case 1:
-			printf("%d %d has taken a dongle", time, num);
-			break;
-		case 2:
-			printf("%d %d is compiling", now, num);
-			break;
-		case 3:
-			printf("%d %d is debugging", now, num);
-			break;
-		case 4:
-			printf("%d %d is refactoring", now, num);
-			break;
-	}
+	if (i == 1)
+		printf("%d %d has taken a dongle", time, num);
+	if (i == 2)
+		printf("%d %d is compiling", now, num);
+	if (i == 3)
+		printf("%d %d is debugging", now, num);
+	if (i == 4)
+		printf("%d %d is refactoring", now, num);
 	usleep(time);
 	return (0);
 }
 
-long current_time(struct timeval time0)
+void	current_time(void)
 {
-	struct timeval	time;
-	long			sec, usec;
-
-	gettimeofday(&time, NULL);
-	sec = time.tv_sec - time0.tv_sec;
-	usec = time.tv_usec - time0.tv_usec;
-	return (sec * 1000 + usec / 1000);
+	return ;
 }
 
-// Controlla se si verifica il burnout, altrimenti si usano le chiavette e poi si apetta il cooldown per riusarle
-void check_burnout(int num, pthread_t thread, struct timeval time0, long deadline, int *array)
+// Controlla se si verifica il burnout, altrimenti si usano le chiavette e poi
+// si apetta il cooldown per riusarle
+void	check_burnout(void)
 {
-	long now;
-
-	now = current_time(time0);
-	if (now < deadline)
-		use_dongle(now, 0, num, 1);
-	else
-		printf("%d %d burned out", now, num);
-	if (now < deadline)
-		use_dongle(now, 0, num, 1);
-	else
-		printf("%d %d burned out", now, num);
-	if (now + array[2] < deadline)
-		use_dongle(now, array[2], num, 2);
-	else
-		printf("%d %d burned out", now, num);
-	if (now + array[3] < deadline)
-		use_dongle(now, array[3], num, 3);
-	else
-		printf("%d %d burned out", now, num);
-	if (now + array[4] < deadline)
-		use_dongle(now, array[4], num, 4);
-	else
-		printf("%d %d burned out", now, num);
-	usleep(array[6]);
+	return ;
 }
 
-int check_values(int argc, char **argv)
+// Se e' minore di 0 o se l'atoi fallisce e il numero in forma di 
+// stringa e' diverso da 0
+int	check_values(int argc, char **argv)
 {
-	int i;
-	int n;
+	int	i;
+	int	n;
 
 	i = 1;
 	if (argc != 9)
@@ -76,7 +58,6 @@ int check_values(int argc, char **argv)
 	while (i != argc - 1)
 	{
 		n = atoi(argv[i]);
-		// Se e' minore di 0 o se l'atoi fallisce e il numero in forma di stringa e' diverso da 0
 		if (n < 0 || (n == 0 && strcmp(argv[i], "0") != 0))
 			return (1);
 		i++;
@@ -86,7 +67,7 @@ int check_values(int argc, char **argv)
 	return (0);
 }
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	int	i;
 	int	*array;

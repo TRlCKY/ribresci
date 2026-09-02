@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 12:20:16 by ribresci          #+#    #+#             */
-/*   Updated: 2026/09/01 15:14:28 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/09/02 16:20:15 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,14 @@
 
 int	edf(int *array)
 {
-	struct coder	*coders;
-	struct dongle	*dongles;
+	t_coder		*coders;
+	t_dongle	*dongles;
 
-	dongles = malloc(sizeof(struct dongle) * array[0]);
+	dongles = malloc(sizeof(t_dongle) * array[0]);
 	if (!dongles)
 		return (1);
 	dongles = create_dongles(array, dongles);
-	coders = malloc(sizeof(struct coder) * array[0]);
+	coders = malloc(sizeof(t_coder) * array[0]);
 	if (!coders)
 		return (1);
 	coders = create_coders(array, coders, dongles);

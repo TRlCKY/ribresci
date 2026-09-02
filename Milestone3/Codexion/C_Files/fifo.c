@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 12:20:26 by ribresci          #+#    #+#             */
-/*   Updated: 2026/09/01 15:14:45 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/09/02 16:20:39 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,16 +39,24 @@
 
 int	fifo(int *array)
 {
-	struct coder	*coders;
-	struct dongle	*dongles;
+	t_coder		*coders;
+	t_dongle	*dongles;
+	pthread_t	*thread;
+	int			i;
 
-	dongles = malloc(sizeof(struct dongle) * array[0]);
+	i = 0;
+	dongles = malloc(sizeof(t_dongle) * array[0]);
 	if (!dongles)
 		return (1);
 	dongles = create_dongles(array, dongles);
-	coders = malloc(sizeof(struct coder) * array[0]);
+	coders = malloc(sizeof(t_coder) * array[0]);
 	if (!coders)
 		return (1);
 	coders = create_coders(array, coders, dongles);
+	while (i < array[0])
+	{
+		pthread_create(&coders[i].thread, NULL, use_dongle, NULL);
+		pthread_join(thread, NULL);
+	}
 	return (0);
 }

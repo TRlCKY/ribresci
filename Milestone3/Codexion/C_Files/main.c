@@ -6,14 +6,14 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 12:15:14 by ribresci          #+#    #+#             */
-/*   Updated: 2026/09/01 15:48:46 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/09/02 16:19:40 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
 // Controlla se si verifica il burnout con ogni azione
-int	check_burnout(struct coder coder0, struct timespec start, int time)
+int	check_burnout(t_coder coder0, struct timespec start, int time)
 {
 	int	now;
 
@@ -27,31 +27,31 @@ int	check_burnout(struct coder coder0, struct timespec start, int time)
 }
 
 // Dopo il controllo del burnout vengono effettuate le varie azioni
-int	use_dongle(struct timespec start, struct coder *coders, int i)
+int	use_dongle(struct timespec start, t_coder cdr)
 {
-	if (check_burnout(coders[i], start, 0) == 0)
-		printf("%d %d has taken a dongle\n", current_time(start), coders[i].id);
+	if (check_burnout(cdr, start, 0) == 0)
+		printf("%d %d has taken a dongle\n", current_time(start), cdr.id);
 	else
 		return (1);
-	if (check_burnout(coders[i], start, 0) == 0)
-		printf("%d %d has taken a dongle\n", current_time(start), coders[i].id);
+	if (check_burnout(cdr, start, 0) == 0)
+		printf("%d %d has taken a dongle\n", current_time(start), cdr.id);
 	else
 		return (1);
-	if (check_burnout(coders[i], start, coders[i].compile) == 0)
-		printf("%d %d is compiling\n", current_time(start), coders[i].id);
+	if (check_burnout(cdr, start, cdr.compile) == 0)
+		printf("%d %d is compiling\n", current_time(start), cdr.id);
 	else
 		return (1);
-	usleep(coders[i].compile);
-	if (check_burnout(coders[i], start, coders[i].debug) == 0)
-		printf("%d %d is debugging\n", current_time(start), coders[i].id);
+	usleep(cdr.compile);
+	if (check_burnout(cdr, start, cdr.debug) == 0)
+		printf("%d %d is debugging\n", current_time(start), cdr.id);
 	else
 		return (1);
-	usleep(coders[i].debug);
-	if (check_burnout(coders[i], start, coders[i].refactor) == 0)
-		printf("%d %d is refactoring\n", current_time(start), coders[i].id);
+	usleep(cdr.debug);
+	if (check_burnout(cdr, start, cdr.refactor) == 0)
+		printf("%d %d is refactoring\n", current_time(start), cdr.id);
 	else
 		return (1);
-	usleep(coders[i].refactor);
+	usleep(cdr.refactor);
 	return (0);
 }
 

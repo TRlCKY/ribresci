@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 12:15:14 by ribresci          #+#    #+#             */
-/*   Updated: 2026/09/02 16:19:40 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/09/02 17:01:48 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,25 +90,16 @@ int	check_values(int argc, char **argv)
 
 int	main(int argc, char **argv)
 {
-	struct timespec	start;
-	int				i;
+	t_sim			sim;
 	int				*array;
+	int				i;
+	int				len;
 
 	i = 0;
-	clock_gettime(CLOCK_MONOTONIC, &start);
 	if (check_values(argc, argv) == 1)
 		return (1);
-	array = malloc((argc - 2) * sizeof(int));
-	if (!array)
-		return (NULL);
-	while (i < argc - 2)
-	{
-		array[i] = atoi(argv[i]);
-		i++;
-	}
-	if (strcmp(argv[argc -1], "fifo") == 0)
-		return (fifo(array));
-	if (strcmp(argv[argc -1], "edf") == 0)
-		return (edf(array));
+	array = create_array(argc, argv);
+	len = strlen(array[7]);
+	create_sim(sim, array, len);
 	return (0);
 }

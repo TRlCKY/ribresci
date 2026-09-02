@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 14:51:00 by ribresci          #+#    #+#             */
-/*   Updated: 2026/09/02 16:37:15 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/09/02 17:10:51 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,9 @@ t_coder	*create_coders(t_sim sim, t_coder *coders, t_dongle *dongles)
 	return (coders);
 }
 
-t_sim	create_sim(t_sim sim, int *array)
+t_sim	create_sim(t_sim sim, int *array, int len)
 {
+	clock_gettime(CLOCK_MONOTONIC, &sim.start);
 	sim.num = array[0];
 	sim.burnout = array[1];
 	sim.compile = array[2];
@@ -57,7 +58,13 @@ t_sim	create_sim(t_sim sim, int *array)
 	sim.refactor = array[4];
 	sim.n_compile = array[5];
 	sim.cooldown = array[6];
+	strlcopy(sim.scheduler, array[7], len);
+	sim.dongles = malloc(sizeof(t_dongle) * sim.num);
+	if (!sim.dongles)
+		return (sim.error = 1, free(sim.dongles), sim);
 	sim.dongles = create_dongles(sim, sim.dongles);
+	if (!sim.coders)
+		return (sim.error = 1, free(sim.coders), sim);
 	sim.coders = create_coders(sim, sim.coders, sim.dongles);
 	return (sim);
 }

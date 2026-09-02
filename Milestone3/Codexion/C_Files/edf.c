@@ -6,49 +6,42 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 12:20:16 by ribresci          #+#    #+#             */
-/*   Updated: 2026/09/02 16:20:15 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/09/02 17:11:35 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
 /*
-* Number of coders and dongles
+* (0) Number of coders and dongles
 *
-* Time to burnout(If a coder did not start compiling within
-* time_to_burnout milliseconds since the beginning of their last compile
-* or the beginning of the simulation, they burn out.)
+* (1) Time to burnout(If a coder did not start compiling within
+* 	  time_to_burnout milliseconds since the beginning of their last compile
+*  	  or the beginning of the simulation, they burn out.)
 *
-* Time to compile(During that time, they must hold two dongles)
+* (2) Time to compile(During that time, they must hold two dongles)
 *
-* Time to debug(The time a coder will spend debugging)
+* (3) Time to debug(The time a coder will spend debugging)
 *
-* Time to refactor(After completing the refactoring phase, the coder will attempt
-* to acquire dongles and start compiling again.)
+* (4) Time to refactor(After completing the refactoring phase, the coder will 
+* 	  attempt to acquire dongles and start compiling again.)
 *
-* Number of compiles required(If all coders have compiled at least this
-* many times, the simulation stops. Otherwise, it stops when a coder burns
-* out)
+* (5) Number of compiles required(If all coders have compiled at least this
+* 	  many times, the simulation stops. Otherwise, it stops when a coder burns
+* 	  out)
 *
-* Dongle cooldown(After being released, a dongle is unavailable until its
-* cooldown has passed)
+* (6) Dongle cooldown(After being released, a dongle is unavailable until its
+* 	  cooldown has passed)
 *
-* Scheduler(first_in_first_out/earliest_deadline_first=
-* last_compile_start + time_to_burnout)
+* (7) Scheduler(first_in_first_out/earliest_deadline_first=
+* 	  last_compile_start + time_to_burnout)
 */
 
-int	edf(int *array)
+int	edf(t_sim sim)
 {
-	t_coder		*coders;
-	t_dongle	*dongles;
+	pthread_t	*thread;
+	int			i;
 
-	dongles = malloc(sizeof(t_dongle) * array[0]);
-	if (!dongles)
-		return (1);
-	dongles = create_dongles(array, dongles);
-	coders = malloc(sizeof(t_coder) * array[0]);
-	if (!coders)
-		return (1);
-	coders = create_coders(array, coders, dongles);
+	i = 0;
 	return (0);
 }

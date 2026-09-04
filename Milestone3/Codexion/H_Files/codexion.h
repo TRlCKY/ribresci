@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/02 16:42:16 by ribresci          #+#    #+#             */
-/*   Updated: 2026/09/02 17:28:40 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/09/04 12:45:28 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,6 @@ typedef struct s_coder
 	t_dongle	sx;
 }	t_coder;
 
-typedef struct monitor
-{
-	pthread_t	*monitor;
-}	t_monitor;
-
 typedef struct s_sim
 {
 	struct timespec	start;
@@ -59,6 +54,16 @@ typedef struct s_sim
 	t_coder			*coders;
 	t_dongle		*dongles;
 }	t_sim;
+
+typedef struct monitor
+{
+	pthread_t		*monitor;
+	t_sim			sim;
+	t_coder			*coders;
+	t_dongle		*dongles;
+	int				error;
+	struct timespec	end;
+}	t_monitor;
 
 // fifo
 int				fifo(t_sim sim);
@@ -76,10 +81,11 @@ int				main(int argc, char **argv);
 // create
 t_dongle		*create_dongles(t_sim sim, t_dongle *dongles);
 t_coder			*create_coders(t_sim sim, t_coder *coders, t_dongle *dongles);
-t_sim			create_sim(t_sim sim, int *array, int len);
+t_sim			create_sim(t_sim sim, char *argv);
+t_monitor		create_monitor(t_monitor monitor, t_sim sim, t_coder *coders, t_dongle *dongels);
 
 // utilities
 unsigned int	ft_strlcpy(char *dest, const char *src, size_t size);
 int				*create_array(int argc, char **argv);
 
-#endif
+#endif;

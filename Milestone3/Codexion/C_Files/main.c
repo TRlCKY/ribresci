@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 12:15:14 by ribresci          #+#    #+#             */
-/*   Updated: 2026/09/02 17:01:48 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/09/04 12:44:07 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,16 +90,14 @@ int	check_values(int argc, char **argv)
 
 int	main(int argc, char **argv)
 {
-	t_sim			sim;
-	int				*array;
-	int				i;
-	int				len;
+	t_sim		sim;
+	t_monitor	monitor;
+	int			i;
 
 	i = 0;
 	if (check_values(argc, argv) == 1)
 		return (1);
-	array = create_array(argc, argv);
-	len = strlen(array[7]);
-	create_sim(sim, array, len);
+	sim = create_sim(sim, argv);
+	monitor = create_monitor(monitor, sim, sim.coders, sim.dongles);
 	return (0);
 }

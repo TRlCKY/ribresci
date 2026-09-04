@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 14:51:00 by ribresci          #+#    #+#             */
-/*   Updated: 2026/09/04 12:47:43 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/09/04 14:19:59 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,13 @@ t_dongle	*create_dongles(t_sim sim, t_dongle *dongles)
 
 t_coder	*create_coders(t_sim sim, t_coder *coders, t_dongle *dongles)
 {
-	t_coder	cdr;
-	int		i;
+	t_coder			cdr;
+	int				i;
 
 	i = 0;
 	while (i != sim.num)
 	{
+		coders[i].time = sim.start;
 		cdr.id = i + 1;
 		cdr.sx = dongles[i];
 		if (i == sim.num - 1)
@@ -61,10 +62,11 @@ t_sim	create_sim(t_sim sim, char *argv)
 	strlcopy(sim.scheduler, argv[8], strlen(argv[8]));
 	sim.dongles = malloc(sizeof(t_dongle) * sim.num);
 	if (!sim.dongles)
-		return (sim.error = 1, free(sim.dongles), sim);
+		return (sim.error = 1, freeall(sim), sim);
 	sim.dongles = create_dongles(sim, sim.dongles);
+	sim.coders = malloc(sizeof(t_coder) * sim.num);
 	if (!sim.coders)
-		return (sim.error = 1, free(sim.coders), free(sim.dongles), sim);
+		return (sim.error = 1, freeall(sim), sim);
 	sim.coders = create_coders(sim, sim.coders, sim.dongles);
 	return (sim);
 }
@@ -72,5 +74,6 @@ t_sim	create_sim(t_sim sim, char *argv)
 t_monitor	create_monitor(t_monitor monitor, t_sim sim, t_coder *coders,
 	t_dongle *dongels)
 {
+	
 	return (monitor);
 }

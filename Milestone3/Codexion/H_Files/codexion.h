@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/02 16:42:16 by ribresci          #+#    #+#             */
-/*   Updated: 2026/09/04 12:45:28 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/09/04 14:23:39 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,16 @@ typedef struct s_dongle
 
 typedef struct s_coder
 {
-	int			id;
-	int			burnout;
-	int			compile;
-	int			debug;
-	int			refactor;
-	int			n_compile;
-	pthread_t	thread;
-	t_dongle	dx;
-	t_dongle	sx;
+	struct timespec	time;
+	int				id;
+	int				burnout;
+	int				compile;
+	int				debug;
+	int				refactor;
+	int				n_compile;
+	pthread_t		thread;
+	t_dongle		dx;
+	t_dongle		sx;
 }	t_coder;
 
 typedef struct s_sim
@@ -65,16 +66,15 @@ typedef struct monitor
 	struct timespec	end;
 }	t_monitor;
 
-// fifo
+// fifo_edf
 int				fifo(t_sim sim);
-
-// edf
 int				edf(t_sim sim);
+void			start(t_sim sim, t_monitor monitor, int scheduler);
 
 // main
 int				check_values(int argc, char **argv);
 int				check_burnout(t_coder coder0, struct timespec start, int time);
-int				use_dongle(struct timespec start, t_coder cdr);
+int				use_dongle(struct timespec start, t_coder coder);
 int				current_time(struct timespec start);
 int				main(int argc, char **argv);
 
@@ -86,6 +86,6 @@ t_monitor		create_monitor(t_monitor monitor, t_sim sim, t_coder *coders, t_dongl
 
 // utilities
 unsigned int	ft_strlcpy(char *dest, const char *src, size_t size);
-int				*create_array(int argc, char **argv);
+void			freeall(t_sim sim);
 
 #endif;

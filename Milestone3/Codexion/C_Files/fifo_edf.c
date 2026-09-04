@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fifo.c                                             :+:      :+:    :+:   */
+/*   fifo_edf.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 12:20:26 by ribresci          #+#    #+#             */
-/*   Updated: 2026/09/02 17:11:17 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/09/04 14:15:03 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,31 @@ int	fifo(t_sim sim)
 
 	i = 0;
 	return (0);
+}
+
+int	edf(t_sim sim)
+{
+	pthread_t	*thread;
+	int			i;
+
+	i = 0;
+	return (0);
+}
+
+void	start(t_sim sim, t_monitor monitor, int scheduler)
+{
+	int	i;
+	int	n_c;
+
+	n_c = 0;
+	while (true)
+	{
+		i = 0;
+		while (i < sim.num && n_c <= sim.n_compile)
+		{
+			pthread_create(sim.coders[i].thread, NULL, use_dongle,
+				&sim.coders[i]);
+			pthread_join(sim.coders[i].thread, NULL);
+		}
+	}
 }

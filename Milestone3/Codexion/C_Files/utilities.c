@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/02 16:45:49 by ribresci          #+#    #+#             */
-/*   Updated: 2026/09/02 17:00:57 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/09/04 13:58:38 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,19 +36,10 @@ unsigned int	ft_strlcpy(char *dest, const char *src, size_t size)
 	return (e);
 }
 
-int	*create_array(int argc, char **argv)
+void	freeall(t_sim sim)
 {
-	int	*array;
-	int	i;
-
-	i = 0;
-	malloc((argc - 2) * sizeof(int));
-	if (!array)
-		return (NULL);
-	while (i < argc - 2)
-	{
-		array[i] = atoi(argv[i]);
-		i++;
-	}
-	return (array);
+	if (sim.coders)
+		free(sim.coders);
+	if (sim.dongles)
+		free(sim.dongles);
 }

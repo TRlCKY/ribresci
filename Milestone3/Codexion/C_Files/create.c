@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 14:51:00 by ribresci          #+#    #+#             */
-/*   Updated: 2026/09/04 14:19:59 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/09/04 15:35:59 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,13 @@ t_coder	*create_coders(t_sim sim, t_coder *coders, t_dongle *dongles)
 	i = 0;
 	while (i != sim.num)
 	{
-		coders[i].time = sim.start;
+		cdr.time = sim.start;
 		cdr.id = i + 1;
+		cdr.burnout = sim.burnout;
+		cdr.compile = sim.compile;
+		cdr.debug = sim.debug;
+		cdr.refactor = sim.refactor;
+		cdr.n_compile = sim.n_compile;
 		cdr.sx = dongles[i];
 		if (i == sim.num - 1)
 			cdr.dx = dongles[0];

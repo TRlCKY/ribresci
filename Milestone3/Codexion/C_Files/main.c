@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 12:15:14 by ribresci          #+#    #+#             */
-/*   Updated: 2026/09/04 14:23:06 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/09/04 16:03:15 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,32 +27,32 @@ int	check_burnout(t_coder coder0, struct timespec start, int time)
 }
 
 // Dopo il controllo del burnout vengono effettuate le varie azioni
-int	use_dongle(t_sim sim, t_coder coder)
+void	*use_dongle(t_coder cdr)
 {
-	if (check_burnout(coder, sim.start, 0) == 0)
-		printf("%d %d has taken a dongle\n", current_time(sim.start), coder.id);
+	if (check_burnout(cdr, cdr.start, 0) == 0)
+		printf("%d %d has taken a dongle\n", current_time(cdr.start), cdr.id);
 	else
-		return (1);
-	if (check_burnout(coder, sim.start, 0) == 0)
-		printf("%d %d has taken a dongle\n", current_time(sim.start), coder.id);
+		return (cdr.error = 1, NULL);
+	if (check_burnout(cdr, cdr.start, 0) == 0)
+		printf("%d %d has taken a dongle\n", current_time(cdr.start), cdr.id);
 	else
-		return (1);
-	if (check_burnout(coder, sim.start, coder.compile) == 0)
-		printf("%d %d is compiling\n", current_time(sim.start), coder.id);
+		return (cdr.error = 1, NULL);
+	if (check_burnout(cdr, cdr.start, cdr.compile) == 0)
+		printf("%d %d is compiling\n", current_time(cdr.start), cdr.id);
 	else
-		return (1);
-	usleep(coder.compile);
-	if (check_burnout(coder, sim.start, coder.debug) == 0)
-		printf("%d %d is debugging\n", current_time(sim.start), coder.id);
+		return (cdr.error = 1, NULL);
+	usleep(cdr.compile);
+	if (check_burnout(cdr, cdr.start, cdr.debug) == 0)
+		printf("%d %d is debugging\n", current_time(cdr.start), cdr.id);
 	else
-		return (1);
-	usleep(coder.debug);
-	if (check_burnout(coder, sim.start, coder.refactor) == 0)
-		printf("%d %d is refactoring\n", current_time(sim.start), coder.id);
+		return (cdr.error = 1, NULL);
+	usleep(cdr.debug);
+	if (check_burnout(cdr, cdr.start, cdr.refactor) == 0)
+		printf("%d %d is refactoring\n", current_time(cdr.start), cdr.id);
 	else
-		return (1);
-	usleep(coder.refactor);
-	return (0);
+		return (cdr.error = 1, NULL);
+	usleep(cdr.refactor);
+	return (NULL);
 }
 
 int	current_time(struct timespec start)
@@ -92,17 +92,13 @@ int	main(int argc, char **argv)
 {
 	t_sim		sim;
 	t_monitor	monitor;
-	int			i;
+	int			x;
 
-	i = 0;
 	if (check_values(argc, argv) == 1)
 		return (1);
 	sim = create_sim(sim, argv);
-	monitor = create_monitor(monitor, sim, sim.coders, sim.dongles);
-	if (strncmp(sim.scheduler, "fifo") == 0)
-		start(sim, monitor, 0);
-	else
-		start(sim, monitor, 1);
+	monitor = create_monitor(monitor, sim);
+	x = start(sim, monitor, 1);
 	freeall(sim);
 	return (0);
 }

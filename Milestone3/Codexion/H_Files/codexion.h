@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/02 16:42:16 by ribresci          #+#    #+#             */
-/*   Updated: 2026/09/04 14:23:39 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/09/04 16:04:44 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,14 @@ typedef struct s_dongle
 
 typedef struct s_coder
 {
-	struct timespec	time;
+	struct timespec	start;
 	int				id;
 	int				burnout;
 	int				compile;
 	int				debug;
 	int				refactor;
 	int				n_compile;
+	int				error;
 	pthread_t		thread;
 	t_dongle		dx;
 	t_dongle		sx;
@@ -58,23 +59,20 @@ typedef struct s_sim
 
 typedef struct monitor
 {
-	pthread_t		*monitor;
+	pthread_t		*monitor_t;
 	t_sim			sim;
-	t_coder			*coders;
-	t_dongle		*dongles;
 	int				error;
-	struct timespec	end;
 }	t_monitor;
 
 // fifo_edf
 int				fifo(t_sim sim);
 int				edf(t_sim sim);
-void			start(t_sim sim, t_monitor monitor, int scheduler);
+int				start(t_sim sim, t_monitor monitor, int scheduler);
 
 // main
 int				check_values(int argc, char **argv);
 int				check_burnout(t_coder coder0, struct timespec start, int time);
-int				use_dongle(struct timespec start, t_coder coder);
+void			*use_dongle(struct timespec start, t_coder cdr);
 int				current_time(struct timespec start);
 int				main(int argc, char **argv);
 
@@ -82,7 +80,7 @@ int				main(int argc, char **argv);
 t_dongle		*create_dongles(t_sim sim, t_dongle *dongles);
 t_coder			*create_coders(t_sim sim, t_coder *coders, t_dongle *dongles);
 t_sim			create_sim(t_sim sim, char *argv);
-t_monitor		create_monitor(t_monitor monitor, t_sim sim, t_coder *coders, t_dongle *dongels);
+t_monitor		create_monitor(t_monitor monitor, t_sim sim);
 
 // utilities
 unsigned int	ft_strlcpy(char *dest, const char *src, size_t size);

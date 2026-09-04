@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 12:20:26 by ribresci          #+#    #+#             */
-/*   Updated: 2026/09/04 14:15:03 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/09/04 16:00:14 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,20 +55,24 @@ int	edf(t_sim sim)
 	return (0);
 }
 
-void	start(t_sim sim, t_monitor monitor, int scheduler)
+int	start(t_sim sim, t_monitor monitor, int scheduler)
 {
 	int	i;
 	int	n_c;
+	int	stop;
 
 	n_c = 0;
+	i = 0;
+	while (i < sim.num)
+		pthread_create(sim.coders[i].thread, NULL, use_dongle,
+			&sim.coders[i]);
 	while (true)
 	{
-		i = 0;
-		while (i < sim.num && n_c <= sim.n_compile)
-		{
-			pthread_create(sim.coders[i].thread, NULL, use_dongle,
-				&sim.coders[i]);
-			pthread_join(sim.coders[i].thread, NULL);
-		}
+		if (monitor.error == 1)
+			return (1);
+		pthread_join(sim.coders[i].thread, NULL);
+		if (sim.coders[i].error == 1)
+			monitor.error = 1;
 	}
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 12:15:14 by ribresci          #+#    #+#             */
-/*   Updated: 2026/09/04 16:03:15 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/09/09 16:52:25 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	check_burnout(t_coder coder0, struct timespec start, int time)
 // Dopo il controllo del burnout vengono effettuate le varie azioni
 void	*use_dongle(t_coder cdr)
 {
-	if (check_burnout(cdr, cdr.start, 0) == 0)
+	if (check_burnout(cdr, cdr.start, 0) == 0 && can_use_dongles(cdr))
 		printf("%d %d has taken a dongle\n", current_time(cdr.start), cdr.id);
 	else
 		return (cdr.error = 1, NULL);

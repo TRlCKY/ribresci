@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/02 16:45:49 by ribresci          #+#    #+#             */
-/*   Updated: 2026/09/04 13:58:38 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/09/09 16:53:34 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,4 +42,11 @@ void	freeall(t_sim sim)
 		free(sim.coders);
 	if (sim.dongles)
 		free(sim.dongles);
+}
+
+int	can_use_dongle(t_coder coder)
+{
+	if (coder.dx.used == 0 && coder.sx.used == 0)
+		return (1);
+	return (0);
 }

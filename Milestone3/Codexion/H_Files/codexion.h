@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/02 16:42:16 by ribresci          #+#    #+#             */
-/*   Updated: 2026/09/04 16:04:44 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/09/09 16:54:07 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int				start(t_sim sim, t_monitor monitor, int scheduler);
 // main
 int				check_values(int argc, char **argv);
 int				check_burnout(t_coder coder0, struct timespec start, int time);
-void			*use_dongle(struct timespec start, t_coder cdr);
+void			*use_dongle(t_coder cdr);
 int				current_time(struct timespec start);
 int				main(int argc, char **argv);
 
@@ -85,5 +85,6 @@ t_monitor		create_monitor(t_monitor monitor, t_sim sim);
 // utilities
 unsigned int	ft_strlcpy(char *dest, const char *src, size_t size);
 void			freeall(t_sim sim);
+int				can_use_dongle(t_coder coder);
 
 #endif;

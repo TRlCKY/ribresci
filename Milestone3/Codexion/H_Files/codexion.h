@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/02 16:42:16 by ribresci          #+#    #+#             */
-/*   Updated: 2026/09/16 11:56:09 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/09/16 12:57:16 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,17 @@ int				check_burnout(t_coder coder0, struct timespec start, int time);
 void			*use_dongle(t_coder cdr);
 int				current_time(struct timespec start);
 int				main(int argc, char **argv);
+
+// coder action
+void			take_dongle_dx(t_coder coder);
+void			take_dongle_sx(t_coder coder);
+void			start_compiling(t_coder coder);
+void			start_debugging(t_coder coder);
+void			start_refactoring(t_coder coder);
+
+// coder action 1
+void			release_dongle_dx(t_coder coder);
+void			release_dongle_sx(t_coder coder);
 
 // create
 t_dongle		*create_dongles(t_sim sim, t_dongle *dongles);

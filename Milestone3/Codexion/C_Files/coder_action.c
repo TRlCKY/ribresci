@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/09 17:12:37 by ribresci          #+#    #+#             */
-/*   Updated: 2026/09/16 12:51:20 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/09/16 12:57:32 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	take_dongle_sx(t_coder coder)
 	}
 }
 
-void	is_compiling(t_coder coder)
+void	start_compiling(t_coder coder)
 {
 	if (check_burnout(coder, coder.start, coder.compile) == 1)
 	{
@@ -56,7 +56,7 @@ void	is_compiling(t_coder coder)
 	sleep(coder.compile);
 }
 
-void	is_debugging(t_coder coder)
+void	start_debugging(t_coder coder)
 {
 	if (check_burnout(coder, coder.start, coder.debug) == 1)
 	{
@@ -67,7 +67,7 @@ void	is_debugging(t_coder coder)
 	sleep(coder.debug);
 }
 
-void	is_refactoring(t_coder coder)
+void	start_refactoring(t_coder coder)
 {
 	if (check_burnout(coder, coder.start, coder.refactor) == 1)
 	{

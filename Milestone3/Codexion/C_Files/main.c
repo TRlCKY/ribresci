@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 12:15:14 by ribresci          #+#    #+#             */
-/*   Updated: 2026/09/09 16:52:25 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/09/16 12:58:11 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,31 +27,26 @@ int	check_burnout(t_coder coder0, struct timespec start, int time)
 }
 
 // Dopo il controllo del burnout vengono effettuate le varie azioni
-void	*use_dongle(t_coder cdr)
+void	*use_dongle(t_coder coder)
 {
-	if (check_burnout(cdr, cdr.start, 0) == 0 && can_use_dongles(cdr))
-		printf("%d %d has taken a dongle\n", current_time(cdr.start), cdr.id);
-	else
-		return (cdr.error = 1, NULL);
-	if (check_burnout(cdr, cdr.start, 0) == 0)
-		printf("%d %d has taken a dongle\n", current_time(cdr.start), cdr.id);
-	else
-		return (cdr.error = 1, NULL);
-	if (check_burnout(cdr, cdr.start, cdr.compile) == 0)
-		printf("%d %d is compiling\n", current_time(cdr.start), cdr.id);
-	else
-		return (cdr.error = 1, NULL);
-	usleep(cdr.compile);
-	if (check_burnout(cdr, cdr.start, cdr.debug) == 0)
-		printf("%d %d is debugging\n", current_time(cdr.start), cdr.id);
-	else
-		return (cdr.error = 1, NULL);
-	usleep(cdr.debug);
-	if (check_burnout(cdr, cdr.start, cdr.refactor) == 0)
-		printf("%d %d is refactoring\n", current_time(cdr.start), cdr.id);
-	else
-		return (cdr.error = 1, NULL);
-	usleep(cdr.refactor);
+	if (coder.dx.used == 0 && coder.sx.used == 0)
+	{
+		take_dongle_dx(coder);
+		if (coder.error == 1)
+			return (NULL);
+		take_dongle_sx(coder);
+		if (coder.error == 1)
+			return (NULL);
+		start_compiling(coder);
+		if (coder.error == 1)
+			return (NULL);
+		start_debugging(coder);
+		if (coder.error == 1)
+			return (NULL);
+		start_refactoring(coder);
+		if (coder.error == 1)
+			return (NULL);
+	}
 	return (NULL);
 }
 

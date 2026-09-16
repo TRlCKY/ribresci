@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 14:51:00 by ribresci          #+#    #+#             */
-/*   Updated: 2026/09/04 16:05:30 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/09/16 11:57:08 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,11 @@ t_dongle	*create_dongles(t_sim sim, t_dongle *dongles)
 	while (i != sim.num)
 	{
 		dngl.id = i + 1;
+		if (pthread_mutex_init(&dngl.mutex, NULL) != 0)
+			return (NULL);
 		dngl.cooldown = sim.cooldown;
+		if (pthread_cond_init(&dngl.cond, NULL) != 0)
+			return (NULL);
 		dngl.used = 0;
 		dongles[i] = dngl;
 		i++;

@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/02 16:42:16 by ribresci          #+#    #+#             */
-/*   Updated: 2026/09/09 16:54:07 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/09/16 11:56:09 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,11 @@
 
 typedef struct s_dongle
 {
-	int	id;
-	int	cooldown;
-	int	used;
+	pthread_cond_t	cond;
+	pthread_mutex_t	mutex;
+	int				id;
+	int				cooldown;
+	int				used;
 }	t_dongle;
 
 typedef struct s_coder

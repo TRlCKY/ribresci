@@ -1,0 +1,79 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   coder_action.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/09/09 17:12:37 by ribresci          #+#    #+#             */
+/*   Updated: 2026/09/16 12:51:20 by ribresci         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "codexion.h"
+
+void	take_dongle_dx(t_coder coder)
+{
+	pthread_mutex_t	mutex;
+
+	if (check_burnout(coder, coder.start, 0) == 1)
+		return ;
+	pthread_mutex_init(&mutex, NULL);
+	pthread_mutex_lock(&coder.dx.mutex);
+	if (coder.dx.used == 0)
+	{
+		printf("&d &d has taken a dongle", current_time(coder.start), coder.id);
+		coder.dx.used = 1;
+	}
+}
+
+void	take_dongle_sx(t_coder coder)
+{
+	pthread_mutex_t	mutex;
+
+	if (check_burnout(coder, coder.start, 0) == 1)
+	{
+		coder.error = 1;
+		return ;
+	}
+	pthread_mutex_init(&mutex, NULL);
+	pthread_mutex_lock(&coder.sx.mutex);
+	if (coder.sx.used == 0)
+	{
+		printf("&d &d has taken a dongle", current_time(coder.start), coder.id);
+		coder.sx.used = 1;
+	}
+}
+
+void	is_compiling(t_coder coder)
+{
+	if (check_burnout(coder, coder.start, coder.compile) == 1)
+	{
+		coder.error = 1;
+		return ;
+	}
+	printf("&d &d is compiling", current_time(coder.start), coder.id);
+	sleep(coder.compile);
+}
+
+void	is_debugging(t_coder coder)
+{
+	if (check_burnout(coder, coder.start, coder.debug) == 1)
+	{
+		coder.error = 1;
+		return ;
+	}
+	printf("&d &d is debugging", current_time(coder.start), coder.id);
+	sleep(coder.debug);
+}
+
+void	is_refactoring(t_coder coder)
+{
+	if (check_burnout(coder, coder.start, coder.refactor) == 1)
+	{
+		coder.error = 1;
+		return ;
+	}
+	printf("&d &d is refactoring", current_time(coder.start), coder.id);
+	sleep(coder.refactor);
+}

@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 12:15:14 by ribresci          #+#    #+#             */
-/*   Updated: 2026/09/16 12:58:11 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/09/16 12:59:58 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,11 @@ int	main(int argc, char **argv)
 	sim = create_sim(sim, argv);
 	monitor = create_monitor(monitor, sim);
 	x = start(sim, monitor, 1);
+	if (monitor.error == 1)
+	{
+		freeall(sim);
+		return (1);
+	}
 	freeall(sim);
 	return (0);
 }

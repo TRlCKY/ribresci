@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 14:51:00 by ribresci          #+#    #+#             */
-/*   Updated: 2026/09/16 11:57:08 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/09/18 16:09:59 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ t_coder	*create_coders(t_sim sim, t_coder *coders, t_dongle *dongles)
 		cdr.refactor = sim.refactor;
 		cdr.n_compile = sim.n_compile;
 		cdr.error = 0;
+		cdr.last_compile_start = current_time(sim.start);
 		cdr.sx = dongles[i];
 		if (i == sim.num - 1)
 			cdr.dx = dongles[0];
@@ -69,6 +70,9 @@ t_sim	create_sim(t_sim sim, char *argv)
 	sim.refactor = atoi(argv[5]);
 	sim.n_compile = atoi(argv[6]);
 	sim.cooldown = atoi(argv[7]);
+	sim.scheduler = malloc(sizeof(char) * (strlen(argv[8]) + 1));
+	if (!sim.scheduler)
+		return (sim.error = 1, freeall(sim), sim);
 	strlcopy(sim.scheduler, argv[8], strlen(argv[8]));
 	sim.dongles = malloc(sizeof(t_dongle) * sim.num);
 	if (!sim.dongles)

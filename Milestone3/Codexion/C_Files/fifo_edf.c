@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 12:20:26 by ribresci          #+#    #+#             */
-/*   Updated: 2026/09/09 16:58:32 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/09/18 16:14:25 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,30 +55,59 @@ int	edf(t_sim sim)
 	return (0);
 }
 
-int	start(t_sim sim, t_monitor monitor, int scheduler)
+// Controlla che i coders non vadano in burnout
+void	*check(void *arg)
+{
+	t_monitor	*mntr;
+	t_coder		cdr;
+	int			end;
+	int			i;
+	int			now;
+
+	mntr = (t_monitor *)arg;
+	while (!mntr->error)
+	{
+		i = 0;
+		while (i < mntr->sim.num)
+		{
+			now = current_time(mntr->sim.start);
+			cdr = mntr->sim.coders[i];
+			if (now >= cdr.burnout + cdr.last_compile_start)
+			{
+				printf("%d %d burned out\n", now, cdr.id);
+				mntr->error = 1;
+				return (NULL);
+			}
+			i++;
+		}
+		
+	}
+	return (NULL);
+}
+
+int	start(t_sim sim, t_monitor *monitor, int scheduler)
 {
 	int	i;
-	int	stop;
 
+	i = 0;
+	if (pthread_create(&monitor->monitor_t, NULL, check, monitor) != 0)
+		return (1);
+	while (i < sim.num)
+	{
+		if (pthread_create(&sim.coders[i].thread, NULL, use_dongle,
+				&sim.coders[i]) != 0)
+			return (1);
+		i++;
+	}
+	pthread_join(monitor->monitor_t, NULL);
+	if (monitor->error == 1)
+		return (1);
 	i = 0;
 	while (i < sim.num)
 	{
-		pthread_create(sim.coders[i].thread, NULL, use_dongle,
-			&sim.coders[i]);
-		i++;
-	}
-	while (true)
-	{
-		i = 0;
-		if (monitor.error == 1)
+		if (pthread_join(sim.coders[i].thread, NULL) != 0)
 			return (1);
-		while (i < sim.num)
-		{
-			pthread_join(sim.coders[i].thread, NULL);
-			i++;
-		}
-		if (sim.coders[i].error == 1)
-			monitor.error = 1;
+		i++;
 	}
 	return (0);
 }

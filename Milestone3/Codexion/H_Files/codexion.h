@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/02 16:42:16 by ribresci          #+#    #+#             */
-/*   Updated: 2026/09/16 12:57:16 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/09/18 16:08:10 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ typedef struct s_coder
 	int				refactor;
 	int				n_compile;
 	int				error;
+	int				last_compile_start;
 	pthread_t		thread;
 	t_dongle		dx;
 	t_dongle		sx;
@@ -69,7 +70,7 @@ typedef struct monitor
 // fifo_edf
 int				fifo(t_sim sim);
 int				edf(t_sim sim);
-int				start(t_sim sim, t_monitor monitor, int scheduler);
+int				start(t_sim sim, t_monitor *monitor, int scheduler);
 
 // main
 int				check_values(int argc, char **argv);
@@ -98,6 +99,5 @@ t_monitor		create_monitor(t_monitor monitor, t_sim sim);
 // utilities
 unsigned int	ft_strlcpy(char *dest, const char *src, size_t size);
 void			freeall(t_sim sim);
-int				can_use_dongle(t_coder coder);
 
 #endif;

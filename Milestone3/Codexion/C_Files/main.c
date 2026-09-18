@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 12:15:14 by ribresci          #+#    #+#             */
-/*   Updated: 2026/09/16 12:59:58 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/09/18 16:07:41 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,12 @@ void	*use_dongle(t_coder coder)
 		if (coder.error == 1)
 			return (NULL);
 		start_refactoring(coder);
+		if (coder.error == 1)
+			return (NULL);
+		release_dongle_dx(coder);
+		if (coder.error == 1)
+			return (NULL);
+		release_dongle_sx(coder);
 		if (coder.error == 1)
 			return (NULL);
 	}
@@ -93,7 +99,7 @@ int	main(int argc, char **argv)
 		return (1);
 	sim = create_sim(sim, argv);
 	monitor = create_monitor(monitor, sim);
-	x = start(sim, monitor, 1);
+	x = start(sim, &monitor, 1);
 	if (monitor.error == 1)
 	{
 		freeall(sim);

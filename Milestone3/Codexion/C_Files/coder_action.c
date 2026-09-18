@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/09 17:12:37 by ribresci          #+#    #+#             */
-/*   Updated: 2026/09/16 12:57:32 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/09/18 16:09:37 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,10 @@ void	take_dongle_dx(t_coder coder)
 
 	if (check_burnout(coder, coder.start, 0) == 1)
 		return ;
-	pthread_mutex_init(&mutex, NULL);
-	pthread_mutex_lock(&coder.dx.mutex);
+	if (pthread_mutex_init(&mutex, NULL) != 0)
+		return (1);
+	if (pthread_mutex_lock(&coder.dx.mutex) != 0)
+		return (1);
 	if (coder.dx.used == 0)
 	{
 		printf("&d &d has taken a dongle", current_time(coder.start), coder.id);
@@ -45,15 +47,11 @@ void	take_dongle_sx(t_coder coder)
 	}
 }
 
-void	start_compiling(t_coder coder)
+void	start_compiling(t_coder *coder)
 {
-	if (check_burnout(coder, coder.start, coder.compile) == 1)
-	{
-		coder.error = 1;
-		return ;
-	}
-	printf("&d &d is compiling", current_time(coder.start), coder.id);
-	sleep(coder.compile);
+	coder->last_compile_start = current_time(coder->start);
+	printf("&d &d is compiling", current_time(coder->start), coder->id);
+	sleep(coder->compile);
 }
 
 void	start_debugging(t_coder coder)

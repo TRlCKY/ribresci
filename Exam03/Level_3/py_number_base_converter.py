@@ -20,9 +20,10 @@ def number_base_converter(number: str, from_base: int, to_base: int) -> str:
             new_number += new_number0[len(new_number0) - 1 - i]
     else:
         for i in range(len(number)):
-            x = int(number[i]) * pow(to_base, i)
+            x = int(number[i]) * pow(10, i)
             number0 += x
-            new_number +=
+        new_number0 = str(number0)
+        
     return new_number
 
 

@@ -7,16 +7,15 @@ def string_sculptor(text: str) -> str:
 
     i = 0
     while i < x:
-        while (i < x and text[i] <= "a" and text[i] >= "z"
-               and text[i] <= "A" and text[i] >= "Z"):
+        if text[i] == ' ':
+            n = 0
+        while (i < x and not text[i].isalpha()):
             new_text += text[i]
             i = i + 1
-        n = 0
-        while (i < x and text[i] >= "a" and text[i] <= "z" or text[i] >= "A"
-               and text[i] <= "Z"):
-            if n % 2 == 0 and text[i] >= "A" and text[i] <= "Z":
+        while (i < x and text[i].isalpha()):
+            if n % 2 == 0:
                 new_text += text[i].lower()
-            elif n % 2 == 1 and text[i] >= "a" and text[i] <= "z":
+            elif n % 2 == 1:
                 new_text += text[i].upper()
             n = n + 1
             i = i + 1
@@ -24,7 +23,7 @@ def string_sculptor(text: str) -> str:
 
 
 def main():
-    print(string_sculptor("hello"))
+    print(string_sculptor(""))
 
 
 main()

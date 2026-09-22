@@ -25,6 +25,6 @@ def count(s0: str, c: str) -> int:
     return n
 
 
-# def main():
-#    print(string_permutation_checker("abc", "bca"))
-# main()
+def main():
+    print(string_permutation_checker("lis ten", "s ilent"))
+main()

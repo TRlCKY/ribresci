@@ -20,31 +20,25 @@ def bracket_validator(s: str) -> bool:
     new_array = []
     new_array.append(array.pop(0))
     i = 0
-    print(new_array)
     while i < len(array):
         if array[i] == '(' or array[i] == '[' or array[i] == '{':
             new_array.append(array.pop(i))
         elif (new_array[-1] == '(' and array[i] == ')' or new_array[-1] == '['
                 and array[i] == ']' or
                 new_array[-1] == '{' and array[i] == '}'):
-            print(f'new_array0: {new_array[-1]}\narray0: {array[i]}')
             new_array.pop()
             array.pop(i)
-            print(f'array: {array}')
-            print(f'new array: {new_array}')
         elif ((new_array[-1] == '(' or new_array[-1] == '[' or
                new_array[-1] == '{') and (array[i] == '(' or
               array[i] == '[' or array[i] == '{')):
             i = i + 1
         else:
             return False
-    print(new_array)
-    print(array)
     return True
 
 
 def main():
-    s = "["
+    s = "[]"
     print(bracket_validator(s))
 
 

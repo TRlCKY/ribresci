@@ -17,6 +17,9 @@ def echo_validator(text: str) -> bool:
 
     return True
 
-# def main():
-#    print(echo_validator("a"))
-# main()
+
+def main():
+    print(echo_validator("abba"))
+
+
+main()

@@ -9,6 +9,9 @@ def pattern_tracker(text: str) -> int:
         i = i + 1
     return n
 
-# def main():
-#    print(pattern_tracker("1a2b3c4"))
-# main()
+
+def main():
+    print(pattern_tracker("1a2b3c4"))
+
+
+main()

@@ -13,9 +13,6 @@ def cryptic_sorter(strings: list[str]) -> list[str]:
                 strings[i + 1] = string0
             i = i + 1
         x = x + 1
-
-    print("Stringa 1:")
-    print(strings)
     # Valore ASCII (non per le lettere maiuscole/minuscole con la stessa lunghezza)
     x = 0
     while x < len(strings):
@@ -42,8 +39,7 @@ def cryptic_sorter(strings: list[str]) -> list[str]:
 
 
 def main():
-    strings = ['albz', 'c3d4', 'e5f6', 'g7h8']
-    print(strings)
+    strings = ['e5f6', 'albz', 'g7h8', 'c3d4']
     print(cryptic_sorter(strings))
 
-# main()
+main()

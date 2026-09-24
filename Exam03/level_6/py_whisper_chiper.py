@@ -16,7 +16,7 @@ def whisper_cipher(text: str, shift: int) -> str:
                     if text[i].islower():
                         new_char = ord('a') + new_shift - 1
                     else:
-                        new_char = ord('A') + new_shift -1
+                        new_char = ord('A') + new_shift - 1
                 else:
                     while not chr(new_char).isalpha():
                         new_char += 1

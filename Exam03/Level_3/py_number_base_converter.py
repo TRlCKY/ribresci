@@ -1,30 +1,32 @@
 def number_base_converter(number: str, from_base: int, to_base: int) -> str:
-    if from_base < 2 or from_base > 36:
+    if from_base < 2 or from_base > 36 or to_base < 2 or to_base > 36:
         return "ERROR"
-    number0 = 0
-    new_number0 = ""
-    new_number = ""
     num_abc = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    for i in range(len(number)):
-        if (number[i] >= num_abc[from_base]):
-            return "ERROR"
-    if from_base == to_base:
-        return number
-    elif from_base > to_base:
-        x = int(number)
-        while x >= 1:
-            new_x = int(x % to_base)
-            x = x / to_base
-            new_number0 += num_abc[new_x]
-        for i in range(len(new_number0)):
-            new_number += new_number0[len(new_number0) - 1 - i]
-    else:
-        for i in range(len(number)):
-            x = int(number[i]) * pow(10, i)
-            number0 += x
-        new_number0 = str(number0)
-        
+    new_number = ""
+    if from_base != 10:
+        number = convert(from_base, number)
+    num_int = int(number)
+    while num_int != 0:
+        module = num_int % to_base
+        num_int //= 10
+        new_number.insert(0, num_abc[module])
     return new_number
+
+
+def convert(from_base: int, number: str):
+    number0 = []
+    number10 = 0
+    i = 0
+    for n in number:
+        if n.isalpha():
+            number0.append((ord[n] - ord('A') + 10) * pow(from_base, len(number) - i - 1))
+        else:
+            number0.append((ord[n] - ord('0')) * pow(from_base, len(number) - i - 1))
+        i += 1
+    i = 0
+    for i in range(len(number0)):
+        number10 += int(number0[i])
+    return str(number10)
 
 
 def main():

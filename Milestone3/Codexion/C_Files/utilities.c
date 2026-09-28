@@ -6,11 +6,11 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/02 16:45:49 by ribresci          #+#    #+#             */
-/*   Updated: 2026/09/09 16:53:34 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/09/28 15:44:24 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "codexion.h"
+#include "../H_Files/codexion.h"
 
 unsigned int	ft_strlcpy(char *dest, const char *src, size_t size)
 {
@@ -36,12 +36,23 @@ unsigned int	ft_strlcpy(char *dest, const char *src, size_t size)
 	return (e);
 }
 
-void	freeall(t_sim sim)
+void	freemonitor(t_monitor monitor)
+{
+	if (monitor.sim.coders)
+		free(monitor.sim.coders);
+	if (monitor.sim.dongles)
+		free(monitor.sim.dongles);
+	freesim(monitor.sim);
+	free(&monitor);
+}
+
+void	freesim(t_sim sim)
 {
 	if (sim.coders)
 		free(sim.coders);
 	if (sim.dongles)
 		free(sim.dongles);
+	free(&sim);
 }
 
 int	can_use_dongle(t_coder coder)

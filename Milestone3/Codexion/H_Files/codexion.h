@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/02 16:42:16 by ribresci          #+#    #+#             */
-/*   Updated: 2026/09/18 16:08:10 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/09/28 15:43:04 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <pthread.h>
+# include <string.h>
 # include <time.h>
 
 typedef struct s_dongle
@@ -68,15 +69,16 @@ typedef struct monitor
 }	t_monitor;
 
 // fifo_edf
-int				fifo(t_sim sim);
-int				edf(t_sim sim);
-int				start(t_sim sim, t_monitor *monitor, int scheduler);
+void			*use_dongle_fifo(t_coder cdr);
+void			*use_dongle_edf(t_coder cdr);
+void			*check(void *arg);
+int				start(t_sim sim, t_monitor *monitor, char *scheduler);
+int				start1(t_sim sim, t_monitor *monitor, char *scheduler);
 
 // main
-int				check_values(int argc, char **argv);
 int				check_burnout(t_coder coder0, struct timespec start, int time);
-void			*use_dongle(t_coder cdr);
 int				current_time(struct timespec start);
+int				check_values(int argc, char *argv);
 int				main(int argc, char **argv);
 
 // coder action
@@ -98,6 +100,8 @@ t_monitor		create_monitor(t_monitor monitor, t_sim sim);
 
 // utilities
 unsigned int	ft_strlcpy(char *dest, const char *src, size_t size);
-void			freeall(t_sim sim);
+void			freemonitor(t_monitor monitor);
+void			freesim(t_sim sim);
+int				can_use_dongle(t_coder coder);
 
-#endif;
+#endif

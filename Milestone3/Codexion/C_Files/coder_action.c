@@ -6,22 +6,31 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/09 17:12:37 by ribresci          #+#    #+#             */
-/*   Updated: 2026/09/18 16:09:37 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/09/28 12:34:46 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "codexion.h"
+#include "../H_Files/codexion.h"
 
 void	take_dongle_dx(t_coder coder)
 {
 	pthread_mutex_t	mutex;
 
 	if (check_burnout(coder, coder.start, 0) == 1)
+	{
+		coder.error = 1;
 		return ;
+	}
 	if (pthread_mutex_init(&mutex, NULL) != 0)
-		return (1);
+	{
+		coder.error = 1;
+		return ;
+	}
 	if (pthread_mutex_lock(&coder.dx.mutex) != 0)
-		return (1);
+	{
+		coder.error = 1;
+		return ;
+	}
 	if (coder.dx.used == 0)
 	{
 		printf("&d &d has taken a dongle", current_time(coder.start), coder.id);

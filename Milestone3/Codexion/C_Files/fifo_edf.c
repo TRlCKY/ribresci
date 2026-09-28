@@ -6,11 +6,11 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 12:20:26 by ribresci          #+#    #+#             */
-/*   Updated: 2026/09/18 16:14:25 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/09/28 15:35:10 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "codexion.h"
+#include "../H_Files/codexion.h"
 
 /*
 * (0) Number of coders and dongles
@@ -37,22 +37,41 @@
 * 	  last_compile_start + time_to_burnout)
 */
 
-int	fifo(t_sim sim)
+// Dopo il controllo del burnout vengono effettuate le varie azioni
+void	*use_dongle_fifo(t_coder coder)
 {
-	pthread_t	*thread;
-	int			i;
-
-	i = 0;
-	return (0);
+	if (coder.dx.used == 0 && coder.sx.used == 0)
+	{
+		take_dongle_dx(coder);
+		if (coder.error == 1)
+			return (NULL);
+		take_dongle_sx(coder);
+		if (coder.error == 1)
+			return (NULL);
+		start_compiling(coder);
+		if (coder.error == 1)
+			return (NULL);
+		start_debugging(coder);
+		if (coder.error == 1)
+			return (NULL);
+		start_refactoring(coder);
+		if (coder.error == 1)
+			return (NULL);
+		release_dongle_dx(coder);
+		if (coder.error == 1)
+			return (NULL);
+		release_dongle_sx(coder);
+		if (coder.error == 1)
+			return (NULL);
+	}
+	return (NULL);
 }
 
-int	edf(t_sim sim)
+// Dopo il controllo del burnout vengono effettuate le varie azioni
+void	*use_dongle_edf(t_coder coder)
 {
-	pthread_t	*thread;
-	int			i;
-
-	i = 0;
-	return (0);
+	
+	return (NULL);
 }
 
 // Controlla che i coders non vadano in burnout
@@ -80,12 +99,11 @@ void	*check(void *arg)
 			}
 			i++;
 		}
-		
 	}
 	return (NULL);
 }
 
-int	start(t_sim sim, t_monitor *monitor, int scheduler)
+int	start(t_sim sim, t_monitor *monitor, char *scheduler)
 {
 	int	i;
 
@@ -94,14 +112,30 @@ int	start(t_sim sim, t_monitor *monitor, int scheduler)
 		return (1);
 	while (i < sim.num)
 	{
-		if (pthread_create(&sim.coders[i].thread, NULL, use_dongle,
-				&sim.coders[i]) != 0)
-			return (1);
+		if (strcmp(scheduler, "edf") == 0)
+		{
+			if (pthread_create(&sim.coders[i].thread, NULL, use_dongle_edf,
+					&sim.coders[i]) != 0)
+				return (1);
+		}
+		else
+		{
+			if (pthread_create(&sim.coders[i].thread, NULL, use_dongle_fifo,
+					&sim.coders[i]) != 0)
+				return (1);
+		}
 		i++;
 	}
 	pthread_join(monitor->monitor_t, NULL);
 	if (monitor->error == 1)
 		return (1);
+	return (start1(sim, monitor, scheduler));
+}
+
+int	start1(t_sim sim, t_monitor *monitor, char *scheduler)
+{
+	int	i;
+
 	i = 0;
 	while (i < sim.num)
 	{
@@ -109,5 +143,4 @@ int	start(t_sim sim, t_monitor *monitor, int scheduler)
 			return (1);
 		i++;
 	}
-	return (0);
 }

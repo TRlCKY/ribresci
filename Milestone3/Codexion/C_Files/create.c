@@ -6,11 +6,11 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 14:51:00 by ribresci          #+#    #+#             */
-/*   Updated: 2026/09/18 16:09:59 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/09/28 15:45:04 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "codexion.h"
+#include "H_Files/codexion.h"
 
 t_dongle	*create_dongles(t_sim sim, t_dongle *dongles)
 {
@@ -72,15 +72,15 @@ t_sim	create_sim(t_sim sim, char *argv)
 	sim.cooldown = atoi(argv[7]);
 	sim.scheduler = malloc(sizeof(char) * (strlen(argv[8]) + 1));
 	if (!sim.scheduler)
-		return (sim.error = 1, freeall(sim), sim);
+		return (sim.error = 1, freesim(sim), sim);
 	strlcopy(sim.scheduler, argv[8], strlen(argv[8]));
 	sim.dongles = malloc(sizeof(t_dongle) * sim.num);
 	if (!sim.dongles)
-		return (sim.error = 1, freeall(sim), sim);
+		return (sim.error = 1, freesim(sim), sim);
 	sim.dongles = create_dongles(sim, sim.dongles);
 	sim.coders = malloc(sizeof(t_coder) * sim.num);
 	if (!sim.coders)
-		return (sim.error = 1, freeall(sim), sim);
+		return (sim.error = 1, freesim(sim), sim);
 	sim.coders = create_coders(sim, sim.coders, sim.dongles);
 	return (sim);
 }

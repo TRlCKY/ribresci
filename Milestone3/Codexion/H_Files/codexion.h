@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/02 16:42:16 by ribresci          #+#    #+#             */
-/*   Updated: 2026/09/28 15:43:04 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/09/28 18:13:55 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,13 @@
 # include <string.h>
 # include <time.h>
 
+typedef struct s_heap
+{
+	int		size;
+	t_coder	*coders;
+	int		error;
+}	t_heap;
+
 typedef struct s_dongle
 {
 	pthread_cond_t	cond;
@@ -27,6 +34,7 @@ typedef struct s_dongle
 	int				id;
 	int				cooldown;
 	int				used;
+	int				error;
 }	t_dongle;
 
 typedef struct s_coder
@@ -65,6 +73,7 @@ typedef struct monitor
 {
 	pthread_t		*monitor_t;
 	t_sim			sim;
+	t_heap			heap;
 	int				error;
 }	t_monitor;
 
@@ -82,26 +91,27 @@ int				check_values(int argc, char *argv);
 int				main(int argc, char **argv);
 
 // coder action
-void			take_dongle_dx(t_coder coder);
-void			take_dongle_sx(t_coder coder);
-void			start_compiling(t_coder coder);
-void			start_debugging(t_coder coder);
-void			start_refactoring(t_coder coder);
+int				take_dongle_dx(t_coder coder);
+int				take_dongle_sx(t_coder coder);
+int				start_compiling(t_coder coder);
+int				start_debugging(t_coder coder);
+int				start_refactoring(t_coder coder);
 
 // coder action 1
-void			release_dongle_dx(t_coder coder);
-void			release_dongle_sx(t_coder coder);
+int				release_dongle_dx(t_coder coder);
+int				release_dongle_sx(t_coder coder);
 
 // create
 t_dongle		*create_dongles(t_sim sim, t_dongle *dongles);
 t_coder			*create_coders(t_sim sim, t_coder *coders, t_dongle *dongles);
 t_sim			create_sim(t_sim sim, char *argv);
-t_monitor		create_monitor(t_monitor monitor, t_sim sim);
+t_monitor		create_monitor(t_monitor monitor, t_sim sim, t_heap heap);
+t_heap			create_heap(t_heap heap, int n);
 
 // utilities
 unsigned int	ft_strlcpy(char *dest, const char *src, size_t size);
 void			freemonitor(t_monitor monitor);
 void			freesim(t_sim sim);
-int				can_use_dongle(t_coder coder);
+void			freeheap(t_heap heap);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 12:15:14 by ribresci          #+#    #+#             */
-/*   Updated: 2026/09/28 15:45:01 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/09/28 18:01:52 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,14 +64,16 @@ int	main(int argc, char **argv)
 {
 	t_sim		*sim;
 	t_monitor	*monitor;
+	t_heap		*heap;
 	int			x;
 
 	if (check_values(argc, *argv) == 1)
 		return (1);
 	sim = NULL;
 	monitor = NULL;
+	*heap = create_heap(*heap, argv[0]);
 	*sim = create_sim(*sim, *argv);
-	*monitor = create_monitor(*monitor, *sim);
+	*monitor = create_monitor(*monitor, *sim, *heap);
 	x = start(*sim, monitor, 1);
 	if ((*monitor).error == 1)
 	{

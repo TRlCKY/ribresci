@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/02 16:45:49 by ribresci          #+#    #+#             */
-/*   Updated: 2026/09/28 15:44:24 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/09/28 18:13:19 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void	freemonitor(t_monitor monitor)
 	if (monitor.sim.dongles)
 		free(monitor.sim.dongles);
 	freesim(monitor.sim);
+	freeheap(monitor.heap);
 	free(&monitor);
 }
 
@@ -55,9 +56,9 @@ void	freesim(t_sim sim)
 	free(&sim);
 }
 
-int	can_use_dongle(t_coder coder)
+void	freeheap(t_heap heap)
 {
-	if (coder.dx.used == 0 && coder.sx.used == 0)
-		return (1);
-	return (0);
+	if (heap.coders)
+		free(heap.coders);
+	free(&heap);
 }

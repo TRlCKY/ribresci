@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 14:51:00 by ribresci          #+#    #+#             */
-/*   Updated: 2026/09/28 15:45:04 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/09/28 18:00:21 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,22 +72,36 @@ t_sim	create_sim(t_sim sim, char *argv)
 	sim.cooldown = atoi(argv[7]);
 	sim.scheduler = malloc(sizeof(char) * (strlen(argv[8]) + 1));
 	if (!sim.scheduler)
-		return (sim.error = 1, freesim(sim), sim);
+		return (sim.error = 1, sim);
 	strlcopy(sim.scheduler, argv[8], strlen(argv[8]));
 	sim.dongles = malloc(sizeof(t_dongle) * sim.num);
 	if (!sim.dongles)
-		return (sim.error = 1, freesim(sim), sim);
+		return (sim.error = 1, sim);
 	sim.dongles = create_dongles(sim, sim.dongles);
 	sim.coders = malloc(sizeof(t_coder) * sim.num);
 	if (!sim.coders)
-		return (sim.error = 1, freesim(sim), sim);
+		return (sim.error = 1, sim);
 	sim.coders = create_coders(sim, sim.coders, sim.dongles);
 	return (sim);
 }
 
-t_monitor	create_monitor(t_monitor monitor, t_sim sim)
+t_monitor	create_monitor(t_monitor monitor, t_sim sim, t_heap heap)
 {
 	monitor.error = 0;
 	monitor.sim = sim;
+	if (monitor.sim.error != 0)
+		monitor.error = 1;
+	monitor.heap = heap;
+	if (monitor.heap.error != 0)
+		monitor.error = 1;
 	return (monitor);
+}
+
+t_heap	create_heap(t_heap heap, int n)
+{
+	heap.size = n;
+	heap.coders = malloc(sizeof(t_coder) * heap.size);
+	if (!heap.coders)
+		return (heap.error = 1, heap);
+	return (heap.error = 0, heap);
 }

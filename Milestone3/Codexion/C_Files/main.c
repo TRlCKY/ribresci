@@ -80,6 +80,6 @@ int	main(int argc, char **argv)
 		freemonitor(*monitor);
 		return (1);
 	}
-	(*monitor);
+	
 	return (0);
 }

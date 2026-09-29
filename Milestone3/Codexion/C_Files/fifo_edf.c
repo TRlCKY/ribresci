@@ -46,15 +46,15 @@ void	*use_dongle_fifo(t_coder coder)
 			return (NULL);
 		if (take_dongle_sx(coder) == 1)
 			return (NULL);
-		if (start_compiling(coder) == 1)
-			return (NULL);
-		if (start_debugging(coder) == 1)
-			return (NULL);
-		if (start_refactoring(coder) == 1)
+		if (start_compiling(&coder) == 1)
 			return (NULL);
 		if (release_dongle_dx(coder) == 1)
 			return (NULL);
 		if (release_dongle_sx(coder) == 1)
+			return (NULL);
+		if (start_debugging(coder) == 1)
+			return (NULL);
+		if (start_refactoring(coder) == 1)
 			return (NULL);
 	}
 	return (NULL);
@@ -117,11 +117,9 @@ int	start(t_sim sim, t_monitor *monitor, char *scheduler)
 					&sim.coders[i]) != 0)
 				return (1);
 		}
+		monitor->heap.coders[i] = sim.coders[i];
 		i++;
 	}
-	pthread_join(monitor->monitor_t, NULL);
-	if (monitor->error == 1)
-		return (1);
 	return (start1(sim, monitor, scheduler));
 }
 
@@ -130,10 +128,14 @@ int	start1(t_sim sim, t_monitor *monitor, char *scheduler)
 	int	i;
 
 	i = 0;
+	pthread_join(monitor->monitor_t, NULL);
+	if (monitor->error == 1)
+		return (1);
 	while (i < sim.num)
 	{
-		if (pthread_join(sim.coders[i].thread, NULL) != 0)
-			return (1);
+		if (sim.coders[i].n_compile > 0)
+			if (pthread_join(sim.coders[i].thread, NULL) != 0)
+				return (1);
 		i++;
 	}
 }

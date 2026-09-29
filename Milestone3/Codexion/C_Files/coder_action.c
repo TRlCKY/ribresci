@@ -16,6 +16,8 @@ int	take_dongle_dx(t_coder coder)
 {
 	pthread_mutex_t	mutex;
 
+	if (coder.n_compile == 0)
+		return (0);
 	if (check_burnout(coder, coder.start, 0) == 1)
 	{
 		coder.error = 1;

@@ -93,7 +93,7 @@ int				main(int argc, char **argv);
 // coder action
 int				take_dongle_dx(t_coder coder);
 int				take_dongle_sx(t_coder coder);
-int				start_compiling(t_coder coder);
+int				start_compiling(t_coder *coder);
 int				start_debugging(t_coder coder);
 int				start_refactoring(t_coder coder);
 

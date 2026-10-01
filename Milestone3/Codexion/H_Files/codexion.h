@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/02 16:42:16 by ribresci          #+#    #+#             */
-/*   Updated: 2026/09/28 18:13:55 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/01 17:14:52 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,6 @@
 # include <pthread.h>
 # include <string.h>
 # include <time.h>
-
-typedef struct s_heap
-{
-	int		size;
-	t_coder	*coders;
-	int		error;
-}	t_heap;
 
 typedef struct s_dongle
 {
@@ -69,6 +62,13 @@ typedef struct s_sim
 	t_dongle		*dongles;
 }	t_sim;
 
+typedef struct s_heap
+{
+	int		size;
+	t_coder	*coders;
+	int		error;
+}	t_heap;
+
 typedef struct monitor
 {
 	pthread_t		*monitor_t;
@@ -82,7 +82,7 @@ void			*use_dongle_fifo(t_coder cdr);
 void			*use_dongle_edf(t_coder cdr);
 void			*check(void *arg);
 int				start(t_sim sim, t_monitor *monitor, char *scheduler);
-int				start1(t_sim sim, t_monitor *monitor, char *scheduler);
+int				start1(t_sim sim, t_monitor *monitor);
 
 // main
 int				check_burnout(t_coder coder0, struct timespec start, int time);

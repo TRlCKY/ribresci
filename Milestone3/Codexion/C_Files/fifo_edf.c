@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 12:20:26 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/01 15:57:59 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/01 17:15:14 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,17 @@ void	*use_dongle_fifo(t_coder coder)
 			return (NULL);
 	}
 	else
- 		pthread_cond_wait(coder.dx.cond);
+	{
+		pthread_cond_wait(&(coder.dx.cond), &(coder.dx.mutex));
+		pthread_cond_wait(&(coder.sx.cond), &(coder.sx.mutex));
+	}
 	return (NULL);
 }
 
 // Dopo il controllo del burnout vengono effettuate le varie azioni
 void	*use_dongle_edf(t_coder coder)
 {
-	
+	printf("CIAO");
 	return (NULL);
 }
 
@@ -122,10 +125,10 @@ int	start(t_sim sim, t_monitor *monitor, char *scheduler)
 		monitor->heap.coders[i] = sim.coders[i];
 		i++;
 	}
-	return (start1(sim, monitor, scheduler));
+	return (start1(sim, monitor));
 }
 
-int	start1(t_sim sim, t_monitor *monitor, char *scheduler)
+int	start1(t_sim sim, t_monitor *monitor)
 {
 	int	i;
 
@@ -140,4 +143,5 @@ int	start1(t_sim sim, t_monitor *monitor, char *scheduler)
 				return (1);
 		i++;
 	}
+	return (0);
 }

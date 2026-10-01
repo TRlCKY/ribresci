@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 12:15:14 by ribresci          #+#    #+#             */
-/*   Updated: 2026/09/28 18:01:52 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/01 17:11:42 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,17 +69,18 @@ int	main(int argc, char **argv)
 
 	if (check_values(argc, *argv) == 1)
 		return (1);
+	heap = NULL;
 	sim = NULL;
 	monitor = NULL;
-	*heap = create_heap(*heap, argv[0]);
+	*heap = create_heap(*heap, atoi(argv[0]));
+	if ((*heap).error == 1)
+		return (freeheap(*heap), 1);
 	*sim = create_sim(*sim, *argv);
+	if ((*sim).error == 1)
+		return (freeheap(*heap), freesim(*sim), 1);
 	*monitor = create_monitor(*monitor, *sim, *heap);
-	x = start(*sim, monitor, 1);
+	x = start(*sim, monitor, sim->scheduler);
 	if ((*monitor).error == 1)
-	{
-		freemonitor(*monitor);
-		return (1);
-	}
-	
+		return (freeheap(*heap), freesim(*sim), freemonitor(*monitor), 1);
 	return (0);
 }

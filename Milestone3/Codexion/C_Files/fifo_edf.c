@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 12:20:26 by ribresci          #+#    #+#             */
-/*   Updated: 2026/09/28 18:20:54 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/01 15:57:59 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ void	*use_dongle_fifo(t_coder coder)
 		if (start_refactoring(coder) == 1)
 			return (NULL);
 	}
+	else
+ 		pthread_cond_wait(coder.dx.cond);
 	return (NULL);
 }
 

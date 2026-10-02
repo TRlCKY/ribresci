@@ -7,14 +7,14 @@ SRC = $(wildcard C_Files/*.c)
 # Cambia da .c in .o per il comando nel terminale
 OBJ = $(SRC:.c=.o)
 # Nome del programma
-NAME = codexion.a
+NAME = codexion
 
 # Target principale
 all:	$(NAME)
 
-# Crea e/o aggiorna la libreria statica(ar rcs) e ci associa tutti i file oggetto creati dal comando sotto
 $(NAME): $(OBJ)
-		ar rcs $(NAME) $(OBJ)
+		$(CC) $(CFLAGS) $(OBJ) -o $(NAME) -pthread
+
 # Prende tutti i file .c($<), li compila in file oggetto(-o) e gli rimette lo stesso nome($@)
 %.o: %.c
 		$(CC) $(CFLAGS) -c $< -o $@

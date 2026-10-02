@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/02 16:45:49 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/01 17:14:07 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/02 17:59:17 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ void	freesim(t_sim sim)
 		free(sim.coders);
 	if (sim.dongles)
 		free(sim.dongles);
+	if (sim.scheduler)
+		free(sim.scheduler);
 }
 
 void	freeheap(t_heap heap)

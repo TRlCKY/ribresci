@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 12:15:14 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/02 17:36:19 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/02 17:44:40 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,9 @@ int	main(int argc, char **argv)
 	t_heap		heap;
 	int			x;
 
+	memset(&sim, 0, sizeof(sim));
+	memset(&monitor, 0, sizeof(monitor));
+	memset(&heap, 0, sizeof(heap));
 	if (check_values(argc, argv) == 1)
 		return (1);
 	heap = create_heap(heap, atoi(argv[1]));

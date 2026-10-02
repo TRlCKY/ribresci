@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/16 12:41:48 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/02 17:16:37 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/02 17:54:01 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 int	release_dongle_dx(t_coder *coder)
 {
-	sleep(coder->dx.cooldown);
-	coder->dx.used = 0;
-	pthread_mutex_unlock(&coder->dx.mutex);
+	usleep(coder->dx->cooldown);
+	coder->dx->used = 0;
+	pthread_mutex_unlock(&coder->dx->mutex);
 	if (check_burnout(*coder, coder->start, 0) == 1)
 	{
 		coder->error = 1;
@@ -28,9 +28,9 @@ int	release_dongle_dx(t_coder *coder)
 
 int	release_dongle_sx(t_coder *coder)
 {
-	sleep(coder->sx.cooldown);
-	coder->sx.used = 0;
-	pthread_mutex_unlock(&coder->sx.mutex);
+	usleep(coder->sx->cooldown);
+	coder->sx->used = 0;
+	pthread_mutex_unlock(&coder->sx->mutex);
 	if (check_burnout(*coder, coder->start, 0) == 1)
 	{
 		coder->error = 1;

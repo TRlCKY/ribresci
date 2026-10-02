@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 12:20:26 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/02 17:39:08 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/02 17:43:10 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ int	start(t_sim sim, t_monitor *monitor, char *scheduler)
 	int	i;
 
 	i = 0;
-	if (pthread_create(&(monitor->monitor_t), NULL, check, monitor) != 0)
+	if (pthread_create(monitor->monitor_t, NULL, check, monitor) != 0)
 		return (1);
 	while (i < sim.num)
 	{

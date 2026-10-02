@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/09 17:12:37 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/02 17:38:21 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/02 18:00:35 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int	start_compiling(t_coder *coder)
 {
 	coder->last_compile_start = current_time(coder->start);
 	printf("%d %d is compiling", current_time(coder->start), coder->id);
-	sleep(coder->compile);
+	usleep(coder->compile);
 	if (check_burnout(*coder, coder->start, coder->compile))
 	{
 		coder->error = 1;
@@ -84,7 +84,7 @@ int	start_compiling(t_coder *coder)
 int	start_debugging(t_coder *coder)
 {
 	printf("%d %d is debugging", current_time(coder->start), coder->id);
-	sleep(coder->debug);
+	usleep(coder->debug);
 	if (check_burnout(*coder, coder->start, coder->debug) == 1)
 	{
 		coder->error = 1;
@@ -96,7 +96,7 @@ int	start_debugging(t_coder *coder)
 int	start_refactoring(t_coder *coder)
 {
 	printf("%d %d is refactoring", current_time(coder->start), coder->id);
-	sleep(coder->refactor);
+	usleep(coder->refactor);
 	if (check_burnout(*coder, coder->start, coder->refactor) == 1)
 	{
 		coder->error = 1;

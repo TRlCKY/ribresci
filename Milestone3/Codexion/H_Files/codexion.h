@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/02 16:42:16 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/01 17:14:52 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/02 17:30:16 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ typedef struct s_coder
 	int				error;
 	int				last_compile_start;
 	pthread_t		thread;
-	t_dongle		dx;
-	t_dongle		sx;
+	t_dongle		*dx;
+	t_dongle		*sx;
 }	t_coder;
 
 typedef struct s_sim
@@ -78,8 +78,8 @@ typedef struct monitor
 }	t_monitor;
 
 // fifo_edf
-void			*use_dongle_fifo(t_coder cdr);
-void			*use_dongle_edf(t_coder cdr);
+void			*use_dongle_fifo(void *arg);
+void			*use_dongle_edf(void *arg);
 void			*check(void *arg);
 int				start(t_sim sim, t_monitor *monitor, char *scheduler);
 int				start1(t_sim sim, t_monitor *monitor);
@@ -87,24 +87,24 @@ int				start1(t_sim sim, t_monitor *monitor);
 // main
 int				check_burnout(t_coder coder0, struct timespec start, int time);
 int				current_time(struct timespec start);
-int				check_values(int argc, char *argv);
+int				check_values(int argc, char **argv);
 int				main(int argc, char **argv);
 
 // coder action
-int				take_dongle_dx(t_coder coder);
-int				take_dongle_sx(t_coder coder);
+int				take_dongle_dx(t_coder *coder);
+int				take_dongle_sx(t_coder *coder);
 int				start_compiling(t_coder *coder);
-int				start_debugging(t_coder coder);
-int				start_refactoring(t_coder coder);
+int				start_debugging(t_coder *coder);
+int				start_refactoring(t_coder *coder);
 
 // coder action 1
-int				release_dongle_dx(t_coder coder);
-int				release_dongle_sx(t_coder coder);
+int				release_dongle_dx(t_coder *coder);
+int				release_dongle_sx(t_coder *coder);
 
 // create
 t_dongle		*create_dongles(t_sim sim, t_dongle *dongles);
 t_coder			*create_coders(t_sim sim, t_coder *coders, t_dongle *dongles);
-t_sim			create_sim(t_sim sim, char *argv);
+t_sim			create_sim(t_sim sim, char **argv);
 t_monitor		create_monitor(t_monitor monitor, t_sim sim, t_heap heap);
 t_heap			create_heap(t_heap heap, int n);
 

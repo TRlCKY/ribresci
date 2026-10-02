@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 12:20:26 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/02 17:08:24 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/02 17:39:08 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,27 +43,27 @@ void	*use_dongle_fifo(void *arg)
 	t_coder	*coder;
 
 	coder = (t_coder *)arg;
-	if (coder->dx.used == 0 && coder->sx.used == 0)
+	if (coder->dx->used == 0 && coder->sx->used == 0)
 	{
-		if (take_dongle_dx(*coder) == 1)
+		if (take_dongle_dx(coder) == 1)
 			return (NULL);
-		if (take_dongle_sx(*coder) == 1)
+		if (take_dongle_sx(coder) == 1)
 			return (NULL);
 		if (start_compiling(coder) == 1)
 			return (NULL);
-		if (release_dongle_dx(*coder) == 1)
+		if (release_dongle_dx(coder) == 1)
 			return (NULL);
-		if (release_dongle_sx(*coder) == 1)
+		if (release_dongle_sx(coder) == 1)
 			return (NULL);
-		if (start_debugging(*coder) == 1)
+		if (start_debugging(coder) == 1)
 			return (NULL);
-		if (start_refactoring(*coder) == 1)
+		if (start_refactoring(coder) == 1)
 			return (NULL);
 	}
 	else
 	{
-		pthread_cond_wait(&(coder->dx.cond), &(coder->dx.mutex));
-		pthread_cond_wait(&(coder->sx.cond), &(coder->sx.mutex));
+		pthread_cond_wait(&(coder->dx->cond), &(coder->dx->mutex));
+		pthread_cond_wait(&(coder->sx->cond), &(coder->sx->mutex));
 	}
 	return (NULL);
 }

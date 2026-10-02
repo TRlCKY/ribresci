@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 12:15:14 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/02 17:06:08 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/02 17:36:19 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	current_time(struct timespec start)
 }
 
 // Controlla che tutti i numeri siano positivi e se l'atoi li converte tutti
-int	check_values(int argc, char *argv)
+int	check_values(int argc, char **argv)
 {
 	int	i;
 	int	n;
@@ -49,38 +49,35 @@ int	check_values(int argc, char *argv)
 		return (1);
 	while (i != argc - 1)
 	{
-		n = atoi(&argv[i]);
-		if (n < 0 || (n == 0 && strcmp(&argv[i], "0") != 0))
+		n = atoi(argv[i]);
+		if (n < 0 || (n == 0 && strcmp(argv[i], "0") != 0))
 			return (1);
 		i++;
 	}
-	if (strcmp(&argv[argc -1], "fifo") != 0
-		&& strcmp(&argv[argc -1], "edf") != 0)
+	if (strcmp(argv[argc -1], "fifo") != 0
+		&& strcmp(argv[argc -1], "edf") != 0)
 		return (1);
 	return (0);
 }
 
 int	main(int argc, char **argv)
 {
-	t_sim		*sim;
-	t_monitor	*monitor;
-	t_heap		*heap;
+	t_sim		sim;
+	t_monitor	monitor;
+	t_heap		heap;
 	int			x;
 
-	if (check_values(argc, *argv) == 1)
+	if (check_values(argc, argv) == 1)
 		return (1);
-	heap = NULL;
-	sim = NULL;
-	monitor = NULL;
-	*heap = create_heap(*heap, atoi(argv[0]));
-	if ((*heap).error == 1)
-		return (freeheap(*heap), 1);
-	*sim = create_sim(*sim, *argv);
-	if ((*sim).error == 1)
-		return (freeheap(*heap), freesim(*sim), 1);
-	*monitor = create_monitor(*monitor, *sim, *heap);
-	x = start(*sim, monitor, sim->scheduler);
-	if ((*monitor).error == 1)
-		return (freeheap(*heap), freesim(*sim), freemonitor(*monitor), 1);
+	heap = create_heap(heap, atoi(argv[1]));
+	if ((heap).error == 1)
+		return (freeheap(heap), 1);
+	sim = create_sim(sim, argv);
+	if ((sim).error == 1)
+		return (freeheap(heap), freesim(sim), 1);
+	monitor = create_monitor(monitor, sim, heap);
+	x = start(sim, &monitor, sim.scheduler);
+	if ((monitor).error == 1)
+		return (freeheap(heap), freesim(sim), freemonitor(monitor), 1);
 	return (0);
 }

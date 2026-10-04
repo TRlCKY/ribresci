@@ -99,11 +99,13 @@ t_monitor	create_monitor(t_monitor monitor, t_sim sim, t_heap heap)
 	return (monitor);
 }
 
-t_heap	create_heap(t_heap heap, int n)
+t_heap	create_heap(t_heap heap, int n, char *scheduler)
 {
 	heap.size = n;
 	heap.coders = malloc(sizeof(t_coder) * heap.size);
 	if (!heap.coders)
 		return (heap.error = 1, heap);
+	heap.deadline = 0;
+	ft_strlcpy(heap.scheduler, scheduler, strlen(scheduler));
 	return (heap.error = 0, heap);
 }

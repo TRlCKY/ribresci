@@ -67,6 +67,8 @@ typedef struct s_heap
 	int		size;
 	t_coder	*coders;
 	int		error;
+	int		deadline;
+	char	*scheduler;
 }	t_heap;
 
 typedef struct monitor

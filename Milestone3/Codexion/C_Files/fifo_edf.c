@@ -43,7 +43,7 @@ void	*use_dongle_fifo(void *arg)
 	t_coder	*coder;
 
 	coder = (t_coder *)arg;
-	if (coder->dx->used == 0 && coder->sx->used == 0)
+	while (!coder->error)
 	{
 		if (take_dongle_dx(coder) == 1)
 			return (NULL);
@@ -59,11 +59,6 @@ void	*use_dongle_fifo(void *arg)
 			return (NULL);
 		if (start_refactoring(coder) == 1)
 			return (NULL);
-	}
-	else
-	{
-		pthread_cond_wait(&(coder->dx->cond), &(coder->dx->mutex));
-		pthread_cond_wait(&(coder->sx->cond), &(coder->sx->mutex));
 	}
 	return (NULL);
 }

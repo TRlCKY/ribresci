@@ -22,7 +22,6 @@ int	release_dongle_dx(t_coder *coder)
 		coder->error = 1;
 		return (1);
 	}
-	coder->n_compile--;
 	return (0);
 }
 

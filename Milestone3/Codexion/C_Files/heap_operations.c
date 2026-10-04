@@ -1,28 +1,38 @@
 #include "../H_Files/codexion.h"
 
+// Aggiunge in coda un coder
 void	add_back(t_heap *heap, t_coder *coder)
 {
+	pthread_mutex_lock(&heap->mutex);
 	heap->coders[heap->size] = *coder;
 	heap->size++;
 	if (strcmp(heap->scheduler, "edf") == 0)
 		sort_heap(heap);
+	pthread_mutex_unlock(&heap->mutex);
 }
 
+// Rimuove il primo coder della coda quando ha finito di compilare e rilasciato le chiavette
 void	pop_front(t_heap *heap)
 {
 	int	i;
 
 	i = 0;
+	pthread_mutex_lock(&heap->mutex);
 	if (heap->size == 0)
+	{
+		pthread_mutex_unlock(&heap->mutex);
 		return ;
+	}
 	while (i < heap->size - 1)
 	{
 		heap->coders[i] = heap->coders[i + 1];
 		i++;
 	}
 	heap->size--;
+	pthread_mutex_unlock(&heap->mutex);
 }
 
+// In caso di scheduler=="edf" si ordina la coda per la deadline più vicina
 void	sort_heap(t_heap *heap)
 {
 	int		i;
@@ -47,10 +57,13 @@ void	sort_heap(t_heap *heap)
 	}
 }
 
+// Restuìituisce il primo coder senza rimuoverlo, con size==0 restituisce NULL
 t_coder	*get_next(t_heap *heap)
 {
+	pthread_mutex_lock(&heap->mutex);
 	if (heap->size == 0)
 		return (NULL);
 	else
 		return(&heap->coders[0]);
+		pthread_mutex_unlock(&heap->mutex);
 }

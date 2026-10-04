@@ -64,11 +64,12 @@ typedef struct s_sim
 
 typedef struct s_heap
 {
-	int		size;
-	t_coder	*coders;
-	int		error;
-	int		deadline;
-	char	*scheduler;
+	pthread_mutex_t	mutex;
+	int				size;
+	t_coder			*coders;
+	int				error;
+	int				deadline;
+	char			*scheduler;
 }	t_heap;
 
 typedef struct monitor
@@ -108,7 +109,13 @@ t_dongle		*create_dongles(t_sim sim, t_dongle *dongles);
 t_coder			*create_coders(t_sim sim, t_coder *coders, t_dongle *dongles);
 t_sim			create_sim(t_sim sim, char **argv);
 t_monitor		create_monitor(t_monitor monitor, t_sim sim, t_heap heap);
-t_heap			create_heap(t_heap heap, int n);
+t_heap			create_heap(t_heap heap, int n, char *scheduler);
+
+// heap_operations
+void			add_back(t_heap *heap, t_coder *coder);
+void			pop_front(t_heap *heap);
+void			sort_heap(t_heap *heap);
+t_coder			*get_next(t_heap *heap);
 
 // utilities
 unsigned int	ft_strlcpy(char *dest, const char *src, size_t size);

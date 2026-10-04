@@ -42,6 +42,7 @@ typedef struct s_coder
 	int				error;
 	int				last_compile_start;
 	pthread_t		thread;
+	pthread_mutex_t	print_mutex;
 	t_dongle		*dx;
 	t_dongle		*sx;
 }	t_coder;

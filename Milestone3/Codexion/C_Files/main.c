@@ -6,22 +6,53 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 12:15:14 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/02 17:44:40 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/05 14:34:09 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../H_Files/codexion.h"
 
-// Controlla se si verifica il burnout con ogni azione
-int	check_burnout(t_coder coder0, struct timespec start, int time)
+int	start(t_sim sim, t_monitor *monitor, char *scheduler)
 {
-	int	now;
+	int	i;
 
-	now = current_time(start);
-	if (now + time >= coder0.burnout)
-	{
-		printf("%d %d burned out\n", current_time(start), coder0.id);
+	i = 0;
+	if (pthread_create(monitor->monitor_t, NULL, check, monitor) != 0)
 		return (1);
+	while (i < sim.num)
+	{
+		if (strcmp(scheduler, "edf") == 0)
+		{
+			if (pthread_create(&sim.coders[i].thread, NULL, use_dongle_edf,
+					&sim.coders[i]) != 0)
+				return (1);
+		}
+		else
+		{
+			if (pthread_create(&sim.coders[i].thread, NULL, use_dongle_fifo,
+					&sim.coders[i]) != 0)
+				return (1);
+		}
+		monitor->heap.coders[i] = sim.coders[i];
+		i++;
+	}
+	return (start1(sim, monitor));
+}
+
+int	start1(t_sim sim, t_monitor *monitor)
+{
+	int	i;
+
+	i = 0;
+	pthread_join(*(monitor->monitor_t), NULL);
+	if (monitor->error == 1)
+		return (1);
+	while (i < sim.num)
+	{
+		if (sim.coders[i].n_compile > 0)
+			if (pthread_join(sim.coders[i].thread, NULL) != 0)
+				return (1);
+		i++;
 	}
 	return (0);
 }
@@ -72,7 +103,7 @@ int	main(int argc, char **argv)
 	memset(&heap, 0, sizeof(heap));
 	if (check_values(argc, argv) == 1)
 		return (1);
-	heap = create_heap(heap, atoi(argv[1]));
+	heap = create_heap(heap, atoi(argv[1]), argv[7]);
 	if ((heap).error == 1)
 		return (freeheap(heap), 1);
 	sim = create_sim(sim, argv);

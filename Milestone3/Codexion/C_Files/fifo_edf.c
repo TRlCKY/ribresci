@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 12:20:26 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/02 17:43:10 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/05 14:57:12 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,75 +72,50 @@ void	*use_dongle_edf(void *arg)
 	return (NULL);
 }
 
-// Controlla che i coders non vadano in burnout
+// Controlla che i coders non vadano in burnout o abbiano finito
 void	*check(void *arg)
 {
 	t_monitor	*mntr;
-	t_coder		cdr;
 	int			i;
-	int			now;
+	int			finish;
 
 	mntr = (t_monitor *)arg;
-	while (!mntr->error)
+	finish = 1;
+	while (finish)
 	{
-		i = 0;
-		while (i < mntr->sim.num)
+		i = -1;
+		while (++i < mntr->sim.num)
 		{
-			now = current_time(mntr->sim.start);
-			cdr = mntr->sim.coders[i];
-			if (now >= cdr.burnout + cdr.last_compile_start)
+			if (mntr->sim.coders[i].n_compile != 0
+				&& (mntr->sim.coders[i].burnout
+					> current_time(mntr->sim.start)))
 			{
-				printf("%d %d burned out\n", now, cdr.id);
-				mntr->error = 1;
-				return (NULL);
+				write_error(mntr->sim.coders[i].id,
+					current_time(mntr->sim.start));
+				finish = 0;
 			}
-			i++;
+			else
+				finish = check_coders(mntr, finish);
 		}
+		usleep(1000);
 	}
-	return (NULL);
+	return (free_monitor(mntr), NULL);
 }
 
-int	start(t_sim sim, t_monitor *monitor, char *scheduler)
+int	*check_coders(t_monitor *mntr, int finish)
 {
 	int	i;
+	int	x;
 
 	i = 0;
-	if (pthread_create(monitor->monitor_t, NULL, check, monitor) != 0)
-		return (1);
-	while (i < sim.num)
+	x = 0;
+	while (i < mntr->sim.num)
 	{
-		if (strcmp(scheduler, "edf") == 0)
-		{
-			if (pthread_create(&sim.coders[i].thread, NULL, use_dongle_edf,
-					&sim.coders[i]) != 0)
-				return (1);
-		}
-		else
-		{
-			if (pthread_create(&sim.coders[i].thread, NULL, use_dongle_fifo,
-					&sim.coders[i]) != 0)
-				return (1);
-		}
-		monitor->heap.coders[i] = sim.coders[i];
+		if (mntr->sim.coders[i].n_compile == 0)
+			x++;
 		i++;
 	}
-	return (start1(sim, monitor));
-}
-
-int	start1(t_sim sim, t_monitor *monitor)
-{
-	int	i;
-
-	i = 0;
-	pthread_join(*(monitor->monitor_t), NULL);
-	if (monitor->error == 1)
-		return (1);
-	while (i < sim.num)
-	{
-		if (sim.coders[i].n_compile > 0)
-			if (pthread_join(sim.coders[i].thread, NULL) != 0)
-				return (1);
-		i++;
-	}
-	return (0);
+	if (x == 0)
+		return (freemonitor(*mntr), 0);
+	return (1);
 }

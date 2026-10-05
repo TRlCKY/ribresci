@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/02 16:42:16 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/02 17:30:16 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/05 14:57:24 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,14 +85,14 @@ typedef struct monitor
 void			*use_dongle_fifo(void *arg);
 void			*use_dongle_edf(void *arg);
 void			*check(void *arg);
-int				start(t_sim sim, t_monitor *monitor, char *scheduler);
-int				start1(t_sim sim, t_monitor *monitor);
+int				*check_coders(t_monitor *mntr, int finish);
 
 // main
-int				check_burnout(t_coder coder0, struct timespec start, int time);
 int				current_time(struct timespec start);
 int				check_values(int argc, char **argv);
 int				main(int argc, char **argv);
+int				start(t_sim sim, t_monitor *monitor, char *scheduler);
+int				start1(t_sim sim, t_monitor *monitor);
 
 // coder action
 int				take_dongle_dx(t_coder *coder);
@@ -123,5 +123,6 @@ unsigned int	ft_strlcpy(char *dest, const char *src, size_t size);
 void			freemonitor(t_monitor monitor);
 void			freesim(t_sim sim);
 void			freeheap(t_heap heap);
+void			write_error(int id, int time);
 
 #endif

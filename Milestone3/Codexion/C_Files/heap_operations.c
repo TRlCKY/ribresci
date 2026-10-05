@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heap_operations.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/10/05 14:00:29 by ribresci          #+#    #+#             */
+/*   Updated: 2026/10/05 14:01:11 by ribresci         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../H_Files/codexion.h"
 
 // Aggiunge in coda un coder
@@ -11,7 +23,7 @@ void	add_back(t_heap *heap, t_coder *coder)
 	pthread_mutex_unlock(&heap->mutex);
 }
 
-// Rimuove il primo coder della coda quando ha finito di compilare e rilasciato le chiavette
+// Rimuove il primo coder della coda quando ha finito di compilare
 void	pop_front(t_heap *heap)
 {
 	int	i;
@@ -45,7 +57,9 @@ void	sort_heap(t_heap *heap)
 		i = 0;
 		while (i < heap->size - 1)
 		{
-			if (heap->coders[i].last_compile_start + heap->coders[i].burnout > heap->coders[i + 1].last_compile_start + heap->coders[i + 1].burnout)
+			if (heap->coders[i].last_compile_start + heap->coders[i].burnout
+				> heap->coders[i + 1].last_compile_start
+				+ heap->coders[i + 1].burnout)
 			{
 				coder0 = heap->coders[i];
 				heap->coders[i] = heap->coders[i + 1];
@@ -64,6 +78,6 @@ t_coder	*get_next(t_heap *heap)
 	if (heap->size == 0)
 		return (NULL);
 	else
-		return(&heap->coders[0]);
-		pthread_mutex_unlock(&heap->mutex);
+		return (&heap->coders[0]);
+	pthread_mutex_unlock(&heap->mutex);
 }

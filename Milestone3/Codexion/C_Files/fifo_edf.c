@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 12:20:26 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/05 16:35:06 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/05 16:40:06 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	*use_dongle_fifo(void *arg)
 	t_coder	*coder;
 
 	coder = (t_coder *)arg;
-	while (!coder->error)
+	while (coder->n_compile != 0)
 	{
 		if (take_dongle_dx(coder) == 1)
 			return (pthread_mutex_unlock(&coder->dx->mutex), NULL);

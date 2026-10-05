@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/09 17:12:37 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/05 16:33:57 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/05 16:43:07 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ int	start_compiling(t_coder *coder)
 	coder->last_compile_start = current_time(coder->start);
 	printf("%d %d is compiling\n", current_time(coder->start), coder->id);
 	usleep(coder->compile * 1000);
+	coder->n_compile--;
 	return (0);
 }
 

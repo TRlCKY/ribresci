@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 12:20:26 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/05 14:57:12 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/05 14:58:42 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,14 +95,14 @@ void	*check(void *arg)
 				finish = 0;
 			}
 			else
-				finish = check_coders(mntr, finish);
+				finish = check_coders(mntr);
 		}
 		usleep(1000);
 	}
 	return (free_monitor(mntr), NULL);
 }
 
-int	*check_coders(t_monitor *mntr, int finish)
+int	*check_coders(t_monitor *mntr)
 {
 	int	i;
 	int	x;

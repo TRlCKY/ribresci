@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/02 16:42:16 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/05 14:57:24 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/05 14:58:44 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ typedef struct monitor
 void			*use_dongle_fifo(void *arg);
 void			*use_dongle_edf(void *arg);
 void			*check(void *arg);
-int				*check_coders(t_monitor *mntr, int finish);
+int				*check_coders(t_monitor *mntr);
 
 // main
 int				current_time(struct timespec start);

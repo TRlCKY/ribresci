@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 12:20:26 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/05 14:58:42 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/05 16:35:06 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,19 +46,19 @@ void	*use_dongle_fifo(void *arg)
 	while (!coder->error)
 	{
 		if (take_dongle_dx(coder) == 1)
-			return (NULL);
+			return (pthread_mutex_unlock(&coder->dx->mutex), NULL);
 		if (take_dongle_sx(coder) == 1)
-			return (NULL);
+			return (pthread_mutex_unlock(&coder->dx->mutex), NULL);
 		if (start_compiling(coder) == 1)
-			return (NULL);
+			return (pthread_mutex_unlock(&coder->dx->mutex), NULL);
 		if (release_dongle_dx(coder) == 1)
-			return (NULL);
+			return (pthread_mutex_unlock(&coder->dx->mutex), NULL);
 		if (release_dongle_sx(coder) == 1)
-			return (NULL);
+			return (pthread_mutex_unlock(&coder->dx->mutex), NULL);
 		if (start_debugging(coder) == 1)
-			return (NULL);
+			return (pthread_mutex_unlock(&coder->dx->mutex), NULL);
 		if (start_refactoring(coder) == 1)
-			return (NULL);
+			return (pthread_mutex_unlock(&coder->dx->mutex), NULL);
 	}
 	return (NULL);
 }

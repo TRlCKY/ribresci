@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/02 16:42:16 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/05 14:58:44 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/06 12:18:40 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ typedef struct s_dongle
 	int				cooldown;
 	int				used;
 	int				error;
+	t_heap			heap;
 }	t_dongle;
 
 typedef struct s_coder
@@ -39,7 +40,7 @@ typedef struct s_coder
 	int				debug;
 	int				refactor;
 	int				n_compile;
-	int				error;
+	int				order;
 	int				last_compile_start;
 	pthread_t		thread;
 	pthread_mutex_t	print_mutex;
@@ -77,7 +78,6 @@ typedef struct monitor
 {
 	pthread_t		*monitor_t;
 	t_sim			sim;
-	t_heap			heap;
 	int				error;
 }	t_monitor;
 
@@ -108,9 +108,9 @@ int				release_dongle_sx(t_coder *coder);
 // create
 t_dongle		*create_dongles(t_sim sim, t_dongle *dongles);
 t_coder			*create_coders(t_sim sim, t_coder *coders, t_dongle *dongles);
-t_sim			create_sim(t_sim sim, char **argv);
-t_monitor		create_monitor(t_monitor monitor, t_sim sim, t_heap heap);
-t_heap			create_heap(t_heap heap, int n, char *scheduler);
+t_sim			create_sim(char **argv);
+t_monitor		create_monitor(t_sim sim);
+t_heap			create_heap(int n, char *scheduler);
 
 // heap_operations
 void			add_back(t_heap *heap, t_coder *coder);

@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 12:15:14 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/05 14:34:09 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/06 12:18:59 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ int	start(t_sim sim, t_monitor *monitor, char *scheduler)
 					&sim.coders[i]) != 0)
 				return (1);
 		}
-		monitor->heap.coders[i] = sim.coders[i];
 		i++;
 	}
 	return (start1(sim, monitor));
@@ -98,18 +97,15 @@ int	main(int argc, char **argv)
 	t_heap		heap;
 	int			x;
 
-	memset(&sim, 0, sizeof(sim));
-	memset(&monitor, 0, sizeof(monitor));
-	memset(&heap, 0, sizeof(heap));
 	if (check_values(argc, argv) == 1)
 		return (1);
-	heap = create_heap(heap, atoi(argv[1]), argv[7]);
+	heap = create_heap(atoi(argv[1]), argv[7]);
 	if ((heap).error == 1)
 		return (freeheap(heap), 1);
-	sim = create_sim(sim, argv);
+	sim = create_sim(argv);
 	if ((sim).error == 1)
 		return (freeheap(heap), freesim(sim), 1);
-	monitor = create_monitor(monitor, sim, heap);
+	monitor = create_monitor(sim);
 	x = start(sim, &monitor, sim.scheduler);
 	if ((monitor).error == 1)
 		return (freeheap(heap), freesim(sim), freemonitor(monitor), 1);

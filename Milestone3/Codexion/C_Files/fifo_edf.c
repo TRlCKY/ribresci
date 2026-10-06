@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 12:20:26 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/05 16:40:06 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/06 11:55:47 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@
 // Dopo il controllo del burnout vengono effettuate le varie azioni
 void	*use_dongle_fifo(void *arg)
 {
-	t_coder	*coder;
+	t_coder		*coder;
 
 	coder = (t_coder *)arg;
 	while (coder->n_compile != 0)

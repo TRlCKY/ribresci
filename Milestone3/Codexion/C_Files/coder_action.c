@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/09 17:12:37 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/05 16:43:07 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/06 12:01:30 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 int	take_dongle_dx(t_coder *cdr)
 {
+	static int	order;
+
+	order = 0;
 	if (cdr->n_compile == 0)
 		return (0);
 	if (pthread_mutex_lock(&cdr->dx->mutex) != 0)
-	{
-		cdr->error = 1;
 		return (1);
-	}
-	while (cdr->dx->used == 1)
+	while (cdr->dx->used == 1 && cdr->order != order)
 		pthread_cond_wait(&cdr->dx->cond, &cdr->dx->mutex);
 	if (cdr->dx->used == 0)
 	{
@@ -29,21 +29,18 @@ int	take_dongle_dx(t_coder *cdr)
 		cdr->dx->used = 1;
 	}
 	if (pthread_mutex_unlock(&cdr->dx->mutex))
-	{
-		cdr->error = 1;
 		return (1);
-	}
 	return (0);
 }
 
 int	take_dongle_sx(t_coder *cdr)
 {
+	static int	order;
+
+	order = 0;
 	if (pthread_mutex_lock(&cdr->sx->mutex) != 0)
-	{
-		cdr->error = 1;
 		return (1);
-	}
-	while (cdr->sx->used == 1)
+	while (cdr->sx->used == 1 && cdr->order != order)
 		pthread_cond_wait(&cdr->sx->cond, &cdr->sx->mutex);
 	if (cdr->sx->used == 0)
 	{
@@ -51,10 +48,7 @@ int	take_dongle_sx(t_coder *cdr)
 		cdr->sx->used = 1;
 	}
 	if (pthread_mutex_unlock(&cdr->sx->mutex) != 0)
-	{
-		cdr->error = 1;
 		return (1);
-	}
 	return (0);
 }
 

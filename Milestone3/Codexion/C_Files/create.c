@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 14:51:00 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/02 17:32:13 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/06 12:18:42 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ t_dongle	*create_dongles(t_sim sim, t_dongle *dongles)
 			return (NULL);
 		if (pthread_cond_init(&dongles[i].cond, NULL) != 0)
 			return (NULL);
+		dongles[i].heap = create_heap(sim.num, sim.scheduler);
 		i++;
 	}
 	return (dongles);
@@ -33,8 +34,8 @@ t_dongle	*create_dongles(t_sim sim, t_dongle *dongles)
 
 t_coder	*create_coders(t_sim sim, t_coder *coders, t_dongle *dongles)
 {
-	t_coder			cdr;
-	int				i;
+	t_coder	cdr;
+	int		i;
 
 	i = 0;
 	while (i != sim.num)
@@ -46,7 +47,7 @@ t_coder	*create_coders(t_sim sim, t_coder *coders, t_dongle *dongles)
 		cdr.debug = sim.debug;
 		cdr.refactor = sim.refactor;
 		cdr.n_compile = sim.n_compile;
-		cdr.error = 0;
+		cdr.order = 0;
 		cdr.last_compile_start = current_time(sim.start);
 		cdr.sx = &dongles[i];
 		if (i == sim.num - 1)
@@ -59,8 +60,10 @@ t_coder	*create_coders(t_sim sim, t_coder *coders, t_dongle *dongles)
 	return (coders);
 }
 
-t_sim	create_sim(t_sim sim, char **argv)
+t_sim	create_sim(char **argv)
 {
+	t_sim	sim;
+
 	clock_gettime(CLOCK_MONOTONIC, &sim.start);
 	sim.num = atoi(argv[1]);
 	sim.burnout = atoi(argv[2]);
@@ -70,7 +73,6 @@ t_sim	create_sim(t_sim sim, char **argv)
 	sim.n_compile = atoi(argv[6]);
 	sim.cooldown = atoi(argv[7]);
 	sim.scheduler = malloc(sizeof(char) * (strlen(argv[8]) + 1));
-	sim.error = 0;
 	if (!sim.scheduler)
 		return (sim.error = 1, sim);
 	ft_strlcpy(sim.scheduler, argv[8], strlen(argv[8]) + 1);
@@ -84,23 +86,24 @@ t_sim	create_sim(t_sim sim, char **argv)
 	if (!sim.coders)
 		return (sim.error = 1, sim);
 	sim.coders = create_coders(sim, sim.coders, sim.dongles);
-	return (sim);
+	return (sim.error = 0, sim);
 }
 
-t_monitor	create_monitor(t_monitor monitor, t_sim sim, t_heap heap)
+t_monitor	create_monitor(t_sim sim)
 {
+	t_monitor	monitor;
+
 	monitor.error = 0;
 	monitor.sim = sim;
 	if (monitor.sim.error != 0)
 		monitor.error = 1;
-	monitor.heap = heap;
-	if (monitor.heap.error != 0)
-		monitor.error = 1;
 	return (monitor);
 }
 
-t_heap	create_heap(t_heap heap, int n, char *scheduler)
+t_heap	create_heap(int n, char *scheduler)
 {
+	t_heap	heap;
+
 	heap.size = n;
 	heap.coders = malloc(sizeof(t_coder) * heap.size);
 	if (!heap.coders)

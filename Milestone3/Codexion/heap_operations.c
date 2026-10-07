@@ -19,6 +19,11 @@ void	add_back(t_heap *heap, t_coder *coder)
 
 	i = 0;
 	pthread_mutex_lock(&heap->mutex);
+	if (heap->size >= heap->capacity)
+	{
+		pthread_mutex_unlock(&heap->mutex);
+		return ;
+	}
 	heap->coders[heap->size] = *coder;
 	heap->size++;
 	if (strcmp(heap->scheduler, "edf") == 0)

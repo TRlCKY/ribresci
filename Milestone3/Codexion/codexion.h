@@ -29,7 +29,6 @@ typedef struct s_heap
 	int				capacity;
 	t_coder			*coders;
 	int				error;
-	int				deadline;
 	char			*scheduler;
 }	t_heap;
 
@@ -56,7 +55,7 @@ typedef struct s_coder
 	int				n_compile;
 	int				order;
 	int				error;
-	int				last_compile_start;
+	long			last_compile_start;
 	pthread_t		thread;
 	pthread_mutex_t	print_mutex;
 	t_dongle		*dx;

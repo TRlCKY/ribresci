@@ -14,21 +14,26 @@
 
 int	take_dongle_dx(t_coder *cdr)
 {
+	t_coder	*next;
+
 	if (cdr->n_compile == 0)
 		return (0);
 	if (pthread_mutex_lock(&cdr->dx->mutex) != 0)
 		return (1);
-	while (cdr->dx->used == 1 || current_time(cdr->start) < cdr->dx->cooldown_time)
+	add_back(&cdr->dx->heap, cdr);
+	while (1)
 	{
+		next = get_next(&cdr->dx->heap);
+		if (next && next->id == cdr->id && cdr->dx->used == 0
+			&& current_time(cdr->start) >= cdr->dx->cooldown_time)
+			break;
 		pthread_mutex_lock(&cdr->dx->mutex);
 		pthread_cond_wait(&cdr->dx->cond, &cdr->dx->mutex);
 		pthread_mutex_unlock(&cdr->dx->mutex);
 	}
-	if (cdr->dx->used == 0)
-	{
-		printf("%d %d has taken a dongle\n", current_time(cdr->start), cdr->id);
-		cdr->dx->used = 1;
-	}
+	pop_front(&cdr->dx->heap);
+	printf("%d %d has taken a dongle\n", current_time(cdr->start), cdr->id);
+	cdr->dx->used = 1;
 	if (pthread_mutex_unlock(&cdr->dx->mutex))
 		return (1);
 	return (0);
@@ -36,20 +41,27 @@ int	take_dongle_dx(t_coder *cdr)
 
 int	take_dongle_sx(t_coder *cdr)
 {
+	t_coder	*next;
+
+	if (cdr->n_compile == 0)
+		return (0);
 	if (pthread_mutex_lock(&cdr->sx->mutex) != 0)
 		return (1);
-	while (cdr->sx->used == 1 || current_time(cdr->start) < cdr->sx->cooldown_time)
+	add_back(&cdr->sx->heap, cdr);
+	while (1)
 	{
+		next = get_next(&cdr->sx->heap);
+		if (next && next->id == cdr->id && cdr->sx->used == 0
+			&& current_time(cdr->start) >= cdr->sx->cooldown_time)
+			break;
 		pthread_mutex_lock(&cdr->sx->mutex);
 		pthread_cond_wait(&cdr->sx->cond, &cdr->sx->mutex);
 		pthread_mutex_unlock(&cdr->sx->mutex);
 	}
-	if (cdr->sx->used == 0)
-	{
-		printf("%d %d has taken a dongle\n", current_time(cdr->start), cdr->id);
-		cdr->sx->used = 1;
-	}
-	if (pthread_mutex_unlock(&cdr->sx->mutex) != 0)
+	pop_front(&cdr->sx->heap);
+	printf("%d %d has taken a dongle\n", current_time(cdr->start), cdr->id);
+	cdr->sx->used = 1;
+	if (pthread_mutex_unlock(&cdr->sx->mutex))
 		return (1);
 	return (0);
 }

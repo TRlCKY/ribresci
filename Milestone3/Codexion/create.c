@@ -109,7 +109,6 @@ t_heap	create_heap(int n, char *scheduler)
 	heap.coders = malloc(sizeof(t_coder) * n);
 	if (!heap.coders)
 		return (heap.error = 1, heap);
-	heap.deadline = 0;
 	if (pthread_mutex_init(&heap.mutex, NULL) != 0)
 		return (heap.error = 1, heap);
 	heap.scheduler = malloc(sizeof(char) * (strlen(scheduler) + 1));

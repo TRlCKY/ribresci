@@ -84,8 +84,14 @@ t_coder	*get_next(t_heap *heap)
 {
 	pthread_mutex_lock(&heap->mutex);
 	if (heap->size == 0)
+	{
+		pthread_mutex_unlock(&heap->mutex);
 		return (NULL);
+	}
 	else
+	{
+		pthread_mutex_unlock(&heap->mutex);
 		return (&heap->coders[0]);
+	}
 	pthread_mutex_unlock(&heap->mutex);
 }

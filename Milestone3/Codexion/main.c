@@ -17,7 +17,7 @@ int	start(t_sim sim, t_monitor *monitor, char *scheduler)
 	int	i;
 
 	i = 0;
-	if (pthread_create(monitor->monitor_t, NULL, check, monitor) != 0)
+	if (pthread_create(&monitor->monitor_t, NULL, check, monitor) != 0)
 		return (1);
 	while (i < sim.num)
 	{
@@ -43,14 +43,13 @@ int	start1(t_sim sim, t_monitor *monitor)
 	int	i;
 
 	i = 0;
-	pthread_join(*(monitor->monitor_t), NULL);
+	pthread_join(monitor->monitor_t, NULL);
 	if (monitor->error == 1)
 		return (1);
 	while (i < sim.num)
 	{
-		if (sim.coders[i].n_compile > 0)
-			if (pthread_join(sim.coders[i].thread, NULL) != 0)
-				return (1);
+		if (pthread_join(sim.coders[i].thread, NULL) != 0)
+			return (1);
 		i++;
 	}
 	return (0);

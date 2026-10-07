@@ -77,32 +77,31 @@ void	*check(void *arg)
 {
 	t_monitor	*mntr;
 	int			i;
-	int			finish;
 
 	mntr = (t_monitor *)arg;
-	finish = 1;
-	while (finish)
+	while (mntr->finish)
 	{
 		i = -1;
 		while (++i < mntr->sim.num)
 		{
 			if (mntr->sim.coders[i].n_compile != 0
-				&& (mntr->sim.coders[i].burnout
-					> current_time(mntr->sim.start)))
+				&& (current_time(mntr->sim.start)
+				- mntr->sim.coders[i].last_compile_start
+				>= mntr->sim.coders[i].burnout))
 			{
-				write_error(mntr->sim.coders[i].id,
-					current_time(mntr->sim.start));
-				finish = 0;
+				fprintf(stderr, "%d %d burned out",
+					current_time(mntr->sim.start), mntr->sim.coders[i].id);
+				mntr->finish = 0;
 			}
 			else
-				finish = check_coders(mntr);
+				mntr->finish = check_coders(mntr);
 		}
 		usleep(1000);
 	}
-	return (free_monitor(mntr), NULL);
+	return (freemonitor(*mntr), NULL);
 }
 
-int	*check_coders(t_monitor *mntr)
+int	check_coders(t_monitor *mntr)
 {
 	int	i;
 	int	x;
@@ -115,7 +114,7 @@ int	*check_coders(t_monitor *mntr)
 			x++;
 		i++;
 	}
-	if (x == 0)
-		return (freemonitor(*mntr), 0);
+	if (x == mntr->sim.num)
+		return (0);
 	return (1);
 }

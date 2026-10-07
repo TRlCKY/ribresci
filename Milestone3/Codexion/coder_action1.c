@@ -15,18 +15,19 @@
 int	release_dongle_dx(t_coder *coder)
 {
 	pthread_mutex_lock(&coder->dx->mutex);
-	usleep(coder->dx->cooldown);
 	coder->dx->used = 0;
-	pthread_mutex_unlock(&coder->dx->mutex);
+	coder->dx->cooldown_time = current_time(coder->start) + coder->dx->cooldown;
 	pthread_cond_broadcast(&coder->dx->cond);
+	pthread_mutex_unlock(&coder->dx->mutex);
 	return (0);
 }
 
 int	release_dongle_sx(t_coder *coder)
 {
-	pthread_mutex_lock(&coder->dx->mutex);
-	usleep(coder->sx->cooldown);
+	pthread_mutex_lock(&coder->sx->mutex);
 	coder->sx->used = 0;
+	coder->sx->cooldown_time = current_time(coder->start) + coder->sx->cooldown;
+	pthread_cond_broadcast(&coder->sx->cond);
 	pthread_mutex_unlock(&coder->sx->mutex);
 	return (0);
 }

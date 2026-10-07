@@ -20,10 +20,13 @@
 # include <string.h>
 # include <time.h>
 
+typedef struct s_coder t_coder;
+
 typedef struct s_heap
 {
 	pthread_mutex_t	mutex;
 	int				size;
+	int				capacity;
 	t_coder			*coders;
 	int				error;
 	int				deadline;
@@ -36,6 +39,7 @@ typedef struct s_dongle
 	pthread_mutex_t	mutex;
 	int				id;
 	int				cooldown;
+	long			cooldown_time;
 	int				used;
 	int				error;
 	t_heap			heap;
@@ -51,6 +55,7 @@ typedef struct s_coder
 	int				refactor;
 	int				n_compile;
 	int				order;
+	int				error;
 	int				last_compile_start;
 	pthread_t		thread;
 	pthread_mutex_t	print_mutex;
@@ -69,6 +74,7 @@ typedef struct s_sim
 	int				n_compile;
 	int				cooldown;
 	char			*scheduler;
+	int				order;
 	int				error;
 	t_coder			*coders;
 	t_dongle		*dongles;
@@ -76,16 +82,17 @@ typedef struct s_sim
 
 typedef struct monitor
 {
-	pthread_t		*monitor_t;
+	pthread_t		monitor_t;
 	t_sim			sim;
 	int				error;
+	int				finish;
 }	t_monitor;
 
 // fifo_edf
 void			*use_dongle_fifo(void *arg);
 void			*use_dongle_edf(void *arg);
 void			*check(void *arg);
-int				*check_coders(t_monitor *mntr);
+int				check_coders(t_monitor *mntr);
 
 // main
 int				current_time(struct timespec start);
@@ -123,6 +130,5 @@ unsigned int	ft_strlcpy(char *dest, const char *src, size_t size);
 void			freemonitor(t_monitor monitor);
 void			freesim(t_sim sim);
 void			freeheap(t_heap heap);
-void			write_error(int id, int time);
 
 #endif

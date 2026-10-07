@@ -47,7 +47,6 @@ t_coder	*create_coders(t_sim sim, t_coder *coders, t_dongle *dongles)
 		cdr.debug = sim.debug;
 		cdr.refactor = sim.refactor;
 		cdr.n_compile = sim.n_compile;
-		cdr.order = 0;
 		cdr.last_compile_start = current_time(sim.start);
 		cdr.sx = &dongles[i];
 		if (i == sim.num - 1)
@@ -97,6 +96,7 @@ t_monitor	create_monitor(t_sim sim)
 	monitor.sim = sim;
 	if (monitor.sim.error != 0)
 		monitor.error = 1;
+	monitor.finish = 1;
 	return (monitor);
 }
 
@@ -104,11 +104,15 @@ t_heap	create_heap(int n, char *scheduler)
 {
 	t_heap	heap;
 
-	heap.size = n;
-	heap.coders = malloc(sizeof(t_coder) * heap.size);
+	heap.size = 0;
+	heap.capacity = n;
+	heap.coders = malloc(sizeof(t_coder) * n);
 	if (!heap.coders)
 		return (heap.error = 1, heap);
 	heap.deadline = 0;
-	ft_strlcpy(heap.scheduler, scheduler, strlen(scheduler));
+	if (pthread_mutex_init(&heap.mutex, NULL) != 0)
+		return (heap.error = 1, heap);
+	heap.scheduler = malloc(sizeof(char) * (strlen(scheduler) + 1));
+	ft_strlcpy(heap.scheduler, scheduler, strlen(scheduler) + 1);
 	return (heap.error = 0, heap);
 }

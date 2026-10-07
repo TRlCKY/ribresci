@@ -6,11 +6,11 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 12:15:14 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/06 12:18:59 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/06 14:52:55 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../H_Files/codexion.h"
+#include "codexion.h"
 
 int	start(t_sim sim, t_monitor *monitor, char *scheduler)
 {

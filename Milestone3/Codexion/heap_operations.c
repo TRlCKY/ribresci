@@ -6,11 +6,11 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/05 14:00:29 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/06 12:00:03 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/06 14:53:30 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../H_Files/codexion.h"
+#include "codexion.h"
 
 // Aggiunge in coda un coder
 void	add_back(t_heap *heap, t_coder *coder)

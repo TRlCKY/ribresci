@@ -6,11 +6,11 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 14:51:00 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/06 12:18:42 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/06 14:53:23 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../H_Files/codexion.h"
+#include "codexion.h"
 
 t_dongle	*create_dongles(t_sim sim, t_dongle *dongles)
 {

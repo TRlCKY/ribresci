@@ -6,11 +6,11 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/16 12:41:48 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/05 16:34:43 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/06 14:53:18 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../H_Files/codexion.h"
+#include "codexion.h"
 
 int	release_dongle_dx(t_coder *coder)
 {

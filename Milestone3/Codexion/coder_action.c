@@ -6,11 +6,11 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/09 17:12:37 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/06 12:01:30 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/06 15:05:53 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../H_Files/codexion.h"
+#include "codexion.h"
 
 int	take_dongle_dx(t_coder *cdr)
 {
@@ -35,9 +35,6 @@ int	take_dongle_dx(t_coder *cdr)
 
 int	take_dongle_sx(t_coder *cdr)
 {
-	static int	order;
-
-	order = 0;
 	if (pthread_mutex_lock(&cdr->sx->mutex) != 0)
 		return (1);
 	while (cdr->sx->used == 1 && cdr->order != order)

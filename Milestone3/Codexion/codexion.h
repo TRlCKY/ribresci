@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/02 16:42:16 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/06 12:18:40 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/06 14:56:32 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,16 @@
 # include <pthread.h>
 # include <string.h>
 # include <time.h>
+
+typedef struct s_heap
+{
+	pthread_mutex_t	mutex;
+	int				size;
+	t_coder			*coders;
+	int				error;
+	int				deadline;
+	char			*scheduler;
+}	t_heap;
 
 typedef struct s_dongle
 {
@@ -63,16 +73,6 @@ typedef struct s_sim
 	t_coder			*coders;
 	t_dongle		*dongles;
 }	t_sim;
-
-typedef struct s_heap
-{
-	pthread_mutex_t	mutex;
-	int				size;
-	t_coder			*coders;
-	int				error;
-	int				deadline;
-	char			*scheduler;
-}	t_heap;
 
 typedef struct monitor
 {

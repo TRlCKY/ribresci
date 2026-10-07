@@ -6,11 +6,11 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 12:20:26 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/06 11:55:47 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/06 14:53:08 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../H_Files/codexion.h"
+#include "codexion.h"
 
 /*
 * (0) Number of coders and dongles

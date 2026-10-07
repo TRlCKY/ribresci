@@ -6,11 +6,11 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/02 16:45:49 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/06 12:19:14 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/06 14:53:01 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../H_Files/codexion.h"
+#include "codexion.h"
 
 unsigned int	ft_strlcpy(char *dest, const char *src, size_t size)
 {

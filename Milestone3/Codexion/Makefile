@@ -3,7 +3,7 @@ CC = cc
 # Flags per compilare
 CFLAGS = -Wall -Wextra -Werror
 # File sorgenti
-SRC = $(wildcard C_Files/*.c)
+SRC = $(wildcard *.c)
 # Cambia da .c in .o per il comando nel terminale
 OBJ = $(SRC:.c=.o)
 # Nome del programma

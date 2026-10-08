@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/02 16:42:16 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/08 15:56:46 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/08 17:49:36 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ void			*use_dongle_fifo(void *arg);
 void			*use_dongle_edf(void *arg);
 void			*check(void *arg);
 int				check_coders(t_monitor *mntr);
+int				check_time(t_monitor *mntr, int i);
 
 // main
 int				current_time(struct timespec start);

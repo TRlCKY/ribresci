@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 12:20:26 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/08 16:01:01 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/08 17:49:14 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,18 +84,18 @@ void	*check(void *arg)
 		i = -1;
 		while (++i < mntr->sim.num)
 		{
-			if (mntr->sim.coders[i].n_compile != 0
-				&& (current_time(mntr->sim.start)
-					- mntr->sim.coders[i].last_compile_start
-					>= mntr->sim.coders[i].burnout))
+			if (mntr->sim.coders[i].n_compile != 0 && check_time(mntr, i))
 			{
 				fprintf(stderr, "%d %d burned out\n",
 					current_time(mntr->sim.start), mntr->sim.coders[i].id);
 				mntr->finish = 0;
 				break ;
 			}
-			else
-				mntr->finish = check_coders(mntr);
+			if (check_coders(mntr) == 0)
+			{
+				mntr->finish = 0;
+				break ;
+			}
 		}
 		usleep(1000);
 	}
@@ -118,4 +118,13 @@ int	check_coders(t_monitor *mntr)
 	if (x == mntr->sim.num)
 		return (0);
 	return (1);
+}
+
+int	check_time(t_monitor *mntr, int i)
+{
+	if (current_time(mntr->sim.start)
+		- mntr->sim.coders[i].last_compile_start
+		>= mntr->sim.coders[i].burnout)
+		return (1);
+	return (0);
 }

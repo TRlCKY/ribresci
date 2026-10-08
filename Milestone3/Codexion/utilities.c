@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/02 16:45:49 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/06 14:53:01 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/08 15:59:43 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ void	freemonitor(t_monitor monitor)
 		free(monitor.sim.coders);
 	if (monitor.sim.dongles)
 		free(monitor.sim.dongles);
-	freesim(monitor.sim);
+	if (monitor.sim.scheduler)
+		free(monitor.sim.scheduler);
 }
 
 void	freesim(t_sim sim)

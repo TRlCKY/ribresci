@@ -6,13 +6,14 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/02 16:42:16 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/06 14:56:32 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/08 15:56:46 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CODEXION_H
 # define CODEXION_H
 # define _POSIX_C_SOURCE 199309L
+# define _XOPEN_SOURCE 500
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
@@ -20,8 +21,9 @@
 # include <string.h>
 # include <time.h>
 
-typedef struct s_coder t_coder;
+typedef struct s_coder	t_coder;
 
+// size e' la dimensione attuale, capacity quella massima
 typedef struct s_heap
 {
 	pthread_mutex_t	mutex;
@@ -32,7 +34,9 @@ typedef struct s_heap
 	char			*scheduler;
 }	t_heap;
 
-typedef struct s_dongle
+// cooldown e' il cooldown della dongle, cooldown_time indice quando sara' di
+// di nuovo disponibile
+typedef struct s_dongle_
 {
 	pthread_cond_t	cond;
 	pthread_mutex_t	mutex;
@@ -57,7 +61,6 @@ typedef struct s_coder
 	int				error;
 	long			last_compile_start;
 	pthread_t		thread;
-	pthread_mutex_t	print_mutex;
 	t_dongle		*dx;
 	t_dongle		*sx;
 }	t_coder;

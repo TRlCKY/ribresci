@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 12:20:26 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/06 14:53:08 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/08 16:01:01 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,17 +48,17 @@ void	*use_dongle_fifo(void *arg)
 		if (take_dongle_dx(coder) == 1)
 			return (pthread_mutex_unlock(&coder->dx->mutex), NULL);
 		if (take_dongle_sx(coder) == 1)
-			return (pthread_mutex_unlock(&coder->dx->mutex), NULL);
+			return (pthread_mutex_unlock(&coder->sx->mutex), NULL);
 		if (start_compiling(coder) == 1)
-			return (pthread_mutex_unlock(&coder->dx->mutex), NULL);
+			return (NULL);
 		if (release_dongle_dx(coder) == 1)
-			return (pthread_mutex_unlock(&coder->dx->mutex), NULL);
+			return (NULL);
 		if (release_dongle_sx(coder) == 1)
-			return (pthread_mutex_unlock(&coder->dx->mutex), NULL);
+			return (NULL);
 		if (start_debugging(coder) == 1)
-			return (pthread_mutex_unlock(&coder->dx->mutex), NULL);
+			return (NULL);
 		if (start_refactoring(coder) == 1)
-			return (pthread_mutex_unlock(&coder->dx->mutex), NULL);
+			return (NULL);
 	}
 	return (NULL);
 }
@@ -86,12 +86,13 @@ void	*check(void *arg)
 		{
 			if (mntr->sim.coders[i].n_compile != 0
 				&& (current_time(mntr->sim.start)
-				- mntr->sim.coders[i].last_compile_start
-				>= mntr->sim.coders[i].burnout))
+					- mntr->sim.coders[i].last_compile_start
+					>= mntr->sim.coders[i].burnout))
 			{
-				fprintf(stderr, "%d %d burned out",
+				fprintf(stderr, "%d %d burned out\n",
 					current_time(mntr->sim.start), mntr->sim.coders[i].id);
 				mntr->finish = 0;
+				break ;
 			}
 			else
 				mntr->finish = check_coders(mntr);

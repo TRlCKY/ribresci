@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 12:15:14 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/06 14:52:55 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/08 15:58:08 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	check_values(int argc, char **argv)
 	i = 1;
 	if (argc != 9)
 		return (1);
-	while (i != argc - 1)
+	while (i < argc - 1)
 	{
 		n = atoi(argv[i]);
 		if (n < 0 || (n == 0 && strcmp(argv[i], "0") != 0))
@@ -107,6 +107,6 @@ int	main(int argc, char **argv)
 	monitor = create_monitor(sim);
 	x = start(sim, &monitor, sim.scheduler);
 	if ((monitor).error == 1)
-		return (freeheap(heap), freesim(sim), freemonitor(monitor), 1);
+		return (freeheap(heap), freesim(sim), 1);
 	return (0);
 }

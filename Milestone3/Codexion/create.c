@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 14:51:00 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/06 14:53:23 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/08 15:42:57 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,8 @@ t_heap	create_heap(int n, char *scheduler)
 	if (pthread_mutex_init(&heap.mutex, NULL) != 0)
 		return (heap.error = 1, heap);
 	heap.scheduler = malloc(sizeof(char) * (strlen(scheduler) + 1));
+	if (!heap.scheduler)
+		return (heap.error = 1, heap);
 	ft_strlcpy(heap.scheduler, scheduler, strlen(scheduler) + 1);
 	return (heap.error = 0, heap);
 }

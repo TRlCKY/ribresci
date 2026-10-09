@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/02 16:42:16 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/09 17:25:09 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/09 18:00:48 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ void			*use_dongle_edf(void *arg);
 
 // monitor
 void			*check(void *arg);
+void			stop_coders(t_monitor *m, int id);
 int				check_coders(t_monitor *mntr);
 int				check_time(t_monitor *mntr, int i);
 void			print_er(int time, int id);

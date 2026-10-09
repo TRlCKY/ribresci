@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/09 17:13:08 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/09 17:32:49 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/09 18:00:25 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,9 @@ void	*check(void *arg)
 		{
 			if (m->sim->coders[i].n_compile != 0 && check_time(m, i))
 			{
-				print_er(current_time(m->sim->start), m->sim->coders[i].id);
-				m->finish = 0;
-				m->sim->coders[i].error = 1;
+				stop_coders(m, m->sim->coders[i].id);
 				i = m->sim->num;
+				m->sim->coders[i].error = 1;
 			}
 			if (check_coders(m) == 0)
 			{
@@ -40,6 +39,20 @@ void	*check(void *arg)
 		usleep(1000);
 	}
 	return (NULL);
+}
+
+void	stop_coders(t_monitor *m, int id)
+{
+	int	i;
+
+	i = 0;
+	print_er(current_time(m->sim->start), id);
+	m->finish = 0;
+	while (i < m->sim->num)
+	{
+		m->sim->coders->error = 1;
+		i++;
+	}
 }
 
 int	check_coders(t_monitor *mntr)

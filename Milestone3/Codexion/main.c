@@ -6,39 +6,40 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 12:15:14 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/08 15:58:08 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/09 16:50:22 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-int	start(t_sim sim, t_monitor *monitor, char *scheduler)
+int	start(t_sim *sim, t_monitor *monitor, char *scheduler)
 {
 	int	i;
 
 	i = 0;
 	if (pthread_create(&monitor->monitor_t, NULL, check, monitor) != 0)
 		return (1);
-	while (i < sim.num)
+	while (i < sim->num)
 	{
 		if (strcmp(scheduler, "edf") == 0)
 		{
-			if (pthread_create(&sim.coders[i].thread, NULL, use_dongle_edf,
-					&sim.coders[i]) != 0)
+			if (pthread_create(&sim->coders[i].thread, NULL, use_dongle_edf,
+					&sim->coders[i]) != 0)
 				return (1);
 		}
 		else
 		{
-			if (pthread_create(&sim.coders[i].thread, NULL, use_dongle_fifo,
-					&sim.coders[i]) != 0)
+			if (pthread_create(&sim->coders[i].thread, NULL, use_dongle_fifo,
+					&sim->coders[i]) != 0)
 				return (1);
 		}
 		i++;
 	}
+	printf("esco\n");
 	return (start1(sim, monitor));
 }
 
-int	start1(t_sim sim, t_monitor *monitor)
+int	start1(t_sim *sim, t_monitor *monitor)
 {
 	int	i;
 
@@ -46,12 +47,19 @@ int	start1(t_sim sim, t_monitor *monitor)
 	pthread_join(monitor->monitor_t, NULL);
 	if (monitor->error == 1)
 		return (1);
-	while (i < sim.num)
+	printf("palle\n");
+	while (i < sim->num)
 	{
-		if (pthread_join(sim.coders[i].thread, NULL) != 0)
+		printf("ciao\n");
+		if (pthread_join(sim->coders[i].thread, NULL) != 0)
+		{
+			printf("AAAAAAAAAAAAAAAAA\n");
 			return (1);
+		}
 		i++;
+		printf("%d\n", i);
 	}
+	printf("esco peddavero\n");
 	return (0);
 }
 
@@ -100,13 +108,16 @@ int	main(int argc, char **argv)
 		return (1);
 	heap = create_heap(atoi(argv[1]), argv[7]);
 	if ((heap).error == 1)
-		return (freeheap(heap), 1);
+		return (freeheap(&heap), 1);
 	sim = create_sim(argv);
 	if ((sim).error == 1)
-		return (freeheap(heap), freesim(sim), 1);
-	monitor = create_monitor(sim);
-	x = start(sim, &monitor, sim.scheduler);
+		return (freeheap(&heap), freesim(&sim), 1);
+	monitor = create_monitor(&sim);
+	x = start(&sim, &monitor, sim.scheduler);
+	freeheap(&heap);
+	freesim(&sim);
+	freemonitor(&monitor);
 	if ((monitor).error == 1)
-		return (freeheap(heap), freesim(sim), 1);
+		return (1);
 	return (0);
 }

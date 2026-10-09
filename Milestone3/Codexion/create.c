@@ -6,55 +6,58 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 14:51:00 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/08 15:42:57 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/09 17:00:45 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-t_dongle	*create_dongles(t_sim sim, t_dongle *dongles)
+t_dongle	*create_dongles(t_sim *sim, t_dongle *dongles)
 {
 	int			i;
 
 	i = 0;
-	while (i != sim.num)
+	while (i != sim->num)
 	{
 		dongles[i].id = i + 1;
-		dongles[i].cooldown = sim.cooldown;
+		dongles[i].cooldown = sim->cooldown;
 		dongles[i].used = 0;
 		if (pthread_mutex_init(&dongles[i].mutex, NULL) != 0)
 			return (NULL);
 		if (pthread_cond_init(&dongles[i].cond, NULL) != 0)
 			return (NULL);
-		dongles[i].heap = create_heap(sim.num, sim.scheduler);
+		dongles[i].heap = create_heap(sim->num, sim->scheduler);
+		dongles[i].cooldown_time = 0;
 		i++;
 	}
 	return (dongles);
 }
 
-t_coder	*create_coders(t_sim sim, t_coder *coders, t_dongle *dongles)
+t_coder	*create_coders(t_sim *sim, t_coder *coders, t_dongle *dongles)
 {
-	t_coder	cdr;
 	int		i;
 
-	i = 0;
-	while (i != sim.num)
+	i = -1;
+	while (++i != sim->num)
 	{
-		cdr.start = sim.start;
-		cdr.id = i + 1;
-		cdr.burnout = sim.burnout;
-		cdr.compile = sim.compile;
-		cdr.debug = sim.debug;
-		cdr.refactor = sim.refactor;
-		cdr.n_compile = sim.n_compile;
-		cdr.last_compile_start = current_time(sim.start);
-		cdr.sx = &dongles[i];
-		if (i == sim.num - 1)
-			cdr.dx = &dongles[0];
+		coders[i].start = sim->start;
+		coders[i].id = i + 1;
+		coders[i].burnout = sim->burnout;
+		coders[i].compile = sim->compile;
+		coders[i].debug = sim->debug;
+		coders[i].refactor = sim->refactor;
+		coders[i].n_compile = sim->n_compile;
+		coders[i].last_compile_start = current_time(sim->start);
+		pthread_mutex_init(&coders[i].mutex, NULL);
+		if (sim->num > 1)
+			coders[i].sx = &dongles[i];
 		else
-			cdr.dx = &dongles[i + 1];
-		coders[i] = cdr;
-		i++;
+			coders[i].sx = NULL;
+		if (i == sim->num - 1)
+			coders[i].dx = &dongles[0];
+		else
+			coders[i].dx = &dongles[i + 1];
+		coders[i].error = 0;
 	}
 	return (coders);
 }
@@ -78,24 +81,26 @@ t_sim	create_sim(char **argv)
 	sim.dongles = malloc(sizeof(t_dongle) * sim.num);
 	if (!sim.dongles)
 		return (sim.error = 1, sim);
-	sim.dongles = create_dongles(sim, sim.dongles);
+	sim.dongles = create_dongles(&sim, sim.dongles);
 	if (!sim.dongles)
 		return (sim.error = 1, sim);
 	sim.coders = malloc(sizeof(t_coder) * sim.num);
 	if (!sim.coders)
 		return (sim.error = 1, sim);
-	sim.coders = create_coders(sim, sim.coders, sim.dongles);
+	sim.coders = create_coders(&sim, sim.coders, sim.dongles);
 	return (sim.error = 0, sim);
 }
 
-t_monitor	create_monitor(t_sim sim)
+t_monitor	create_monitor(t_sim *sim)
 {
 	t_monitor	monitor;
 
 	monitor.error = 0;
 	monitor.sim = sim;
-	if (monitor.sim.error != 0)
+	if (monitor.sim->error != 0)
 		monitor.error = 1;
+	else
+		monitor.error = 0;
 	monitor.finish = 1;
 	return (monitor);
 }

@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/05 14:00:29 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/06 14:53:30 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/09 16:55:41 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,11 @@ void	add_back(t_heap *heap, t_coder *coder)
 
 	i = 0;
 	pthread_mutex_lock(&heap->mutex);
+	if (is_inside(heap, *coder))
+	{
+		pthread_mutex_unlock(&heap->mutex);
+		return ;
+	}
 	if (heap->size >= heap->capacity)
 	{
 		pthread_mutex_unlock(&heap->mutex);
@@ -99,4 +104,18 @@ t_coder	*get_next(t_heap *heap)
 		return (&heap->coders[0]);
 	}
 	pthread_mutex_unlock(&heap->mutex);
+}
+
+int	is_inside(t_heap *heap, t_coder coder)
+{
+	int	i;
+
+	i = 0;
+	while (i < heap->size)
+	{
+		if (heap->coders[i].id == coder.id)
+			return (1);
+		i++;
+	}
+	return (0);
 }

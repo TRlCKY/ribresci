@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 12:20:26 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/08 17:49:14 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/09 17:01:29 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,12 @@ void	*use_dongle_fifo(void *arg)
 	t_coder		*coder;
 
 	coder = (t_coder *)arg;
-	while (coder->n_compile != 0)
+	while (coder->n_compile != 0 && coder->error != 1)
 	{
+		pthread_mutex_lock(&coder->mutex);
+		if (coder->dx->used == 1 || coder->sx->used == 1)
+			usleep(1000);
+		pthread_mutex_unlock(&coder->mutex);
 		if (take_dongle_dx(coder) == 1)
 			return (pthread_mutex_unlock(&coder->dx->mutex), NULL);
 		if (take_dongle_sx(coder) == 1)
@@ -59,6 +63,7 @@ void	*use_dongle_fifo(void *arg)
 			return (NULL);
 		if (start_refactoring(coder) == 1)
 			return (NULL);
+		printf("ciaooooo\n");
 	}
 	return (NULL);
 }
@@ -75,31 +80,32 @@ void	*use_dongle_edf(void *arg)
 // Controlla che i coders non vadano in burnout o abbiano finito
 void	*check(void *arg)
 {
-	t_monitor	*mntr;
+	t_monitor	*m;
 	int			i;
 
-	mntr = (t_monitor *)arg;
-	while (mntr->finish)
+	m = (t_monitor *)arg;
+	while (m->finish)
 	{
 		i = -1;
-		while (++i < mntr->sim.num)
+		while (++i < m->sim->num)
 		{
-			if (mntr->sim.coders[i].n_compile != 0 && check_time(mntr, i))
+			if (m->sim->coders[i].n_compile != 0 && check_time(m, i))
 			{
-				fprintf(stderr, "%d %d burned out\n",
-					current_time(mntr->sim.start), mntr->sim.coders[i].id);
-				mntr->finish = 0;
-				break ;
+				print_er(current_time(m->sim->start), m->sim->coders[i].id);
+				m->finish = 0;
+				printf("Coder error: %d\n", m->sim->coders[i].error);
+				m->sim->coders[i].error = 1;
+				i = m->sim->num;
 			}
-			if (check_coders(mntr) == 0)
+			if (check_coders(m) == 0)
 			{
-				mntr->finish = 0;
-				break ;
+				m->finish = 0;
+				i = m->sim->num;
 			}
 		}
 		usleep(1000);
 	}
-	return (freemonitor(*mntr), NULL);
+	return (NULL);
 }
 
 int	check_coders(t_monitor *mntr)
@@ -109,22 +115,22 @@ int	check_coders(t_monitor *mntr)
 
 	i = 0;
 	x = 0;
-	while (i < mntr->sim.num)
+	while (i < mntr->sim->num)
 	{
-		if (mntr->sim.coders[i].n_compile == 0)
+		if (mntr->sim->coders[i].n_compile == 0)
 			x++;
 		i++;
 	}
-	if (x == mntr->sim.num)
+	if (x == mntr->sim->num)
 		return (0);
 	return (1);
 }
 
 int	check_time(t_monitor *mntr, int i)
 {
-	if (current_time(mntr->sim.start)
-		- mntr->sim.coders[i].last_compile_start
-		>= mntr->sim.coders[i].burnout)
+	if (current_time(mntr->sim->start)
+		- mntr->sim->coders[i].last_compile_start
+		>= mntr->sim->coders[i].burnout)
 		return (1);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/02 16:45:49 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/09 16:28:51 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/09 17:31:00 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ unsigned int	ft_strlcpy(char *dest, const char *src, size_t size)
 	return (e);
 }
 
+/*
 void	freemonitor(t_monitor *monitor)
 {
 	if (monitor->sim->coders)
@@ -45,15 +46,35 @@ void	freemonitor(t_monitor *monitor)
 	if (monitor->sim->scheduler)
 		free(monitor->sim->scheduler);
 }
+*/
 
 void	freesim(t_sim *sim)
 {
-	if (sim->coders)
-		free(sim->coders);
+	int	i;
+
+	i = 0;
 	if (sim->dongles)
+	{
+		while (i < sim->num)
+		{
+			freeheap(&sim->dongles[i].heap);
+			pthread_mutex_destroy(&sim->dongles[i].mutex);
+			pthread_cond_destroy(&sim->dongles[i].cond);
+			i++;
+		}
 		free(sim->dongles);
-	if (sim->scheduler)
-		free(sim->scheduler);
+	}
+	i = 0;
+	if (sim->coders)
+	{
+		while (i < sim->num)
+		{
+			pthread_mutex_destroy(&sim->coders[i].mutex);
+			i++;
+		}
+		free(sim->coders);
+	}
+	free(sim->scheduler);
 }
 
 void	freeheap(t_heap *heap)
@@ -63,9 +84,4 @@ void	freeheap(t_heap *heap)
 		free(heap->coders);
 	if (heap->scheduler)
 		free(heap->scheduler);
-}
-
-void	print_er(int time, int id)
-{
-	fprintf(stderr, "%d %d burned out\n", time, id);
 }

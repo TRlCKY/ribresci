@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 12:15:14 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/09 16:50:22 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/09 17:33:05 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ int	start(t_sim *sim, t_monitor *monitor, char *scheduler)
 		}
 		i++;
 	}
-	printf("esco\n");
 	return (start1(sim, monitor));
 }
 
@@ -47,19 +46,14 @@ int	start1(t_sim *sim, t_monitor *monitor)
 	pthread_join(monitor->monitor_t, NULL);
 	if (monitor->error == 1)
 		return (1);
-	printf("palle\n");
 	while (i < sim->num)
 	{
-		printf("ciao\n");
 		if (pthread_join(sim->coders[i].thread, NULL) != 0)
 		{
-			printf("AAAAAAAAAAAAAAAAA\n");
 			return (1);
 		}
 		i++;
-		printf("%d\n", i);
 	}
-	printf("esco peddavero\n");
 	return (0);
 }
 
@@ -116,7 +110,6 @@ int	main(int argc, char **argv)
 	x = start(&sim, &monitor, sim.scheduler);
 	freeheap(&heap);
 	freesim(&sim);
-	freemonitor(&monitor);
 	if ((monitor).error == 1)
 		return (1);
 	return (0);

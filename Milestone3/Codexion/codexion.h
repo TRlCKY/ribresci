@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/02 16:42:16 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/09 16:46:17 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/09 17:25:09 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,12 +91,19 @@ typedef struct monitor
 	int				finish;
 }	t_monitor;
 
-// fifo_edf
+// fifo
 void			*use_dongle_fifo(void *arg);
+void			*fifo1(void *arg);
+void			*fifo_one_coder(void *arg);
+
+// edf
 void			*use_dongle_edf(void *arg);
+
+// monitor
 void			*check(void *arg);
 int				check_coders(t_monitor *mntr);
 int				check_time(t_monitor *mntr, int i);
+void			print_er(int time, int id);
 
 // main
 int				current_time(struct timespec start);
@@ -132,9 +139,7 @@ int				is_inside(t_heap *heap, t_coder coder);
 
 // utilities
 unsigned int	ft_strlcpy(char *dest, const char *src, size_t size);
-void			freemonitor(t_monitor *monitor);
 void			freesim(t_sim *sim);
 void			freeheap(t_heap *heap);
-void			print_er(int time, int id);
 
 #endif

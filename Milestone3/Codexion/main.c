@@ -96,7 +96,6 @@ int	main(int argc, char **argv)
 	t_sim		sim;
 	t_monitor	monitor;
 	t_heap		heap;
-	int			x;
 
 	if (check_values(argc, argv) == 1)
 		return (1);
@@ -107,7 +106,7 @@ int	main(int argc, char **argv)
 	if ((sim).error == 1)
 		return (freeheap(&heap), freesim(&sim), 1);
 	monitor = create_monitor(&sim);
-	x = start(&sim, &monitor, sim.scheduler);
+	start(&sim, &monitor, sim.scheduler);
 	freeheap(&heap);
 	freesim(&sim);
 	if ((monitor).error == 1)

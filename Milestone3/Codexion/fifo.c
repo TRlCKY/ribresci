@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 12:20:26 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/09 17:51:14 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/12 16:50:31 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,43 +44,25 @@ void	*use_dongle_fifo(void *arg)
 
 	coder = (t_coder *)arg;
 	if (coder->sx == NULL)
-		return (fifo_one_coder(coder));
+		return (one_coder(coder));
 	while (coder->n_compile != 0 && coder->error != 1)
 	{
-		while (coder->dx->used == 1 || coder->sx->used == 1)
+		if (can_take_both(coder) == 0)
 		{
-			pthread_mutex_lock(&coder->mutex);
-			usleep(1000);
-			pthread_mutex_unlock(&coder->mutex);
+			if (coder->error == 1 || start_compiling(coder) == 1)
+				return (NULL);
+			if (coder->error == 1 || release_dongles(coder) == 1)
+				return (NULL);
+			if (coder->error == 1 || start_debugging(coder) == 1)
+				return (NULL);
+			if (coder->error == 1 || start_refactoring(coder) == 1)
+				return (NULL);
 		}
-		if (coder->error == 1 || take_dongle_dx(coder) == 1)
-			return (pthread_mutex_unlock(&coder->dx->mutex), NULL);
-		if (coder->error == 1 || take_dongle_sx(coder) == 1)
-			return (pthread_mutex_unlock(&coder->sx->mutex), NULL);
-		if (coder->error == 1 || start_compiling(coder) == 1)
-			return (NULL);
-		if (coder->error == 1 || release_dongle_dx(coder) == 1)
-			return (NULL);
-		fifo1(coder);
 	}
 	return (NULL);
 }
 
-void	*fifo1(void *arg)
-{
-	t_coder	*coder;
-
-	coder = (t_coder *)arg;
-	if (coder->error == 1 || release_dongle_sx(coder) == 1)
-		return (NULL);
-	if (coder->error == 1 || start_debugging(coder) == 1)
-		return (NULL);
-	if (coder->error == 1 || start_refactoring(coder) == 1)
-		return (NULL);
-	return (NULL);
-}
-
-void	*fifo_one_coder(void *arg)
+void	*one_coder(void *arg)
 {
 	t_coder	*coder;
 
@@ -89,6 +71,26 @@ void	*fifo_one_coder(void *arg)
 		return (NULL);
 	while (coder->error == 0)
 		usleep(1000);
-	release_dongle_dx(coder);
+	release_dongles(coder);
 	return (NULL);
+}
+
+int	can_take_both(t_coder *coder)
+{
+	pthread_mutex_lock(&coder->dx->mutex);
+	pthread_mutex_lock(&coder->sx->mutex);
+	if (coder->dx->used == 0 && coder->sx->used == 0)
+	{
+		if (take_dongle_dx(coder) == 1)
+			return (1);
+		if (take_dongle_sx(coder) == 1)
+			return (1);
+	}
+	else
+	{
+		pthread_mutex_unlock(&coder->dx->mutex);
+		pthread_mutex_unlock(&coder->sx->mutex);
+		return (1);
+	}
+	return (0);
 }

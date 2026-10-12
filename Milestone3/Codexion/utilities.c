@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/02 16:45:49 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/09 17:31:00 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/12 15:10:18 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,18 +35,6 @@ unsigned int	ft_strlcpy(char *dest, const char *src, size_t size)
 	}
 	return (e);
 }
-
-/*
-void	freemonitor(t_monitor *monitor)
-{
-	if (monitor->sim->coders)
-		free(monitor->sim->coders);
-	if (monitor->sim->dongles)
-		free(monitor->sim->dongles);
-	if (monitor->sim->scheduler)
-		free(monitor->sim->scheduler);
-}
-*/
 
 void	freesim(t_sim *sim)
 {

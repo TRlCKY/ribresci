@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/02 16:42:16 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/09 18:00:48 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/12 16:49:20 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,8 @@ typedef struct monitor
 // fifo
 void			*use_dongle_fifo(void *arg);
 void			*fifo1(void *arg);
-void			*fifo_one_coder(void *arg);
+void			*one_coder(void *arg);
+int				can_take_both(t_coder *coder);
 
 // edf
 void			*use_dongle_edf(void *arg);
@@ -115,14 +116,16 @@ int				start1(t_sim *sim, t_monitor *monitor);
 
 // coder action
 int				take_dongle_dx(t_coder *coder);
+int				take_dongle_dx1(t_coder *coder);
 int				take_dongle_sx(t_coder *coder);
+int				take_dongle_sx1(t_coder *coder);
+struct timespec	calculate_time(struct timespec deadline, long time);
+
+// coder action 1
+int				release_dongles(t_coder *coder);
 int				start_compiling(t_coder *coder);
 int				start_debugging(t_coder *coder);
 int				start_refactoring(t_coder *coder);
-
-// coder action 1
-int				release_dongle_dx(t_coder *coder);
-int				release_dongle_sx(t_coder *coder);
 
 // create
 t_dongle		*create_dongles(t_sim *sim, t_dongle *dongles);

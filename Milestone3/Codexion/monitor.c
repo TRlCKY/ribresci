@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/09 17:13:08 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/09 18:00:25 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/12 17:22:34 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void	*check(void *arg)
 			{
 				stop_coders(m, m->sim->coders[i].id);
 				i = m->sim->num;
-				m->sim->coders[i].error = 1;
 			}
 			if (check_coders(m) == 0)
 			{
@@ -41,6 +40,7 @@ void	*check(void *arg)
 	return (NULL);
 }
 
+// Con un burnout si fermano tutti
 void	stop_coders(t_monitor *m, int id)
 {
 	int	i;
@@ -50,11 +50,20 @@ void	stop_coders(t_monitor *m, int id)
 	m->finish = 0;
 	while (i < m->sim->num)
 	{
-		m->sim->coders->error = 1;
+		m->sim->coders[i].error = 1;
+		i++;
+	}
+	i = 0;
+	while (i < m->sim->num)
+	{
+		pthread_mutex_lock(&m->sim->dongles[i].mutex);
+		pthread_cond_broadcast(&m->sim->dongles[i].cond);
+		pthread_mutex_unlock(&m->sim->dongles[i].mutex);
 		i++;
 	}
 }
 
+// Controlla che abbiano finito di compilare tutti
 int	check_coders(t_monitor *mntr)
 {
 	int	i;
@@ -73,6 +82,7 @@ int	check_coders(t_monitor *mntr)
 	return (1);
 }
 
+// Controlla che non vadano in burnout
 int	check_time(t_monitor *mntr, int i)
 {
 	if (current_time(mntr->sim->start)
@@ -82,6 +92,7 @@ int	check_time(t_monitor *mntr, int i)
 	return (0);
 }
 
+// Stampa l'errore
 void	print_er(int time, int id)
 {
 	fprintf(stderr, "%d %d burned out\n", time, id);

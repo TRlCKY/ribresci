@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/02 16:42:16 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/12 16:49:20 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/13 15:52:51 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ typedef struct s_sim
 	char			*scheduler;
 	int				order;
 	int				error;
+	int				stop;
 	t_coder			*coders;
 	t_dongle		*dongles;
 }	t_sim;
@@ -122,7 +123,7 @@ int				take_dongle_sx1(t_coder *coder);
 struct timespec	calculate_time(struct timespec deadline, long time);
 
 // coder action 1
-int				release_dongles(t_coder *coder);
+int				release_dongles(t_coder *coder, int n);
 int				start_compiling(t_coder *coder);
 int				start_debugging(t_coder *coder);
 int				start_refactoring(t_coder *coder);

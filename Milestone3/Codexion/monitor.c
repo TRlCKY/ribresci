@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/09 17:13:08 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/12 17:22:34 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/13 15:56:03 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	*check(void *arg)
 	return (NULL);
 }
 
-// Con un burnout si fermano tutti
+// Con un burnout si fermano tutti e risveglia quelli in attesa
 void	stop_coders(t_monitor *m, int id)
 {
 	int	i;

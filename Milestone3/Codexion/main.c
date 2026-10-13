@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 12:15:14 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/12 11:45:20 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/13 15:17:46 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ int	main(int argc, char **argv)
 
 	if (check_values(argc, argv) == 1)
 		return (1);
-	heap = create_heap(atoi(argv[1]), argv[7]);
+	heap = create_heap(atoi(argv[1]), argv[8]);
 	if ((heap).error == 1)
 		return (freeheap(&heap), 1);
 	sim = create_sim(argv);

@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/09 17:12:37 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/12 17:24:11 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/13 15:39:58 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	take_dongle_dx(t_coder *cdr)
 	if (cdr->n_compile == 0)
 		return (0);
 	add_back(&cdr->dx->heap, cdr);
-	while (1)
+	while (1 && cdr->error == 0)
 	{
 		next = get_next(&cdr->dx->heap);
 		if (next && next->id == cdr->id && cdr->dx->used == 0)
@@ -42,12 +42,7 @@ int	take_dongle_dx(t_coder *cdr)
 int	take_dongle_dx1(t_coder *cdr)
 {
 	if (cdr->error == 1)
-	{
-		pthread_mutex_unlock(&cdr->dx->mutex);
-		if (cdr->sx != NULL)
-			pthread_mutex_unlock(&cdr->sx->mutex);
-		return (1);
-	}
+		return (pthread_mutex_unlock(&cdr->dx->mutex), 1);
 	pop_front(&cdr->dx->heap);
 	pthread_mutex_lock(&cdr->mutex);
 	printf("%d %d has taken a dongle\n", current_time(cdr->start), cdr->id);
@@ -67,12 +62,12 @@ int	take_dongle_sx(t_coder *cdr)
 	if (cdr->n_compile == 0)
 		return (0);
 	add_back(&cdr->sx->heap, cdr);
-	while (1)
+	while (1 && cdr->error == 0)
 	{
 		next = get_next(&cdr->sx->heap);
 		if (next && next->id == cdr->id && cdr->sx->used == 0)
 		{
-			time = cdr->dx->cooldown_time - current_time(cdr->start);
+			time = cdr->sx->cooldown_time - current_time(cdr->start);
 			if (time <= 0)
 				break ;
 			deadline = calculate_time(deadline, time);

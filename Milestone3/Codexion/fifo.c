@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 12:20:26 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/12 16:50:31 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/13 15:56:45 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	*use_dongle_fifo(void *arg)
 		{
 			if (coder->error == 1 || start_compiling(coder) == 1)
 				return (NULL);
-			if (coder->error == 1 || release_dongles(coder) == 1)
+			if (coder->error == 1 || release_dongles(coder, 1) == 1)
 				return (NULL);
 			if (coder->error == 1 || start_debugging(coder) == 1)
 				return (NULL);
@@ -71,26 +71,33 @@ void	*one_coder(void *arg)
 		return (NULL);
 	while (coder->error == 0)
 		usleep(1000);
-	release_dongles(coder);
+	release_dongles(coder, 1);
 	return (NULL);
 }
 
 int	can_take_both(t_coder *coder)
 {
-	pthread_mutex_lock(&coder->dx->mutex);
-	pthread_mutex_lock(&coder->sx->mutex);
-	if (coder->dx->used == 0 && coder->sx->used == 0)
+	if (coder->dx->id < coder->sx->id)
 	{
+		pthread_mutex_lock(&coder->dx->mutex);
 		if (take_dongle_dx(coder) == 1)
 			return (1);
+		pthread_mutex_unlock(&coder->dx->mutex);
+		pthread_mutex_lock(&coder->sx->mutex);
 		if (take_dongle_sx(coder) == 1)
-			return (1);
+			return (release_dongles(coder, 0), 1);
+		pthread_mutex_unlock(&coder->sx->mutex);
 	}
 	else
 	{
-		pthread_mutex_unlock(&coder->dx->mutex);
+		pthread_mutex_lock(&coder->sx->mutex);
+		if (take_dongle_sx(coder) == 1)
+			return (1);
 		pthread_mutex_unlock(&coder->sx->mutex);
-		return (1);
+		pthread_mutex_lock(&coder->dx->mutex);
+		if (take_dongle_dx(coder) == 1)
+			return (release_dongles(coder, 0), 1);
+		pthread_mutex_unlock(&coder->dx->mutex);
 	}
 	return (0);
 }

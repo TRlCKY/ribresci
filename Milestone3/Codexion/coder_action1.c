@@ -6,25 +6,31 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/16 12:41:48 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/12 16:46:09 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/13 15:52:38 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-int	release_dongles(t_coder *coder)
+int	release_dongles(t_coder *coder, int x)
 {
-	pthread_mutex_lock(&coder->dx->mutex);
-	coder->dx->used = 0;
-	coder->dx->cooldown_time = current_time(coder->start) + coder->dx->cooldown;
-	pthread_cond_broadcast(&coder->dx->cond);
-	pthread_mutex_unlock(&coder->dx->mutex);
+	if (coder->dx)
+	{
+		pthread_mutex_lock(&coder->dx->mutex);
+		coder->dx->used = 0;
+		if (x == 1)
+			coder->dx->cooldown_time = current_time(coder->start)
+				+ coder->dx->cooldown;
+		pthread_cond_broadcast(&coder->dx->cond);
+		pthread_mutex_unlock(&coder->dx->mutex);
+	}
 	if (coder->sx)
 	{
 		pthread_mutex_lock(&coder->sx->mutex);
 		coder->sx->used = 0;
-		coder->sx->cooldown_time = current_time(coder->start)
-			+ coder->sx->cooldown;
+		if (x)
+			coder->sx->cooldown_time = current_time(coder->start)
+				+ coder->sx->cooldown;
 		pthread_cond_broadcast(&coder->sx->cond);
 		pthread_mutex_unlock(&coder->sx->mutex);
 	}

@@ -78,7 +78,7 @@ typedef struct s_sim
 	char			*scheduler;
 	int				error;
 	int				stop;
-	char			*argv;
+	char			**argv;
 	t_coder			*coders;
 	t_dongle		*dongles;
 }	t_sim;
@@ -145,5 +145,6 @@ int				is_inside(t_heap *heap, t_coder coder);
 unsigned int	ft_strlcpy(char *dest, const char *src, size_t size);
 void			freesim(t_sim *sim);
 void			freeheap(t_heap *heap);
+char			**get_argv(t_sim *sim, char **argv);
 
 #endif

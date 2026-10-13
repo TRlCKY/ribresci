@@ -48,7 +48,7 @@ t_coder	*create_coders(t_sim *sim, t_coder *coders, t_dongle *dongles)
 		coders[i].refactor = atoi(sim->argv[2]);
 		coders[i].n_compile = atoi(sim->argv[3]);
 		coders[i].last_compile_start = current_time(sim->start);
-		pthread_mutex_init(&coders[i].mutex, NULL);
+		pthread_mutex_init(coders[i].mutex, NULL);
 		if (sim->num > 1)
 			coders[i].sx = &dongles[i];
 		else
@@ -70,7 +70,7 @@ t_sim	create_sim(char **argv)
 	sim.num = atoi(argv[1]);
 	sim.burnout = atoi(argv[2]);
 	sim.argv = malloc(sizeof(char *) * (5));
-	sim.argv = get_argv(argv);
+	sim.argv = get_argv(&sim, argv);
 	if (sim.error == 1)
 		return (sim);
 	sim.cooldown = atoi(argv[7]);

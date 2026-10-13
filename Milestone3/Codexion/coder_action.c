@@ -44,9 +44,9 @@ int	take_dongle_dx1(t_coder *cdr)
 	if (cdr->error == 1)
 		return (pthread_mutex_unlock(&cdr->dx->mutex), 1);
 	pop_front(&cdr->dx->heap);
-	pthread_mutex_lock(&cdr->mutex);
+	pthread_mutex_lock(cdr->mutex);
 	printf("%d %d has taken a dongle\n", current_time(cdr->start), cdr->id);
-	pthread_mutex_unlock(&cdr->mutex);
+	pthread_mutex_unlock(cdr->mutex);
 	cdr->dx->used = 1;
 	if (pthread_mutex_unlock(&cdr->dx->mutex) != 0)
 		return (pthread_mutex_unlock(&cdr->dx->mutex), 1);
@@ -88,9 +88,9 @@ int	take_dongle_sx1(t_coder *cdr)
 		return (1);
 	}
 	pop_front(&cdr->sx->heap);
-	pthread_mutex_lock(&cdr->mutex);
+	pthread_mutex_lock(cdr->mutex);
 	printf("%d %d has taken a dongle\n", current_time(cdr->start), cdr->id);
-	pthread_mutex_unlock(&cdr->mutex);
+	pthread_mutex_unlock(cdr->mutex);
 	cdr->sx->used = 1;
 	if (pthread_mutex_unlock(&cdr->sx->mutex) != 0)
 		return (pthread_mutex_unlock(&cdr->sx->mutex), 1);

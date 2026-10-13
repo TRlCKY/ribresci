@@ -57,7 +57,7 @@ void	freesim(t_sim *sim)
 	{
 		while (i < sim->num)
 		{
-			pthread_mutex_destroy(&sim->coders[i].mutex);
+			pthread_mutex_destroy(sim->coders[i].mutex);
 			i++;
 		}
 		free(sim->coders);

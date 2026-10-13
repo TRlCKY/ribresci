@@ -40,9 +40,9 @@ int	release_dongles(t_coder *coder, int x)
 int	start_compiling(t_coder *coder)
 {
 	coder->last_compile_start = current_time(coder->start);
-	pthread_mutex_lock(&coder->mutex);
+	pthread_mutex_lock(coder->mutex);
 	printf("%d %d is compiling\n", current_time(coder->start), coder->id);
-	pthread_mutex_unlock(&coder->mutex);
+	pthread_mutex_unlock(coder->mutex);
 	usleep(coder->compile * 1000);
 	coder->n_compile--;
 	return (0);
@@ -50,18 +50,18 @@ int	start_compiling(t_coder *coder)
 
 int	start_debugging(t_coder *coder)
 {
-	pthread_mutex_lock(&coder->mutex);
+	pthread_mutex_lock(coder->mutex);
 	printf("%d %d is debugging\n", current_time(coder->start), coder->id);
-	pthread_mutex_unlock(&coder->mutex);
+	pthread_mutex_unlock(coder->mutex);
 	usleep(coder->debug * 1000);
 	return (0);
 }
 
 int	start_refactoring(t_coder *coder)
 {
-	pthread_mutex_lock(&coder->mutex);
+	pthread_mutex_lock(coder->mutex);
 	printf("%d %d is refactoring\n", current_time(coder->start), coder->id);
-	pthread_mutex_unlock(&coder->mutex);
+	pthread_mutex_unlock(coder->mutex);
 	usleep(coder->refactor * 1000);
 	return (0);
 }

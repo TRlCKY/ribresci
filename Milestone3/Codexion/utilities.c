@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/02 16:45:49 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/12 15:10:18 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/13 16:26:19 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,19 @@ void	freeheap(t_heap *heap)
 		free(heap->coders);
 	if (heap->scheduler)
 		free(heap->scheduler);
+}
+
+char	**get_argv(t_sim *sim, char **argv)
+{
+	char	**argv0;
+
+	argv0 = malloc(sizeof(char *) * 5);
+	if (!argv0)
+		return (sim->error = 1, argv0);
+	argv0[0] = argv[3];
+	argv0[1] = argv[4];
+	argv0[2] = argv[5];
+	argv0[3] = argv[6];
+	argv0[4] = "\0";
+	return (argv0);
 }

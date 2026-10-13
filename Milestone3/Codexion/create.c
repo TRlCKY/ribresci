@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 14:51:00 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/09 17:00:45 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/13 16:26:46 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,10 @@ t_coder	*create_coders(t_sim *sim, t_coder *coders, t_dongle *dongles)
 		coders[i].start = sim->start;
 		coders[i].id = i + 1;
 		coders[i].burnout = sim->burnout;
-		coders[i].compile = sim->compile;
-		coders[i].debug = sim->debug;
-		coders[i].refactor = sim->refactor;
-		coders[i].n_compile = sim->n_compile;
+		coders[i].compile = atoi(sim->argv[0]);
+		coders[i].debug = atoi(sim->argv[1]);
+		coders[i].refactor = atoi(sim->argv[2]);
+		coders[i].n_compile = atoi(sim->argv[3]);
 		coders[i].last_compile_start = current_time(sim->start);
 		pthread_mutex_init(&coders[i].mutex, NULL);
 		if (sim->num > 1)
@@ -69,10 +69,10 @@ t_sim	create_sim(char **argv)
 	clock_gettime(CLOCK_MONOTONIC, &sim.start);
 	sim.num = atoi(argv[1]);
 	sim.burnout = atoi(argv[2]);
-	sim.compile = atoi(argv[3]);
-	sim.debug = atoi(argv[4]);
-	sim.refactor = atoi(argv[5]);
-	sim.n_compile = atoi(argv[6]);
+	sim.argv = malloc(sizeof(char *) * (5));
+	sim.argv = get_argv(argv);
+	if (sim.error == 1)
+		return (sim);
 	sim.cooldown = atoi(argv[7]);
 	sim.scheduler = malloc(sizeof(char) * (strlen(argv[8]) + 1));
 	if (!sim.scheduler)

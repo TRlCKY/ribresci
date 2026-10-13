@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/02 16:42:16 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/13 15:52:51 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/13 16:19:01 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ typedef struct s_dongle_
 typedef struct s_coder
 {
 	struct timespec	start;
-	pthread_mutex_t	mutex;
+	pthread_mutex_t	*mutex;
+	pthread_cond_t	*cond;
 	int				id;
 	int				burnout;
 	int				compile;
@@ -69,17 +70,15 @@ typedef struct s_coder
 typedef struct s_sim
 {
 	struct timespec	start;
+	pthread_mutex_t	*mutex;
+	pthread_cond_t	*cond;
 	int				num;
 	int				burnout;
-	int				compile;
-	int				debug;
-	int				refactor;
-	int				n_compile;
 	int				cooldown;
 	char			*scheduler;
-	int				order;
 	int				error;
 	int				stop;
+	char			*argv;
 	t_coder			*coders;
 	t_dongle		*dongles;
 }	t_sim;

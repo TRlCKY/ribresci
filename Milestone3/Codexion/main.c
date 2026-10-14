@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 12:15:14 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/14 17:43:40 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/14 18:10:12 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ int	start1(t_sim *sim, t_monitor *monitor)
 long	current_time(struct timespec start)
 {
 	struct timespec	now;
-	int				sec;
-	int				nsec;
+	long			sec;
+	long			nsec;
 
 	clock_gettime(CLOCK_MONOTONIC, &now);
 	sec = now.tv_sec - start.tv_sec;

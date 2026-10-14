@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/02 16:42:16 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/14 17:28:19 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/14 18:06:02 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,11 @@ typedef struct s_coder
 {
 	struct timespec	start;
 	pthread_mutex_t	*mutex;
-	pthread_cond_t	*cond;
 	int				id;
 	int				compile;
 	int				debug;
 	int				refactor;
 	int				n_compile;
-	int				order;
 	int				error;
 	long			last_compile_start;
 	pthread_t		thread;
@@ -71,7 +69,6 @@ typedef struct s_sim
 {
 	struct timespec	start;
 	pthread_mutex_t	*mutex;
-	pthread_cond_t	*cond;
 	int				num;
 	int				burnout;
 	int				cooldown;
@@ -102,10 +99,9 @@ void			*use_dongle_edf(void *arg);
 
 // monitor
 void			*check(void *arg);
-void			stop_coders(t_monitor *m, int id);
+void			stop_coders(t_monitor *m, t_coder *coder);
 int				check_coders(t_monitor *mntr);
 int				check_time(t_monitor *mntr, int i);
-void			print_er(int time, int id);
 
 // main
 long			current_time(struct timespec start);
@@ -153,5 +149,8 @@ unsigned int	ft_strlcpy(char *dest, const char *src, size_t size);
 void			freesim(t_sim *sim);
 void			freeheap(t_heap *heap);
 char			**get_argv(t_sim *sim, char **argv);
+
+// utilities1
+void			print_msg(t_coder *coder, char *msg);
 
 #endif

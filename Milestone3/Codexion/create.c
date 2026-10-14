@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 14:51:00 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/14 17:43:00 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/14 18:12:35 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,9 @@ t_coder	*create_coders(t_sim *sim, t_coder *cdrs, t_dongle *dngls, char **argv)
 		cdrs[i].debug = atoi(argv[4]);
 		cdrs[i].refactor = atoi(argv[5]);
 		cdrs[i].n_compile = atoi(argv[6]);
-		cdrs[i].order = 0;
 		cdrs[i].error = 0;
 		cdrs[i].last_compile_start = current_time(sim->start);
 		cdrs[i].mutex = sim->mutex;
-		if (pthread_cond_init(cdrs[i].cond, NULL) != 0)
-			cdrs[i].error = 1;
 		if (sim->num > 1)
 			cdrs[i].sx = &dngls[i];
 		else
@@ -73,6 +70,9 @@ t_sim	create_sim(char **argv)
 	sim.burnout = atoi(argv[2]);
 	sim.cooldown = atoi(argv[7]);
 	sim.scheduler = malloc(sizeof(char) * (strlen(argv[8]) + 1));
+	if (!sim.scheduler)
+		return (sim.error = 1, sim);
+	ft_strlcpy(sim.scheduler, argv[8], strlen(argv[8]) + 1);
 	if (create_sim1(&sim, argv) == 1)
 		return (sim);
 	return (sim);
@@ -85,16 +85,11 @@ int	create_sim1(t_sim *sim, char **argv)
 		return (sim->error = 1, 1);
 	if (pthread_mutex_init(sim->mutex, NULL) != 0)
 		return (free(sim->mutex), sim->mutex = NULL, sim->error = 1, 1);
-	if (!sim->scheduler)
-		return (sim->error = 1, 1);
-	ft_strlcpy(sim->scheduler, argv[8], strlen(argv[8]) + 1);
 	sim->dongles = malloc(sizeof(t_dongle) * sim->num);
 	if (!sim->dongles)
 		return (sim->error = 1, 1);
 	memset(sim->dongles, 0, sizeof(t_dongle) * sim->num);
 	if (create_dongles(argv, sim->dongles) == 1)
-		return (sim->error = 1, 1);
-	if (!sim->dongles)
 		return (sim->error = 1, 1);
 	sim->coders = malloc(sizeof(t_coder) * sim->num);
 	if (!sim->coders)

@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/05 14:00:29 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/14 17:43:29 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/14 18:08:44 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,6 @@ void	add_back(t_heap *heap, t_coder *coder)
 	heap->size++;
 	if (strcmp(heap->scheduler, "edf") == 0)
 		sort_heap(heap);
-	while (i < heap->size)
-	{
-		heap->coders[i]->order = i;
-		i++;
-	}
 	pthread_mutex_unlock(&heap->mutex);
 }
 

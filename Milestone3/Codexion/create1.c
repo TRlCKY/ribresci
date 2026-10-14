@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/14 17:09:58 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/14 17:10:16 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/14 17:48:22 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_heap	create_heap(int n, char *scheduler, int burnout)
 	heap.size = 0;
 	heap.capacity = n;
 	heap.burnout = burnout;
-	heap.coders = malloc(sizeof(t_coder) * n);
+	heap.coders = malloc(sizeof(t_coder *) * n);
 	if (!heap.coders)
 		return (heap.error = 1, heap);
 	heap.scheduler = malloc(sizeof(char) * (strlen(scheduler) + 1));

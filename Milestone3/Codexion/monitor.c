@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/09 17:13:08 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/14 17:41:48 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/14 18:06:17 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	*check(void *arg)
 		{
 			if (m->sim->coders[i].n_compile != 0 && check_time(m, i))
 			{
-				stop_coders(m, m->sim->coders[i].id);
+				stop_coders(m, &m->sim->coders[i]);
 				i = m->sim->num;
 			}
 			if (check_coders(m) == 0)
@@ -41,13 +41,12 @@ void	*check(void *arg)
 }
 
 // Con un burnout si fermano tutti e risveglia quelli in attesa
-void	stop_coders(t_monitor *m, int id)
+void	stop_coders(t_monitor *m, t_coder *coder)
 {
 	int	i;
 
 	i = 0;
-	pthread_mutex_lock(m->sim->mutex);
-	print_er(current_time(m->sim->start), id);
+	print_msg(coder, " burned out\n");
 	m->finish = 0;
 	while (i < m->sim->num)
 	{
@@ -92,10 +91,4 @@ int	check_time(t_monitor *mntr, int i)
 		>= mntr->sim->burnout)
 		return (1);
 	return (0);
-}
-
-// Stampa l'errore
-void	print_er(int time, int id)
-{
-	fprintf(stderr, "%d %d burned out\n", time, id);
 }

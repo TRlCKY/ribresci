@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/05 14:00:29 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/13 12:33:02 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/14 17:43:29 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,23 +19,18 @@ void	add_back(t_heap *heap, t_coder *coder)
 
 	i = 0;
 	pthread_mutex_lock(&heap->mutex);
-	if (is_inside(heap, *coder))
+	if (is_inside(heap, *coder) || heap->size >= heap->capacity)
 	{
 		pthread_mutex_unlock(&heap->mutex);
 		return ;
 	}
-	if (heap->size >= heap->capacity)
-	{
-		pthread_mutex_unlock(&heap->mutex);
-		return ;
-	}
-	heap->coders[heap->size] = *coder;
+	heap->coders[heap->size] = coder;
 	heap->size++;
 	if (strcmp(heap->scheduler, "edf") == 0)
 		sort_heap(heap);
 	while (i < heap->size)
 	{
-		heap->coders[i].order = i;
+		heap->coders[i]->order = i;
 		i++;
 	}
 	pthread_mutex_unlock(&heap->mutex);
@@ -48,17 +43,15 @@ void	pop_front(t_heap *heap)
 
 	i = 0;
 	pthread_mutex_lock(&heap->mutex);
-	if (heap->size == 0)
+	if (heap->size > 0)
 	{
-		pthread_mutex_unlock(&heap->mutex);
-		return ;
+		while (i < heap->size - 1)
+		{
+			heap->coders[i] = heap->coders[i + 1];
+			i++;
+		}
+		heap->size--;
 	}
-	while (i < heap->size - 1)
-	{
-		heap->coders[i] = heap->coders[i + 1];
-		i++;
-	}
-	heap->size--;
 	pthread_mutex_unlock(&heap->mutex);
 }
 
@@ -67,7 +60,7 @@ void	sort_heap(t_heap *heap)
 {
 	int		i;
 	int		e;
-	t_coder	coder0;
+	t_coder	*coder0;
 
 	e = 0;
 	while (e < heap->size)
@@ -75,9 +68,7 @@ void	sort_heap(t_heap *heap)
 		i = 0;
 		while (i < heap->size - 1)
 		{
-			if (heap->coders[i].last_compile_start + heap->coders[i].burnout
-				> heap->coders[i + 1].last_compile_start
-				+ heap->coders[i + 1].burnout)
+			if (do_switch(heap->coders[i], heap->coders[i + 1], heap->burnout))
 			{
 				coder0 = heap->coders[i];
 				heap->coders[i] = heap->coders[i + 1];
@@ -89,21 +80,25 @@ void	sort_heap(t_heap *heap)
 	}
 }
 
-// Restuìituisce il primo coder senza rimuoverlo, con size==0 restituisce NULL
-t_coder	*get_next(t_heap *heap)
+int	do_switch(t_coder *c1, t_coder *c2, int burnout)
 {
-	pthread_mutex_lock(&heap->mutex);
-	if (heap->size == 0)
+	long	d1;
+	long	d2;
+
+	d1 = c1->last_compile_start + burnout;
+	d2 = c2->last_compile_start + burnout;
+	if (d1 == d2)
 	{
-		pthread_mutex_unlock(&heap->mutex);
-		return (NULL);
+		if (c1->id > c2->id)
+			return (1);
+		return (0);
 	}
 	else
 	{
-		pthread_mutex_unlock(&heap->mutex);
-		return (&heap->coders[0]);
+		if (d1 > d2)
+			return (1);
+		return (0);
 	}
-	pthread_mutex_unlock(&heap->mutex);
 }
 
 int	is_inside(t_heap *heap, t_coder coder)
@@ -113,7 +108,7 @@ int	is_inside(t_heap *heap, t_coder coder)
 	i = 0;
 	while (i < heap->size)
 	{
-		if (heap->coders[i].id == coder.id)
+		if (heap->coders[i]->id == coder.id)
 			return (1);
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 12:15:14 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/14 10:59:57 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/14 17:43:40 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	start1(t_sim *sim, t_monitor *monitor)
 	return (0);
 }
 
-int	current_time(struct timespec start)
+long	current_time(struct timespec start)
 {
 	struct timespec	now;
 	int				sec;
@@ -76,7 +76,7 @@ int	check_values(int argc, char **argv)
 	int	n;
 
 	i = 1;
-	if (argc != 9)
+	if (argc != 9 || atoi(argv[1]) < 1)
 		return (1);
 	while (i < argc - 1)
 	{
@@ -95,23 +95,15 @@ int	main(int argc, char **argv)
 {
 	t_sim		sim;
 	t_monitor	monitor;
-	t_heap		heap;
-	t_dongle	*dongles;
+	int			x;
 
 	if (check_values(argc, argv) == 1)
 		return (1);
-	dongles = create_dongles(argv, dongles);
-	heap = create_heap(atoi(argv[1]), argv[8]);
-	if ((heap).error == 1)
-		return (freeheap(&heap), 1);
 	sim = create_sim(argv);
 	if ((sim).error == 1)
-		return (freeheap(&heap), freesim(&sim), 1);
-	monitor = create_monitor(&sim, dongles);
-	start(&sim, &monitor, sim.scheduler);
-	freeheap(&heap);
+		return (freesim(&sim), 1);
+	monitor = create_monitor(&sim, sim.dongles);
+	x = start(&sim, &monitor, sim.scheduler);
 	freesim(&sim);
-	if ((monitor).error == 1)
-		return (1);
-	return (0);
+	return (x);
 }

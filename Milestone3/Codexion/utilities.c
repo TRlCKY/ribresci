@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/02 16:45:49 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/13 16:26:19 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/14 17:13:16 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,15 +53,12 @@ void	freesim(t_sim *sim)
 		free(sim->dongles);
 	}
 	i = 0;
-	if (sim->coders)
+	if (sim->mutex)
 	{
-		while (i < sim->num)
-		{
-			pthread_mutex_destroy(sim->coders[i].mutex);
-			i++;
-		}
-		free(sim->coders);
+		pthread_mutex_destroy(sim->mutex);
+		free(sim->mutex);
 	}
+	free(sim->coders);
 	free(sim->scheduler);
 }
 

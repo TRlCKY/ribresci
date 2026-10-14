@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/09 17:12:37 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/13 16:13:22 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/14 17:42:30 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,8 @@ int	take_dongle_dx(t_coder *cdr)
 	long			time;
 	struct timespec	deadline;
 
-	if (cdr->n_compile == 0)
-		return (0);
 	add_back(&cdr->dx->heap, cdr);
-	while (1 && cdr->error == 0)
+	while (cdr->error == 0)
 	{
 		next = get_next(&cdr->dx->heap);
 		if (next && next->id == cdr->id && cdr->dx->used == 0)
@@ -29,7 +27,7 @@ int	take_dongle_dx(t_coder *cdr)
 			time = cdr->dx->cooldown_time - current_time(cdr->start);
 			if (time <= 0)
 				break ;
-			deadline = calculate_time(deadline, time);
+			deadline = calculate_time(time);
 			pthread_cond_timedwait(&cdr->dx->cond, &cdr->dx->mutex,
 				&deadline);
 		}
@@ -44,12 +42,9 @@ int	take_dongle_dx1(t_coder *cdr)
 	if (cdr->error == 1)
 		return (pthread_mutex_unlock(&cdr->dx->mutex), 1);
 	pop_front(&cdr->dx->heap);
-	pthread_mutex_lock(cdr->mutex);
-	printf("%d %d has taken a dongle\n", current_time(cdr->start), cdr->id);
-	pthread_mutex_unlock(cdr->mutex);
+	printf("%ld %d has taken a dongle\n", current_time(cdr->start), cdr->id);
 	cdr->dx->used = 1;
-	if (pthread_mutex_unlock(&cdr->dx->mutex) != 0)
-		return (pthread_mutex_unlock(&cdr->dx->mutex), 1);
+	pthread_mutex_unlock(&cdr->dx->mutex);
 	return (0);
 }
 
@@ -59,8 +54,6 @@ int	take_dongle_sx(t_coder *cdr)
 	long			time;
 	struct timespec	deadline;
 
-	if (cdr->n_compile == 0)
-		return (0);
 	add_back(&cdr->sx->heap, cdr);
 	while (1 && cdr->error == 0)
 	{
@@ -70,7 +63,7 @@ int	take_dongle_sx(t_coder *cdr)
 			time = cdr->sx->cooldown_time - current_time(cdr->start);
 			if (time <= 0)
 				break ;
-			deadline = calculate_time(deadline, time);
+			deadline = calculate_time(time);
 			pthread_cond_timedwait(&cdr->sx->cond, &cdr->sx->mutex,
 				&deadline);
 		}
@@ -83,22 +76,18 @@ int	take_dongle_sx(t_coder *cdr)
 int	take_dongle_sx1(t_coder *cdr)
 {
 	if (cdr->error == 1)
-	{
-		pthread_mutex_unlock(&cdr->sx->mutex);
-		return (1);
-	}
-	pop_front(&cdr->sx->heap);
-	pthread_mutex_lock(cdr->mutex);
-	printf("%d %d has taken a dongle\n", current_time(cdr->start), cdr->id);
-	pthread_mutex_unlock(cdr->mutex);
-	cdr->sx->used = 1;
-	if (pthread_mutex_unlock(&cdr->sx->mutex) != 0)
 		return (pthread_mutex_unlock(&cdr->sx->mutex), 1);
+	pop_front(&cdr->sx->heap);
+	printf("%ld %d has taken a dongle\n", current_time(cdr->start), cdr->id);
+	cdr->sx->used = 1;
+	pthread_mutex_unlock(&cdr->sx->mutex);
 	return (0);
 }
 
-struct timespec	calculate_time(struct timespec deadline, long time)
+struct timespec	calculate_time(long time)
 {
+	struct timespec	deadline;
+
 	clock_gettime(CLOCK_REALTIME, &deadline);
 	deadline.tv_sec += time / 1000;
 	deadline.tv_nsec += (time % 1000) * 1000000L;

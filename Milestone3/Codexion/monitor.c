@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/09 17:13:08 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/13 15:56:03 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/14 17:41:48 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	stop_coders(t_monitor *m, int id)
 	int	i;
 
 	i = 0;
+	pthread_mutex_lock(m->sim->mutex);
 	print_er(current_time(m->sim->start), id);
 	m->finish = 0;
 	while (i < m->sim->num)
@@ -53,6 +54,7 @@ void	stop_coders(t_monitor *m, int id)
 		m->sim->coders[i].error = 1;
 		i++;
 	}
+	pthread_mutex_unlock(m->sim->mutex);
 	i = 0;
 	while (i < m->sim->num)
 	{
@@ -87,7 +89,7 @@ int	check_time(t_monitor *mntr, int i)
 {
 	if (current_time(mntr->sim->start)
 		- mntr->sim->coders[i].last_compile_start
-		>= mntr->sim->coders[i].burnout)
+		>= mntr->sim->burnout)
 		return (1);
 	return (0);
 }

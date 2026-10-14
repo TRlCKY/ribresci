@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/16 12:41:48 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/13 15:52:38 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/14 17:42:19 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	start_compiling(t_coder *coder)
 {
 	coder->last_compile_start = current_time(coder->start);
 	pthread_mutex_lock(coder->mutex);
-	printf("%d %d is compiling\n", current_time(coder->start), coder->id);
+	printf("%ld %d is compiling\n", current_time(coder->start), coder->id);
 	pthread_mutex_unlock(coder->mutex);
 	usleep(coder->compile * 1000);
 	coder->n_compile--;
@@ -51,7 +51,7 @@ int	start_compiling(t_coder *coder)
 int	start_debugging(t_coder *coder)
 {
 	pthread_mutex_lock(coder->mutex);
-	printf("%d %d is debugging\n", current_time(coder->start), coder->id);
+	printf("%ld %d is debugging\n", current_time(coder->start), coder->id);
 	pthread_mutex_unlock(coder->mutex);
 	usleep(coder->debug * 1000);
 	return (0);
@@ -60,7 +60,7 @@ int	start_debugging(t_coder *coder)
 int	start_refactoring(t_coder *coder)
 {
 	pthread_mutex_lock(coder->mutex);
-	printf("%d %d is refactoring\n", current_time(coder->start), coder->id);
+	printf("%ld %d is refactoring\n", current_time(coder->start), coder->id);
 	pthread_mutex_unlock(coder->mutex);
 	usleep(coder->refactor * 1000);
 	return (0);

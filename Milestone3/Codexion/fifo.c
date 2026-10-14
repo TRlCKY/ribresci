@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 12:20:26 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/14 17:35:55 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/14 18:47:38 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ void	*use_dongle_fifo(void *arg)
 			if (coder->error == 1 || start_refactoring(coder) == 1)
 				return (NULL);
 		}
+		usleep(1000);
 	}
 	return (NULL);
 }
@@ -81,23 +82,21 @@ int	can_take_both(t_coder *coder)
 	if (coder->dx->id < coder->sx->id)
 	{
 		pthread_mutex_lock(&coder->dx->mutex);
-		if (take_dongle_dx(coder) == 1)
-			return (1);
-		pthread_mutex_unlock(&coder->dx->mutex);
 		pthread_mutex_lock(&coder->sx->mutex);
-		if (take_dongle_sx(coder) == 1)
-			return (release_dongles(coder, 0), 1);
+		if (coder->dx->used == 0 && coder->sx->used == 0)
+			if (take_dongle_dx(coder) == 1 || take_dongle_sx(coder) == 1)
+				return (release_dongles(coder, 0), 1);
+		pthread_mutex_unlock(&coder->dx->mutex);
 		pthread_mutex_unlock(&coder->sx->mutex);
 	}
 	else
 	{
 		pthread_mutex_lock(&coder->sx->mutex);
-		if (take_dongle_sx(coder) == 1)
-			return (1);
-		pthread_mutex_unlock(&coder->sx->mutex);
 		pthread_mutex_lock(&coder->dx->mutex);
-		if (take_dongle_dx(coder) == 1)
-			return (release_dongles(coder, 0), 1);
+		if (coder->sx->used == 0 && coder->dx->used == 0)
+			if (take_dongle_sx(coder) == 1 || take_dongle_dx(coder) == 1)
+				return (release_dongles(coder, 0), 1);
+		pthread_mutex_unlock(&coder->sx->mutex);
 		pthread_mutex_unlock(&coder->dx->mutex);
 	}
 	return (0);

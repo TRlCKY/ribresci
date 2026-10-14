@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/02 16:42:16 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/13 16:19:01 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/14 11:00:34 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ typedef struct monitor
 {
 	pthread_t		monitor_t;
 	t_sim			*sim;
+	t_dongle		*dongles;
 	int				error;
 	int				finish;
 }	t_monitor;
@@ -128,10 +129,10 @@ int				start_debugging(t_coder *coder);
 int				start_refactoring(t_coder *coder);
 
 // create
-t_dongle		*create_dongles(t_sim *sim, t_dongle *dongles);
+t_dongle		*create_dongles(char **argv, t_dongle *dongles);
 t_coder			*create_coders(t_sim *sim, t_coder *coders, t_dongle *dongles);
 t_sim			create_sim(char **argv);
-t_monitor		create_monitor(t_sim *sim);
+t_monitor		create_monitor(t_sim *sim, t_dongle *dongles);
 t_heap			create_heap(int n, char *scheduler);
 
 // heap_operations

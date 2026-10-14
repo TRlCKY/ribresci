@@ -6,27 +6,27 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 14:51:00 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/13 16:26:46 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/14 11:00:18 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-t_dongle	*create_dongles(t_sim *sim, t_dongle *dongles)
+t_dongle	*create_dongles(char **argv, t_dongle *dongles)
 {
 	int			i;
 
 	i = 0;
-	while (i != sim->num)
+	while (i != atoi(argv[0]))
 	{
 		dongles[i].id = i + 1;
-		dongles[i].cooldown = sim->cooldown;
+		dongles[i].cooldown = atoi(argv[6]);
 		dongles[i].used = 0;
 		if (pthread_mutex_init(&dongles[i].mutex, NULL) != 0)
 			return (NULL);
 		if (pthread_cond_init(&dongles[i].cond, NULL) != 0)
 			return (NULL);
-		dongles[i].heap = create_heap(sim->num, sim->scheduler);
+		dongles[i].heap = create_heap(atoi(argv[0]), argv[7]);
 		dongles[i].cooldown_time = 0;
 		i++;
 	}
@@ -81,7 +81,7 @@ t_sim	create_sim(char **argv)
 	sim.dongles = malloc(sizeof(t_dongle) * sim.num);
 	if (!sim.dongles)
 		return (sim.error = 1, sim);
-	sim.dongles = create_dongles(&sim, sim.dongles);
+	sim.dongles = create_dongles(argv, sim.dongles);
 	if (!sim.dongles)
 		return (sim.error = 1, sim);
 	sim.coders = malloc(sizeof(t_coder) * sim.num);
@@ -91,7 +91,7 @@ t_sim	create_sim(char **argv)
 	return (sim.error = 0, sim);
 }
 
-t_monitor	create_monitor(t_sim *sim)
+t_monitor	create_monitor(t_sim *sim, t_dongle *dongles)
 {
 	t_monitor	monitor;
 
@@ -102,6 +102,7 @@ t_monitor	create_monitor(t_sim *sim)
 	else
 		monitor.error = 0;
 	monitor.finish = 1;
+	monitor.dongles = dongles;
 	return (monitor);
 }
 

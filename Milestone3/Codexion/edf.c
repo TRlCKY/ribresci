@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/09 17:11:00 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/15 15:06:23 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/15 16:28:15 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	*use_dongle_edf(void *arg)
 		return (one_coder(coder));
 	while (coder->n_compile != 0 && coder->error != 1)
 	{
-		if (can_take_both(coder) == 1)
+		if (can_take_both_edf(coder) == 1)
 		{
 			if (coder->error == 1 || start_compiling(coder) == 1)
 				return (NULL);
@@ -50,20 +50,14 @@ int	take_sx_dx_edf(t_coder *coder)
 	pthread_mutex_lock(&coder->sx->mutex);
 	pthread_mutex_lock(&coder->dx->mutex);
 	if (coder->id == next_sx->id && coder->id == next_dx->id)
-	{
 		if (coder->sx->used == 0 && coder->dx->used == 0)
-		{
-			if (coder->sx->cooldown_time - current_time(coder->start) > 0
-				&& coder->dx->cooldown_time - current_time(coder->start) > 0)
-				return (1);
-		}
-		else
-		{
-			pthread_mutex_unlock(&coder->sx->mutex);
-			pthread_mutex_unlock(&coder->dx->mutex);
-			return (0);
-		}
-	}
+			if (coder->sx->cooldown_time - current_time(coder->start) <= 0
+				&& coder->dx->cooldown_time - current_time(coder->start) <= 0)
+				if (take_dongle_sx(coder) == 0)
+					if (take_dongle_dx(coder) == 0)
+						return (1);
+	pthread_mutex_unlock(&coder->sx->mutex);
+	pthread_mutex_unlock(&coder->dx->mutex);
 	return (0);
 }
 
@@ -79,46 +73,21 @@ int	take_dx_sx_edf(t_coder *coder)
 	pthread_mutex_lock(&coder->dx->mutex);
 	pthread_mutex_lock(&coder->sx->mutex);
 	if (coder->id == next_dx->id && coder->id == next_sx->id)
-	{
 		if (coder->dx->used == 0 && coder->sx->used == 0)
-		{
-			if (coder->dx->cooldown_time - current_time(coder->start) > 0
-				&& coder->sx->cooldown_time - current_time(coder->start) > 0)
-				return (1);
-		}
-		else
-		{
-			pthread_mutex_unlock(&coder->sx->mutex);
-			pthread_mutex_unlock(&coder->dx->mutex);
-			return (0);
-		}
-	}
+			if (coder->dx->cooldown_time - current_time(coder->start) <= 0
+				&& coder->sx->cooldown_time - current_time(coder->start) <= 0)
+				if (take_dongle_dx(coder) == 0)
+					if (take_dongle_sx(coder) == 0)
+						return (1);
+	pthread_mutex_unlock(&coder->dx->mutex);
+	pthread_mutex_unlock(&coder->sx->mutex);
 	return (0);
 }
 
 int	can_take_both_edf(t_coder *coder)
 {
 	if (coder->dx->id > coder->sx->id)
-	{
-		if (take_sx_dx_edf(coder) != 0 && take_dongle_sx(coder) == 0)
-		{
-			if (take_dongle_dx(coder) != 0)
-				return (0);
-			else
-				return (1);
-		}
-		else
-			return (0);
-	}
+		return (take_sx_dx_edf(coder));
 	else
-	{
-		if (take_dx_sx_edf(coder) != 0 && take_dongle_dx(coder) != 0)
-		{
-			if (take_dongle_sx(coder) != 0)
-				return (0);
-			else
-				return (1);
-		}
-	}
-	return (0);
+		return (take_dx_sx_edf(coder));
 }

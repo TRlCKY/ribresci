@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 12:20:26 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/15 17:01:55 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/15 17:28:33 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,11 +88,11 @@ int	take_dx_sx(t_coder *coder)
 		return (0);
 	}
 	if (coder->sx->used == 0 && coder->dx->used == 0)
-	{
-		if (take_dongle_dx(coder) == 0)
-			if (take_dongle_sx(coder) == 0)
-				return (1);
-	}
+		if (coder->dx->cooldown_time - current_time(coder->start) <= 0
+			&& coder->sx->cooldown_time - current_time(coder->start) <= 0)
+			if (take_dongle_dx(coder) == 0)
+				if (take_dongle_sx(coder) == 0)
+					return (1);
 	pthread_mutex_unlock(&coder->dx->mutex);
 	pthread_mutex_unlock(&coder->sx->mutex);
 	return (0);
@@ -109,11 +109,11 @@ int	take_sx_dx(t_coder *coder)
 		return (0);
 	}
 	if (coder->sx->used == 0 && coder->dx->used == 0)
-	{
-		if (take_dongle_sx(coder) == 0)
-			if (take_dongle_dx(coder) == 0)
-				return (1);
-	}
+		if (coder->dx->cooldown_time - current_time(coder->start) <= 0
+			&& coder->sx->cooldown_time - current_time(coder->start) <= 0)
+			if (take_dongle_sx(coder) == 0)
+				if (take_dongle_dx(coder) == 0)
+					return (1);
 	pthread_mutex_unlock(&coder->sx->mutex);
 	pthread_mutex_unlock(&coder->dx->mutex);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/09 17:11:00 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/15 16:28:15 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/15 17:18:58 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,5 @@ int	can_take_both_edf(t_coder *coder)
 {
 	if (coder->dx->id > coder->sx->id)
 		return (take_sx_dx_edf(coder));
-	else
-		return (take_dx_sx_edf(coder));
+	return (take_dx_sx_edf(coder));
 }

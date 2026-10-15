@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 12:15:14 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/14 18:10:12 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/15 16:32:15 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,8 @@ int	main(int argc, char **argv)
 
 	if (check_values(argc, argv) == 1)
 		return (1);
+	if (atoi(argv[6]) == 0)
+		return (0);
 	sim = create_sim(argv);
 	if ((sim).error == 1)
 		return (freesim(&sim), 1);

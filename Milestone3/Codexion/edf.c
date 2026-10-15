@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/09 17:11:00 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/15 12:59:05 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/15 15:06:23 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,15 +38,15 @@ void	*use_dongle_edf(void *arg)
 	return (NULL);
 }
 
-int	take_sx_dx(t_coder *coder)
+int	take_sx_dx_edf(t_coder *coder)
 {
 	t_coder	*next_dx;
 	t_coder	*next_sx;
 
 	add_back(&coder->sx->heap, coder);
 	add_back(&coder->dx->heap, coder);
-	next_sx = get_next(coder->sx);
-	next_dx = get_next(coder->dx);
+	next_sx = get_next(&coder->sx->heap);
+	next_dx = get_next(&coder->dx->heap);
 	pthread_mutex_lock(&coder->sx->mutex);
 	pthread_mutex_lock(&coder->dx->mutex);
 	if (coder->id == next_sx->id && coder->id == next_dx->id)
@@ -67,15 +67,15 @@ int	take_sx_dx(t_coder *coder)
 	return (0);
 }
 
-int	take_dx_sx(t_coder *coder)
+int	take_dx_sx_edf(t_coder *coder)
 {
 	t_coder	*next_dx;
 	t_coder	*next_sx;
 
 	add_back(&coder->dx->heap, coder);
 	add_back(&coder->sx->heap, coder);
-	next_sx = get_next(coder->sx);
-	next_dx = get_next(coder->dx);
+	next_sx = get_next(&coder->sx->heap);
+	next_dx = get_next(&coder->dx->heap);
 	pthread_mutex_lock(&coder->dx->mutex);
 	pthread_mutex_lock(&coder->sx->mutex);
 	if (coder->id == next_dx->id && coder->id == next_sx->id)
@@ -96,15 +96,29 @@ int	take_dx_sx(t_coder *coder)
 	return (0);
 }
 
-int	can_take_both(t_coder *coder)
+int	can_take_both_edf(t_coder *coder)
 {
-	int	x;
-
 	if (coder->dx->id > coder->sx->id)
 	{
-		if (take_sx_dx(coder))
-		// prende dngls
+		if (take_sx_dx_edf(coder) != 0 && take_dongle_sx(coder) == 0)
+		{
+			if (take_dongle_dx(coder) != 0)
+				return (0);
+			else
+				return (1);
+		}
+		else
+			return (0);
 	}
 	else
-		take_dx_sx(coder);
+	{
+		if (take_dx_sx_edf(coder) != 0 && take_dongle_dx(coder) != 0)
+		{
+			if (take_dongle_sx(coder) != 0)
+				return (0);
+			else
+				return (1);
+		}
+	}
+	return (0);
 }

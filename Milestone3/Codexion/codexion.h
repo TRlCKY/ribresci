@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/02 16:42:16 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/15 11:53:58 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/15 15:05:14 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,9 @@ int				take_dx_sx(t_coder *coder);
 
 // edf
 void			*use_dongle_edf(void *arg);
+int				can_take_both_edf(t_coder *coder);
+int				take_sx_dx_edf(t_coder *coder);
+int				take_dx_sx_edf(t_coder *coder);
 
 // monitor
 void			*check(void *arg);

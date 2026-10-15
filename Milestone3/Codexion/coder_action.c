@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/09 17:12:37 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/14 18:07:21 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/15 12:23:53 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	take_dongle_dx1(t_coder *cdr)
 	if (cdr->error == 1)
 		return (pthread_mutex_unlock(&cdr->dx->mutex), 1);
 	pop_front(&cdr->dx->heap);
-	print_msg(cdr, " has taken a dongle\n");
+	print_msg(cdr, "has taken a dongle\n");
 	cdr->dx->used = 1;
 	pthread_mutex_unlock(&cdr->dx->mutex);
 	return (0);
@@ -55,7 +55,7 @@ int	take_dongle_sx(t_coder *cdr)
 	struct timespec	deadline;
 
 	add_back(&cdr->sx->heap, cdr);
-	while (1 && cdr->error == 0)
+	while (cdr->error == 0)
 	{
 		next = get_next(&cdr->sx->heap);
 		if (next && next->id == cdr->id && cdr->sx->used == 0)
@@ -78,7 +78,7 @@ int	take_dongle_sx1(t_coder *cdr)
 	if (cdr->error == 1)
 		return (pthread_mutex_unlock(&cdr->sx->mutex), 1);
 	pop_front(&cdr->sx->heap);
-	print_msg(cdr, " has taken a dongle\n");
+	print_msg(cdr, "has taken a dongle\n");
 	cdr->sx->used = 1;
 	pthread_mutex_unlock(&cdr->sx->mutex);
 	return (0);

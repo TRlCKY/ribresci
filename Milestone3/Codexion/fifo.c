@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 12:20:26 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/14 18:47:38 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/15 12:45:39 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	*use_dongle_fifo(void *arg)
 		return (one_coder(coder));
 	while (coder->n_compile != 0 && coder->error != 1)
 	{
-		if (can_take_both(coder) == 0)
+		if (can_take_both(coder) == 1)
 		{
 			if (coder->error == 1 || start_compiling(coder) == 1)
 				return (NULL);
@@ -77,27 +77,63 @@ void	*one_coder(void *arg)
 	return (NULL);
 }
 
+int	take_dx_sx(t_coder *coder)
+{
+	pthread_mutex_lock(&coder->dx->mutex);
+	pthread_mutex_lock(&coder->sx->mutex);
+	if (coder->dx->used == 1 || coder->sx->used == 1)
+	{
+		pthread_mutex_unlock(&coder->sx->mutex);
+		pthread_mutex_unlock(&coder->dx->mutex);
+		return (0);
+	}
+	if (take_dongle_dx(coder) == 1)
+		return (pthread_mutex_unlock(&coder->sx->mutex), 0);
+	if (take_dongle_sx(coder) == 1)
+		return (release_dongles(coder, 0), 0);
+	return (1);
+}
+
+int	take_sx_dx(t_coder *coder)
+{
+	pthread_mutex_lock(&coder->sx->mutex);
+	pthread_mutex_lock(&coder->dx->mutex);
+	if (coder->sx->used == 1 || coder->dx->used == 1)
+	{
+		pthread_mutex_unlock(&coder->dx->mutex);
+		pthread_mutex_unlock(&coder->sx->mutex);
+		return (0);
+	}
+	if (take_dongle_sx(coder) == 1)
+		return (pthread_mutex_unlock(&coder->dx->mutex), 0);
+	if (take_dongle_dx(coder) == 1)
+		return (release_dongles(coder, 0), 0);
+	return (1);
+}
+
 int	can_take_both(t_coder *coder)
 {
 	if (coder->dx->id < coder->sx->id)
-	{
-		pthread_mutex_lock(&coder->dx->mutex);
-		pthread_mutex_lock(&coder->sx->mutex);
-		if (coder->dx->used == 0 && coder->sx->used == 0)
-			if (take_dongle_dx(coder) == 1 || take_dongle_sx(coder) == 1)
-				return (release_dongles(coder, 0), 1);
-		pthread_mutex_unlock(&coder->dx->mutex);
-		pthread_mutex_unlock(&coder->sx->mutex);
-	}
-	else
-	{
-		pthread_mutex_lock(&coder->sx->mutex);
-		pthread_mutex_lock(&coder->dx->mutex);
-		if (coder->sx->used == 0 && coder->dx->used == 0)
-			if (take_dongle_sx(coder) == 1 || take_dongle_dx(coder) == 1)
-				return (release_dongles(coder, 0), 1);
-		pthread_mutex_unlock(&coder->sx->mutex);
-		pthread_mutex_unlock(&coder->dx->mutex);
-	}
-	return (0);
+		return (take_dx_sx(coder));
+	return (take_sx_dx(coder));
 }
+
+// Come funziona un EDF corretto
+// 1) Registrarsi in entrambe le heap (dx e sx) appena si vuole compilare, non 
+//    quando le dongle sono già libere.
+// 2) Prendere le dongle solo se:
+//    * si è in testa a entrambe le heap;
+//    * entrambe le dongle sono libere (used == 0);
+//    * il cooldown di entrambe è passato.
+// 3) Fare il controllo e la presa nella stessa sezione critica, tenendo i 
+//    mutex delle due dongle in ordine di id.
+// 4) Dopo la presa, pop_front da entrambe le heap.
+
+// Questo schema non va in deadlock. Il coder con la deadline più vicina tra 
+// quelli in attesa è in testa a entrambe le sue heap, perché chiunque 
+// condivida una dongle con lui ha una deadline più tarda. Quindi non può 
+// mai essere bloccato dalla posizione in coda, ma solo da used o dal cooldown,
+// che finiscono da soli. La deadline resta fissa mentre aspetta 
+// (last_compile_start cambia solo quando compila, cioè quando è già uscito 
+// dalla heap), quindi non c’è starvation. Il tie-break sull’id che hai 
+// già in do_switch rende l’ordine totale.

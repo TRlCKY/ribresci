@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/09 17:11:00 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/13 15:53:48 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/15 12:59:05 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	*use_dongle_edf(void *arg)
 		return (one_coder(coder));
 	while (coder->n_compile != 0 && coder->error != 1)
 	{
-		if (can_take_both(coder) == 0)
+		if (can_take_both(coder) == 1)
 		{
 			if (coder->error == 1 || start_compiling(coder) == 1)
 				return (NULL);
@@ -33,6 +33,78 @@ void	*use_dongle_edf(void *arg)
 			if (coder->error == 1 || start_refactoring(coder) == 1)
 				return (NULL);
 		}
+		usleep(1000);
 	}
 	return (NULL);
+}
+
+int	take_sx_dx(t_coder *coder)
+{
+	t_coder	*next_dx;
+	t_coder	*next_sx;
+
+	add_back(&coder->sx->heap, coder);
+	add_back(&coder->dx->heap, coder);
+	next_sx = get_next(coder->sx);
+	next_dx = get_next(coder->dx);
+	pthread_mutex_lock(&coder->sx->mutex);
+	pthread_mutex_lock(&coder->dx->mutex);
+	if (coder->id == next_sx->id && coder->id == next_dx->id)
+	{
+		if (coder->sx->used == 0 && coder->dx->used == 0)
+		{
+			if (coder->sx->cooldown_time - current_time(coder->start) > 0
+				&& coder->dx->cooldown_time - current_time(coder->start) > 0)
+				return (1);
+		}
+		else
+		{
+			pthread_mutex_unlock(&coder->sx->mutex);
+			pthread_mutex_unlock(&coder->dx->mutex);
+			return (0);
+		}
+	}
+	return (0);
+}
+
+int	take_dx_sx(t_coder *coder)
+{
+	t_coder	*next_dx;
+	t_coder	*next_sx;
+
+	add_back(&coder->dx->heap, coder);
+	add_back(&coder->sx->heap, coder);
+	next_sx = get_next(coder->sx);
+	next_dx = get_next(coder->dx);
+	pthread_mutex_lock(&coder->dx->mutex);
+	pthread_mutex_lock(&coder->sx->mutex);
+	if (coder->id == next_dx->id && coder->id == next_sx->id)
+	{
+		if (coder->dx->used == 0 && coder->sx->used == 0)
+		{
+			if (coder->dx->cooldown_time - current_time(coder->start) > 0
+				&& coder->sx->cooldown_time - current_time(coder->start) > 0)
+				return (1);
+		}
+		else
+		{
+			pthread_mutex_unlock(&coder->sx->mutex);
+			pthread_mutex_unlock(&coder->dx->mutex);
+			return (0);
+		}
+	}
+	return (0);
+}
+
+int	can_take_both(t_coder *coder)
+{
+	int	x;
+
+	if (coder->dx->id > coder->sx->id)
+	{
+		if (take_sx_dx(coder))
+		// prende dngls
+	}
+	else
+		take_dx_sx(coder);
 }

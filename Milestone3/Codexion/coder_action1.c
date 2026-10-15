@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/16 12:41:48 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/14 18:18:23 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/15 11:13:45 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	release_dongles(t_coder *coder, int x)
 int	start_compiling(t_coder *coder)
 {
 	coder->last_compile_start = current_time(coder->start);
-	print_msg(coder, " is compiling\n");
+	print_msg(coder, "is compiling\n");
 	usleep(coder->compile * 1000);
 	coder->n_compile--;
 	return (0);
@@ -48,14 +48,14 @@ int	start_compiling(t_coder *coder)
 
 int	start_debugging(t_coder *coder)
 {
-	print_msg(coder, " is debugging\n");
+	print_msg(coder, "is debugging\n");
 	usleep(coder->debug * 1000);
 	return (0);
 }
 
 int	start_refactoring(t_coder *coder)
 {
-	print_msg(coder, " is refactoring\n");
+	print_msg(coder, "is refactoring\n");
 	usleep(coder->refactor * 1000);
 	return (0);
 }

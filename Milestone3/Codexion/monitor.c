@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/09 17:13:08 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/14 18:06:17 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/15 11:56:24 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,9 @@ void	stop_coders(t_monitor *m, t_coder *coder)
 	int	i;
 
 	i = 0;
-	print_msg(coder, " burned out\n");
+	pthread_mutex_lock(m->sim->mutex);
+	printf("%ld %d burned out\n",
+		current_time(m->sim->start), coder->id);
 	m->finish = 0;
 	while (i < m->sim->num)
 	{

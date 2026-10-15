@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/02 16:42:16 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/14 18:06:02 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/15 11:53:58 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,9 +90,10 @@ typedef struct monitor
 
 // fifo
 void			*use_dongle_fifo(void *arg);
-void			*fifo1(void *arg);
 void			*one_coder(void *arg);
 int				can_take_both(t_coder *coder);
+int				take_sx_dx(t_coder *coder);
+int				take_dx_sx(t_coder *coder);
 
 // edf
 void			*use_dongle_edf(void *arg);

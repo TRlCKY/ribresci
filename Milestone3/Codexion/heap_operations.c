@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/05 14:00:29 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/16 11:18:33 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/16 17:05:44 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,18 +83,9 @@ int	do_switch(t_coder *c1, t_coder *c2, int burnout)
 
 	d1 = c1->last_compile_start + burnout;
 	d2 = c2->last_compile_start + burnout;
-	if (d1 == d2)
-	{
-		if (c1->id > c2->id)
-			return (1);
-		return (0);
-	}
-	else
-	{
-		if (d1 > d2)
-			return (1);
-		return (0);
-	}
+	if (d1 > d2)
+		return (1);
+	return (0);
 }
 
 // Controlla se il coder e' gia' all'interno dell'heap

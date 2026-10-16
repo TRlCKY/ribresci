@@ -6,12 +6,13 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 12:15:14 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/15 18:04:07 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/16 11:21:28 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
+// Inizia la simulazione creando i thread dei programmatori e del monitor
 int	start(t_sim *sim, t_monitor *monitor, char *scheduler)
 {
 	int	i;
@@ -38,6 +39,7 @@ int	start(t_sim *sim, t_monitor *monitor, char *scheduler)
 	return (start1(sim, monitor));
 }
 
+// Vvengono fatti partire i thread del monitor e dei programmatori
 int	start1(t_sim *sim, t_monitor *monitor)
 {
 	int	i;
@@ -57,6 +59,7 @@ int	start1(t_sim *sim, t_monitor *monitor)
 	return (0);
 }
 
+// Restituisce in ms il tempo attuale
 long	current_time(struct timespec start)
 {
 	struct timespec	now;
@@ -69,7 +72,7 @@ long	current_time(struct timespec start)
 	return ((sec * 1000) + (nsec / 1000000));
 }
 
-// Controlla che tutti i numeri siano positivi e se l'atoi li converte tutti
+// Controlla che tutti i valori, eccetto l'ultimo, siano numeri >= 0 
 int	check_values(int argc, char **argv)
 {
 	int	i;
@@ -91,6 +94,7 @@ int	check_values(int argc, char **argv)
 	return (0);
 }
 
+// Main
 int	main(int argc, char **argv)
 {
 	t_sim		sim;

@@ -6,12 +6,13 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/09 17:12:37 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/15 12:23:53 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/16 11:10:33 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
+// Prende la chiavetta alla sua destra se ci sono le condizioni per farlo
 int	take_dongle_dx(t_coder *cdr)
 {
 	t_coder			*next;
@@ -48,6 +49,7 @@ int	take_dongle_dx1(t_coder *cdr)
 	return (0);
 }
 
+// Prende la chiavetta alla sua sinistra se ci sono le condizioni per farlo
 int	take_dongle_sx(t_coder *cdr)
 {
 	t_coder			*next;
@@ -84,6 +86,7 @@ int	take_dongle_sx1(t_coder *cdr)
 	return (0);
 }
 
+// Calcola il tempo di attesa se la chiavetta e' ancora in cooldown
 struct timespec	calculate_time(long time)
 {
 	struct timespec	deadline;

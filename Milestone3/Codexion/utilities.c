@@ -6,12 +6,13 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/02 16:45:49 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/14 17:13:16 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/16 11:24:37 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
+// Funzione che copia size valori con alla fine '\0' da src a dest
 unsigned int	ft_strlcpy(char *dest, const char *src, size_t size)
 {
 	size_t	i;
@@ -36,6 +37,7 @@ unsigned int	ft_strlcpy(char *dest, const char *src, size_t size)
 	return (e);
 }
 
+// Vengono fatti tutti i free, dai malloc usati in sim
 void	freesim(t_sim *sim)
 {
 	int	i;
@@ -62,6 +64,7 @@ void	freesim(t_sim *sim)
 	free(sim->scheduler);
 }
 
+// Vengono fatti tutti i free, dai malloc usati in heap
 void	freeheap(t_heap *heap)
 {
 	pthread_mutex_destroy(&heap->mutex);
@@ -71,6 +74,7 @@ void	freeheap(t_heap *heap)
 		free(heap->scheduler);
 }
 
+// Prende i valori dell'argv, utili ai coder
 char	**get_argv(t_sim *sim, char **argv)
 {
 	char	**argv0;

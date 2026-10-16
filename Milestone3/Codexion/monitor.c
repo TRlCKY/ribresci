@@ -6,13 +6,14 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/09 17:13:08 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/15 11:56:24 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/16 11:22:31 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-// Controlla che i coders non vadano in burnout o abbiano finito
+// Controlla che i coders non vadano in burnout o abbiano finito di compilare
+// n_compile volte
 void	*check(void *arg)
 {
 	t_monitor	*m;
@@ -40,7 +41,8 @@ void	*check(void *arg)
 	return (NULL);
 }
 
-// Con un burnout si fermano tutti e risveglia quelli in attesa
+// Con un burnout si fermano tutti i coder e vengono risvegliati quelli in
+// attesa
 void	stop_coders(t_monitor *m, t_coder *coder)
 {
 	int	i;

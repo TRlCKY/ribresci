@@ -1,7 +1,7 @@
 # Comandi per compilare
 CC = cc
 # Flags per compilare
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -pthread
 # File sorgenti
 SRC = $(wildcard *.c)
 # Cambia da .c in .o per il comando nel terminale

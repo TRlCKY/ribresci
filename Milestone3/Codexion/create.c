@@ -6,12 +6,13 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 14:51:00 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/14 18:12:35 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/16 11:12:23 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
+// Crea le chiavette
 int	create_dongles(char **argv, t_dongle *dongles)
 {
 	int			i;
@@ -35,6 +36,7 @@ int	create_dongles(char **argv, t_dongle *dongles)
 	return (0);
 }
 
+// Crea i programmatori
 t_coder	*create_coders(t_sim *sim, t_coder *cdrs, t_dongle *dngls, char **argv)
 {
 	int		i;
@@ -60,6 +62,7 @@ t_coder	*create_coders(t_sim *sim, t_coder *cdrs, t_dongle *dngls, char **argv)
 	return (cdrs);
 }
 
+// Crea la simulazione
 t_sim	create_sim(char **argv)
 {
 	t_sim	sim;
@@ -99,6 +102,7 @@ int	create_sim1(t_sim *sim, char **argv)
 	return (sim->error = 0, 0);
 }
 
+// Crea il monitor
 t_monitor	create_monitor(t_sim *sim, t_dongle *dongles)
 {
 	t_monitor	monitor;

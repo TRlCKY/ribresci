@@ -6,12 +6,13 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/16 12:41:48 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/15 11:13:45 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/16 11:11:40 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
+// Dopo la compilazione rilascia entrambe le dongle e setta il cooldown
 int	release_dongles(t_coder *coder, int x)
 {
 	if (coder->dx)
@@ -37,6 +38,7 @@ int	release_dongles(t_coder *coder, int x)
 	return (0);
 }
 
+// Inizia a compilare
 int	start_compiling(t_coder *coder)
 {
 	coder->last_compile_start = current_time(coder->start);
@@ -46,6 +48,7 @@ int	start_compiling(t_coder *coder)
 	return (0);
 }
 
+// Inizia a debuggare
 int	start_debugging(t_coder *coder)
 {
 	print_msg(coder, "is debugging\n");
@@ -53,6 +56,7 @@ int	start_debugging(t_coder *coder)
 	return (0);
 }
 
+// Inizia a refactorare
 int	start_refactoring(t_coder *coder)
 {
 	print_msg(coder, "is refactoring\n");

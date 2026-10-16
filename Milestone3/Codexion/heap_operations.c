@@ -6,13 +6,13 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/05 14:00:29 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/15 17:48:09 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/16 11:18:33 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-// Aggiunge in coda un coder
+// Aggiunge in fondo alla coda un coder
 void	add_back(t_heap *heap, t_coder *coder)
 {
 	int	i;
@@ -75,6 +75,7 @@ void	sort_heap(t_heap *heap)
 	}
 }
 
+// Controlla se vanno scambiati gli elementi
 int	do_switch(t_coder *c1, t_coder *c2, int burnout)
 {
 	long	d1;
@@ -96,6 +97,7 @@ int	do_switch(t_coder *c1, t_coder *c2, int burnout)
 	}
 }
 
+// Controlla se il coder e' gia' all'interno dell'heap
 int	is_inside(t_heap *heap, t_coder coder)
 {
 	int	i;

@@ -6,13 +6,13 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/09 17:11:00 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/15 17:18:58 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/16 11:16:27 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-// Dopo il controllo del burnout vengono effettuate le varie azioni
+// Iniziano a programmare se rispettano le condizioni con scheduler="edf"
 void	*use_dongle_edf(void *arg)
 {
 	t_coder		*coder;
@@ -38,6 +38,7 @@ void	*use_dongle_edf(void *arg)
 	return (NULL);
 }
 
+// Prende prima la chiavetta sinistra e poi la destra, se puo' farlo
 int	take_sx_dx_edf(t_coder *coder)
 {
 	t_coder	*next_dx;
@@ -61,6 +62,7 @@ int	take_sx_dx_edf(t_coder *coder)
 	return (0);
 }
 
+// Prende prima la chiavetta destra e poi la sinistra, se puo' farlo
 int	take_dx_sx_edf(t_coder *coder)
 {
 	t_coder	*next_dx;
@@ -84,6 +86,12 @@ int	take_dx_sx_edf(t_coder *coder)
 	return (0);
 }
 
+// A seconda dell'id delle chiavette si decide quale prendere prima (si prende
+// quella con l'id piu' basso per evitare che tutti prendano ad esempio la 
+// destra e nessuno la sinistra). con 3 coder si ha:
+// *coder1, sx=0, dx = 1 (prende prima la sx)
+// *coder2, sx=1, dx = 2 (prende prima la sx)
+// *coder3, sx=2, dx = 0 (prende prima la dx)
 int	can_take_both_edf(t_coder *coder)
 {
 	if (coder->dx->id > coder->sx->id)

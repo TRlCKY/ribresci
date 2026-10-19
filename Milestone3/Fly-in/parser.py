@@ -5,19 +5,12 @@ class parsingException(Exception):
     pass
 
 
-def init_new_list() -> list[list[str]]:
-    list0 = list[list[str]]
-    list0[0][0] = "nb_drones"
-    list0[1][0] = "start_hub"
-    list0[2][0] = "end_hub"
-    list0[3][0] = "hubs"
-    list0[4][0] = "connection"
-    return list0
-
-
 # Controlla che il file dato come parametro sia scritto correttamente
+# E restituisce una lista con i valori da utilizzare per creare i droni,
+# gli hub e le connessioni
 def parser(argv: list[str]) -> list[list[str]]:
-    new_list = init_new_list()
+    new_list = [['nb_drones'], ['start_hub'], ['end_hub'], ['hubs'],
+                ['connection']]
     with open(argv[1], "r") as f:
         text = f.read()
 
@@ -49,7 +42,7 @@ def parser(argv: list[str]) -> list[list[str]]:
             continue
 
         # Controllo riga nb_drones
-        if x.startswith("nb_drones: "):
+        elif x.startswith("nb_drones: "):
             # Ottiene solo il valore dopo nb_drones
             line0 = (x.split("nb_drones: ", 1).pop())
             try:
@@ -59,28 +52,38 @@ def parser(argv: list[str]) -> list[list[str]]:
                                            f"in line {current_line}.")
                 new_list[0].append(str(nb_drones))
             except ValueError as e:
-                print(f"Got Parser Error : {e}")
+                raise parsingException(f"{e} in line {current_line}")
 
         # Controllo riga start_hub
-        if x.startswith("start_hub: "):
+        elif x.startswith("start_hub: "):
             line0 = x.split(' ')
             line0.pop(0)
+            try:
+                int(line0[0])
+                int(line0[1])
+            except ValueError as e:
+                raise parsingException(f"{e} in line {current_line}")
+            new_list[1].extend([line0[0], line0[1]])
+            # Controllo metadata
+            pipo = 0
 
         # Controllo riga end_hub
-        if x.startswith("end_hub: "):
+        elif x.startswith("end_hub: "):
             line0 = x.split(' ')
             line0.pop(0)
 
         # Controllo righe hub
-        if x.startswith("hub: "):
+        elif x.startswith("hub: "):
             line0 = x.split(' ')
             line0.pop(0)
 
         # Controllo righe connection
-        if x.startswith("connection: "):
+        elif x.startswith("connection: "):
             line0 = x.split(' ')
             line0.pop(0)
-    return 1
+        else:
+            raise parsingException(f"Invalid line in line {current_line}")
+    return new_list
 
 
 def init_hubs(list0: list[list[str]]):
@@ -90,10 +93,10 @@ def init_hubs(list0: list[list[str]]):
 def main():
     argv = sys.argv
     try:
-        new_list = parser(argv)
+        list0 = parser(argv)
     except parsingException as e:
         print(e)
-    init_hubs(new_list)
+    init_hubs(list0)
 
 
 if __name__ == "__main__":

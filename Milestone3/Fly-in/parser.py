@@ -27,13 +27,20 @@ def parser(argv: list[str]) -> int:
         raise parsingException("0 'connection: ...' lines")
 
     current_line = 0
+    # Viene separato il testo in righe a cui viene rimosso lo '\n'
     for x in text.splitlines():
+        x = str(x.split('\n', 1).pop(0))
         current_line += 1
-        if x.startswith("#") or x == "\n":
+
+        # Salta le linee che iniziano con il # o che sono vuote
+        if x.startswith("#") or x == "":
             continue
+
+        # Controllo riga nb_drones
         if x.startswith("nb_drones: "):
             nb_drones_line -= 1
-            line0 = x - "nb_drones: "
+            # Ottiene solo il valore dopo nb_drones
+            line0 = (x.split("nb_drones: ", 1).pop())
             try:
                 nb_drones = int(line0)
                 if nb_drones <= 0:
@@ -41,6 +48,8 @@ def parser(argv: list[str]) -> int:
                                            f"in line {current_line}.")
             except ValueError as e:
                 print(f"Got Parser Error : {e}")
+
+        # Controllo riga start_hub
         if x.startswith("start_hub: "):
             start_line += 1
             # line0 = x - "start_hub: "

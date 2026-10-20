@@ -64,8 +64,42 @@ def parser(argv: list[str]) -> list[list[str]]:
             except ValueError as e:
                 raise parsingException(f"{e} in line {current_line}")
             new_list[1].extend([line0[0], line0[1]])
+
             # Controllo metadata
-            pipo = 0
+            line0.pop(0)
+            line0.pop(0)
+            if not line0[0].startswith('[') and line0[0] is not None:
+                raise parsingException("Invalid metadata format in line "
+                                       f"{current_line}")
+            elif line0[0] is None:
+                continue
+            line1 = " ".join(line0)
+            if not line1.endswith(']'):
+                raise parsingException("Invalid metadata format in line "
+                                       f"{current_line}")
+            if line1.count('[') != line1.count(']') and line1.count(']') != 1:
+                raise parsingException("Invalid metadata format in line "
+                                       f"{current_line}")
+            for el in line0:
+                if el.startswith('['):
+                    el = el.split('[').pop()
+                elif el.endswith(']'):
+                    el = el.split(']').pop()
+                # Il controllo dei colori viene fatto quando si rappresenta
+                # la mappa
+                elif (el.startswith('color=')):
+                    continue
+                # Controllo numero droni
+                elif el.startswith('max_drones='):
+                    el0 = el.split('=').pop()
+                    if int(el0) < 0:
+                        raise parsingException("Invalid max_drones value in "
+                                               f"line {current_line}")
+                # Controllo zone
+                elif (el != "zone=normal" and el != "zone=blocked"
+                      and el != "zone=restricted" and el != "zone=priority"):
+                    raise parsingException("Invalid metadata format in line "
+                                           f"{current_line}")
 
         # Controllo riga end_hub
         elif x.startswith("end_hub: "):

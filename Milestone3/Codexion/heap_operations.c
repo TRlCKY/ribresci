@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/05 14:00:29 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/16 17:05:44 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/20 11:06:19 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,23 +51,23 @@ void	pop_front(t_heap *heap)
 }
 
 // In caso di scheduler=="edf" si ordina la coda per la deadline più vicina
-void	sort_heap(t_heap *heap)
+void	sort_heap(t_heap *h)
 {
 	int		i;
 	int		e;
 	t_coder	*coder0;
 
 	e = 0;
-	while (e < heap->size)
+	while (e < h->size)
 	{
 		i = 0;
-		while (i < heap->size - 1)
+		while (i < h->size - 1)
 		{
-			if (do_switch(heap->coders[i], heap->coders[i + 1], heap->burnout))
+			if (do_switch(h->coders[i], h->coders[i + 1], h->burnout, *h))
 			{
-				coder0 = heap->coders[i];
-				heap->coders[i] = heap->coders[i + 1];
-				heap->coders[i + 1] = coder0;
+				coder0 = h->coders[i];
+				h->coders[i] = h->coders[i + 1];
+				h->coders[i + 1] = coder0;
 			}
 			i++;
 		}
@@ -76,13 +76,21 @@ void	sort_heap(t_heap *heap)
 }
 
 // Controlla se vanno scambiati gli elementi
-int	do_switch(t_coder *c1, t_coder *c2, int burnout)
+int	do_switch(t_coder *c1, t_coder *c2, int burnout, t_heap heap)
 {
 	long	d1;
 	long	d2;
 
-	d1 = c1->last_compile_start + burnout;
-	d2 = c2->last_compile_start + burnout;
+	if (strcmp(heap.scheduler, "edf") == 0)
+	{
+		d1 = c1->last_compile_start + burnout;
+		d2 = c2->last_compile_start + burnout;
+	}
+	else
+	{
+		d1 = c1->request_time;
+		d2 = c2->request_time;
+	}
 	if (d1 > d2)
 		return (1);
 	return (0);

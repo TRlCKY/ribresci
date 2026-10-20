@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/02 16:42:16 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/15 15:05:14 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/20 12:23:35 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ typedef struct s_coder
 	int				n_compile;
 	int				error;
 	long			last_compile_start;
+	long			request_time;
 	pthread_t		thread;
 	t_dongle		*dx;
 	t_dongle		*sx;
@@ -115,10 +116,11 @@ int				start(t_sim *sim, t_monitor *monitor, char *scheduler);
 int				start1(t_sim *sim, t_monitor *monitor);
 
 // coder action
-int				take_dongle_dx(t_coder *coder);
-int				take_dongle_dx1(t_coder *coder);
-int				take_dongle_sx(t_coder *coder);
-int				take_dongle_sx1(t_coder *coder);
+int				take_dongle(t_coder *cdr, t_dongle *d);
+// int				take_dongle_dx(t_coder *coder);
+// int				take_dongle_dx1(t_coder *coder);
+// int				take_dongle_sx(t_coder *coder);
+// int				take_dongle_sx1(t_coder *coder);
 struct timespec	calculate_time(long time);
 
 // coder action 1
@@ -142,7 +144,7 @@ t_heap			create_heap(int n, char *scheduler, int burnout);
 void			add_back(t_heap *heap, t_coder *coder);
 void			pop_front(t_heap *heap);
 void			sort_heap(t_heap *heap);
-int				do_switch(t_coder *c1, t_coder *c2, int burnout);
+int				do_switch(t_coder *c1, t_coder *c2, int burnout, t_heap heap);
 int				is_inside(t_heap *heap, t_coder coder);
 
 // heap_operations1

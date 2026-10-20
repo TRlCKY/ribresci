@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 12:20:26 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/16 17:15:16 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/20 12:37:55 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,56 +46,15 @@ void	*one_coder(void *arg)
 
 	coder = (t_coder *)arg;
 	pthread_mutex_lock(&coder->dx->mutex);
-	if (take_dongle_dx(coder) == 1)
+	if (coder->dx->used == 1)
 		return (NULL);
+	coder->dx->used = 1;
+	print_msg(coder, "has taken a dongle\n");
+	pthread_mutex_unlock(&coder->dx->mutex);
 	while (coder->error == 0 && coder->n_compile != 0)
 		usleep(1000);
 	release_dongles(coder, 1);
 	return (NULL);
-}
-
-// Prende prima la chiavetta destra e poi la sinistra, se puo' farlo
-int	take_dx_sx(t_coder *coder)
-{
-	pthread_mutex_lock(&coder->dx->mutex);
-	pthread_mutex_lock(&coder->sx->mutex);
-	if (coder->dx->used == 1 || coder->sx->used == 1)
-	{
-		pthread_mutex_unlock(&coder->sx->mutex);
-		pthread_mutex_unlock(&coder->dx->mutex);
-		return (0);
-	}
-	if (coder->sx->used == 0 && coder->dx->used == 0)
-		if (coder->dx->cooldown_time - current_time(coder->start) <= 0
-			&& coder->sx->cooldown_time - current_time(coder->start) <= 0)
-			if (take_dongle_dx(coder) == 0)
-				if (take_dongle_sx(coder) == 0)
-					return (1);
-	pthread_mutex_unlock(&coder->dx->mutex);
-	pthread_mutex_unlock(&coder->sx->mutex);
-	return (0);
-}
-
-// Prende prima la chiavetta sinistra e poi la destra, se puo' farlo
-int	take_sx_dx(t_coder *coder)
-{
-	pthread_mutex_lock(&coder->sx->mutex);
-	pthread_mutex_lock(&coder->dx->mutex);
-	if (coder->sx->used == 1 || coder->dx->used == 1)
-	{
-		pthread_mutex_unlock(&coder->dx->mutex);
-		pthread_mutex_unlock(&coder->sx->mutex);
-		return (0);
-	}
-	if (coder->sx->used == 0 && coder->dx->used == 0)
-		if (coder->dx->cooldown_time - current_time(coder->start) <= 0
-			&& coder->sx->cooldown_time - current_time(coder->start) <= 0)
-			if (take_dongle_sx(coder) == 0)
-				if (take_dongle_dx(coder) == 0)
-					return (1);
-	pthread_mutex_unlock(&coder->sx->mutex);
-	pthread_mutex_unlock(&coder->dx->mutex);
-	return (0);
 }
 
 // A seconda dell'id delle chiavette si decide quale prendere prima (si prende
@@ -104,9 +63,29 @@ int	take_sx_dx(t_coder *coder)
 // *coder1, sx=0, dx = 1 (prende prima la sx)
 // *coder2, sx=1, dx = 2 (prende prima la sx)
 // *coder3, sx=2, dx = 0 (prende prima la dx)
-int	can_take_both(t_coder *coder)
+int	can_take_both(t_coder *c)
 {
-	if (coder->dx->id < coder->sx->id)
-		return (take_dx_sx(coder));
-	return (take_sx_dx(coder));
+	t_dongle	*a;
+	t_dongle	*b;
+
+	a = c->dx;
+	b = c->sx;
+	if (c->dx->id > c->sx->id)
+	{
+		a = c->sx;
+		b = c->dx;
+	}
+	pthread_mutex_lock(&a->mutex);
+	pthread_mutex_lock(&b->mutex);
+	add_back(&a->heap, c);
+	add_back(&b->heap, c);
+	if (c == get_next(&a->heap) && c == get_next(&b->heap)
+		&& !a->used && !b->used && a->cooldown_time <= current_time(c->start)
+		&& b->cooldown_time <= current_time(c->start))
+		if (take_dongle(c, a) == 0)
+			if (take_dongle(c, b) == 0)
+				return (1);
+	pthread_mutex_unlock(&a->mutex);
+	pthread_mutex_unlock(&b->mutex);
+	return (0);
 }

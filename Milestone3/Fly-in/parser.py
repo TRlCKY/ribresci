@@ -67,6 +67,7 @@ def parser(argv: list[str]) -> list[list[str]]:
 
     current_line = 0
     connections = list[str]
+    first = 0
     # Viene separato il testo in righe a cui viene rimosso lo '\n'
     for x in text.splitlines():
         x = str(x.split('\n', 1).pop(0))
@@ -77,9 +78,10 @@ def parser(argv: list[str]) -> list[list[str]]:
             continue
 
         # Controllo riga nb_drones
-        elif x.startswith("nb_drones: "):
+        elif x.startswith("nb_drones: ") and first == 0:
             # Ottiene solo il valore dopo nb_drones
             line0 = (x.split("nb_drones: ", 1).pop())
+            first = 1
             try:
                 nb_drones = int(line0)
                 if nb_drones <= 0:
@@ -131,7 +133,7 @@ def parser(argv: list[str]) -> list[list[str]]:
             if check[0] == 1:
                 raise parsingException(check[1])
 
-        # Controllo righe connection dopo fine del for
+        # Controllo righe connection dopo la fine del for
         elif x.startswith("connection: "):
             line0 = x.split(' ')
             line0.pop(0)

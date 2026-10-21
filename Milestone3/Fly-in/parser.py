@@ -141,13 +141,19 @@ def parser(argv: list[str]) -> list[list[str]]:
         else:
             raise parsingException(f"Invalid line in line {current_line}")
 
+    # Controllo righe connection
     if "start_hub" not in connections or "end_hub" not in connections:
         raise parsingException("No 'start_hub' and/or 'end_hub' connections")
     for el in connections.split('-'):
-        if (len(el) > 3 and not el[3].startswith('[')):
+        if (len(el) > 3 and not el[3].startswith('[max_link_capacity=')):
             raise parsingException(f"Invalid 'connection: ' line in line {current_line}")
         if [el[1], el[0]] in connections:
             raise parsingException(f"Repeated connection in line {current_line}")
+        # Controllo metadata di connection
+        if len(el) > 3 and el[3].startswith('[max_link_capacity='):
+            n = el[3].split("[max_link_capacity=")
+            if int(n) < 1:
+                raise parsingException(f"Invalid max_link_capacity value in line {current_line}")
     return new_list
 
 

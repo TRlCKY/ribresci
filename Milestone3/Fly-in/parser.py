@@ -5,7 +5,8 @@ class parsingException(Exception):
     pass
 
 
-def check_metadata(current_line: int, x: str, new_list: list[list[str]], line0: list[str]) -> list[int, str]:
+def check_metadata(current_line: int, x: str, new_list: list[list[str]],
+                   line0: list[str]) -> list[int, str]:
     # Controllo metadata
     line0.pop(0)
     line0.pop(0)
@@ -50,7 +51,7 @@ def parser(argv: list[str]) -> list[list[str]]:
 
     # Controllo numero di volte in cui e' presente una determinata riga
     nb_drones_line = text.count("nb_drones: ")
-    start_line = text.count("start_hub ")
+    start_line = text.count("start_hub: ")
     end_line = text.count("end_hub: ")
     connection_line = text.count("connection: ")
     if nb_drones_line != 1:
@@ -95,12 +96,14 @@ def parser(argv: list[str]) -> list[list[str]]:
         elif x.startswith("start_hub: "):
             line0 = x.split(' ')
             line0.pop(0)
+            line0.pop(0)
             try:
                 int(line0[0])
                 int(line0[1])
             except ValueError as e:
                 raise parsingException(f"{e} in line {current_line}")
-            new_list[1].extend([line0[0], line0[1]])
+            new_list[1].append(line0[0])
+            new_list[1].append(line0[1])
             check = check_metadata(current_line, x, new_list, line0)
             if check[0] == 1:
                 raise parsingException(check[1])
@@ -109,12 +112,14 @@ def parser(argv: list[str]) -> list[list[str]]:
         elif x.startswith("end_hub: "):
             line0 = x.split(' ')
             line0.pop(0)
+            line0.pop(0)
             try:
                 int(line0[0])
                 int(line0[1])
             except ValueError as e:
                 raise parsingException(f"{e} in line {current_line}")
-            new_list[1].extend([line0[0], line0[1]])
+            new_list[2].append(line0[0])
+            new_list[2].append(line0[1])
             check = check_metadata(current_line, x, new_list, line0)
             if check[0] == 1:
                 raise parsingException(check[1])
@@ -123,12 +128,14 @@ def parser(argv: list[str]) -> list[list[str]]:
         elif x.startswith("hub: "):
             line0 = x.split(' ')
             line0.pop(0)
+            line0.pop(0)
             try:
                 int(line0[0])
                 int(line0[1])
             except ValueError as e:
                 raise parsingException(f"{e} in line {current_line}")
-            new_list[1].extend([line0[0], line0[1]])
+            new_list[3].append(line0[0])
+            new_list[3].append(line0[1])
             check = check_metadata(current_line, x, new_list, line0)
             if check[0] == 1:
                 raise parsingException(check[1])
@@ -137,7 +144,8 @@ def parser(argv: list[str]) -> list[list[str]]:
         elif x.startswith("connection: "):
             line0 = x.split(' ')
             line0.pop(0)
-            connections.extend(line0.append(current_line))
+            line0.append(current_line)
+            connections.append(line0[0])
         else:
             raise parsingException(f"Invalid line in line {current_line}")
 
@@ -146,19 +154,22 @@ def parser(argv: list[str]) -> list[list[str]]:
         raise parsingException("No 'start_hub' and/or 'end_hub' connections")
     for el in connections.split('-'):
         if (len(el) > 3 and not el[3].startswith('[max_link_capacity=')):
-            raise parsingException(f"Invalid 'connection: ' line in line {current_line}")
+            raise parsingException("Invalid 'connection: ' line in line "
+                                   f"{current_line}")
         if [el[1], el[0]] in connections:
-            raise parsingException(f"Repeated connection in line {current_line}")
+            raise parsingException("Repeated connection in line "
+                                   f"{current_line}")
         # Controllo metadata di connection
         if len(el) > 3 and el[3].startswith('[max_link_capacity='):
             n = el[3].split("[max_link_capacity=")
             if int(n) < 1:
-                raise parsingException(f"Invalid max_link_capacity value in line {current_line}")
+                raise parsingException("Invalid max_link_capacity value in "
+                                       f"line {current_line}")
     return new_list
 
 
 def init_hubs(list0: list[list[str]]):
-    print()
+    print("ciao")
 
 
 def main():

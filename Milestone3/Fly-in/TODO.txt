@@ -1,0 +1,1 @@
+Controllare i mypy rimanenti

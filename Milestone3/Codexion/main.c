@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 12:15:14 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/16 11:21:28 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/10/22 16:58:09 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ long	current_time(struct timespec start)
 	return ((sec * 1000) + (nsec / 1000000));
 }
 
-// Controlla che tutti i valori, eccetto l'ultimo, siano numeri >= 0 
+// Controlla che tutti i valori, eccetto l'ultimo, siano numeri >= 0
 int	check_values(int argc, char **argv)
 {
 	int	i;

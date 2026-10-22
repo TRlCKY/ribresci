@@ -6,19 +6,19 @@ class parsingException(Exception):
 
 
 def check_metadata(current_line: int, x: str, new_list: list[list[str]],
-                   line0: list[str]) -> list[int, str]:
+                   line0: list[str]) -> tuple:
     # Controllo metadata
     line0.pop(0)
     line0.pop(0)
     if not line0[0].startswith('[') and line0[0] is not None:
-        return [1, f"Invalid metadata format in line {current_line}"]
+        return (1, f"Invalid metadata format in line {current_line}")
     elif line0[0] is None:
-        return [0, ""]
+        return (0, "")
     line1 = " ".join(line0)
     if not line1.endswith(']'):
-        return [1, f"Invalid metadata format in line {current_line}"]
+        return (1, f"Invalid metadata format in line {current_line}")
     if line1.count('[') != line1.count(']') and line1.count(']') != 1:
-        return [1, f"Invalid metadata format in line {current_line}"]
+        return (1, f"Invalid metadata format in line {current_line}")
     for el in line0:
         if el.startswith('['):
             el = el.split('[').pop()
@@ -27,17 +27,18 @@ def check_metadata(current_line: int, x: str, new_list: list[list[str]],
         # Il controllo dei colori viene fatto quando si rappresenta
         # la mappa
         elif (el.startswith('color=')):
-            return [0, ""]
+            return (0, "")
         # Controllo numero droni
         elif el.startswith('max_drones='):
             el0 = el.split('=').pop()
             if int(el0) < 0:
-                return [1, f"Invalid max_drones value in line {current_line}"]
+                return (1, f"Invalid max_drones value in line {current_line}")
         # Controllo zone
         elif (el != "zone=normal" and el != "zone=blocked"
                 and el != "zone=restricted" and el != "zone=priority"):
-            return [1, f"Invalid metadata format in line {current_line}"]
-        return [0, ""]
+            return (1, f"Invalid metadata format in line {current_line}")
+        return (0, "")
+    return (0, "")
 
 
 # Controlla che il file dato come parametro sia scritto correttamente
@@ -71,7 +72,6 @@ def parser(argv: list[str]) -> list[list[str]]:
     first = 0
     # Viene separato il testo in righe a cui viene rimosso lo '\n'
     for x in text.splitlines():
-        print(x)
         x = str(x.split('\n', 1).pop(0))
         current_line += 1
 
@@ -150,33 +150,49 @@ def parser(argv: list[str]) -> list[list[str]]:
         else:
             raise parsingException(f"Invalid line in line {current_line}")
 
-    print(start_hub)
-    print(end_hub)
-    print(connections)
     # Controllo righe connection
-    s = 0
-    e = 0
-    for conn in connections:
-        if start_hub in conn:
-            s += 1
-        if end_hub in conn:
-            e += 1
-    if e != 0 and s != 0:
+    start = 0
+    end = 0
+    for i in range(len(connections)):
+        if start_hub in connections[i]:
+            start += 1
+        if end_hub in connections[i]:
+            end += 1
+        for j in range(len(connections)):
+            if connections[i] == connections[j] and j != i:
+                raise parsingException("Duplicated connection found in line "
+                                       f"{get_line(argv[1], connections[j])}")
+    if end == 0 and start == 0:
         raise parsingException("No 'start_hub' and/or 'end_hub' connections")
-    for el in connections.split('-'):
-        if (len(el) > 3 and not el[3].startswith('[max_link_capacity=')):
+    for el in connections:
+        el0 = el.split('-')
+        el1 = el0[1].split(' ')
+        if (len(el1) > 1 and not el1[1].startswith('[max_link_capacity=')):
             raise parsingException("Invalid 'connection: ' line in line "
-                                   f"{current_line}")
-        if [el[1], el[0]] in connections:
+                                   f"{get_line(argv[1], el0[3])}")
+        c = str(el1[0]) + "-" + str(el0[0])
+        if c in connections:
             raise parsingException("Repeated connection in line "
-                                   f"{current_line}")
+                                   f"{get_line(argv[1], c)}")
         # Controllo metadata di connection
-        if len(el) > 3 and el[3].startswith('[max_link_capacity='):
-            n = el[3].split("[max_link_capacity=")
-            if int(n) < 1:
+        if len(el0) > 3 and el0[3].startswith('[max_link_capacity='):
+            n = el0[3].split("[max_link_capacity=")
+            if int(n[1]) < 1:
+                find = "max_link_capacity"
                 raise parsingException("Invalid max_link_capacity value in "
-                                       f"line {current_line}")
+                                       f"line {get_line(argv[1], find)}")
     return new_list
+
+
+def get_line(file: str, find: str) -> int:
+    n = 1
+    with open(file, "r") as f:
+        x = f.readlines()
+        for line in x:
+            if find in line:
+                return n
+            n += 1
+    return -1
 
 
 def init_hubs(list0: list[list[str]]):

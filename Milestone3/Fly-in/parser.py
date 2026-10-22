@@ -147,6 +147,8 @@ def parser(argv: list[str]) -> list[list[str]]:
             line0.pop(0)
             line0.append(current_line)
             connections.append(line0[0])
+            if line0[1]:
+                connections.append(line0[1])
         else:
             raise parsingException(f"Invalid line in line {current_line}")
 
@@ -167,6 +169,8 @@ def parser(argv: list[str]) -> list[list[str]]:
     for el in connections:
         el0 = el.split('-')
         el1 = el0[1].split(' ')
+        print(el0)
+        print(el1)
         if (len(el1) > 1 and not el1[1].startswith('[max_link_capacity=')):
             raise parsingException("Invalid 'connection: ' line in line "
                                    f"{get_line(argv[1], el0[3])}")
@@ -175,7 +179,7 @@ def parser(argv: list[str]) -> list[list[str]]:
             raise parsingException("Repeated connection in line "
                                    f"{get_line(argv[1], c)}")
         # Controllo metadata di connection
-        if len(el0) > 3 and el0[3].startswith('[max_link_capacity='):
+        if len(el1) > 1 and el1[1].startswith('[max_link_capacity='):
             n = el0[3].split("[max_link_capacity=")
             if int(n[1]) < 1:
                 find = "max_link_capacity"

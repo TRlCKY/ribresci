@@ -67,10 +67,11 @@ def parser(argv: list[str]) -> list[list[str]]:
         raise parsingException("0 'connection: ...' lines")
 
     current_line = 0
-    connections = list[str]
+    connections = list()
     first = 0
     # Viene separato il testo in righe a cui viene rimosso lo '\n'
     for x in text.splitlines():
+        print(x)
         x = str(x.split('\n', 1).pop(0))
         current_line += 1
 
@@ -96,7 +97,7 @@ def parser(argv: list[str]) -> list[list[str]]:
         elif x.startswith("start_hub: "):
             line0 = x.split(' ')
             line0.pop(0)
-            line0.pop(0)
+            start_hub = line0.pop(0)
             try:
                 int(line0[0])
                 int(line0[1])
@@ -112,7 +113,7 @@ def parser(argv: list[str]) -> list[list[str]]:
         elif x.startswith("end_hub: "):
             line0 = x.split(' ')
             line0.pop(0)
-            line0.pop(0)
+            end_hub = line0.pop(0)
             try:
                 int(line0[0])
                 int(line0[1])
@@ -149,8 +150,18 @@ def parser(argv: list[str]) -> list[list[str]]:
         else:
             raise parsingException(f"Invalid line in line {current_line}")
 
+    print(start_hub)
+    print(end_hub)
+    print(connections)
     # Controllo righe connection
-    if "start_hub" not in connections or "end_hub" not in connections:
+    s = 0
+    e = 0
+    for conn in connections:
+        if start_hub in conn:
+            s += 1
+        if end_hub in conn:
+            e += 1
+    if e != 0 and s != 0:
         raise parsingException("No 'start_hub' and/or 'end_hub' connections")
     for el in connections.split('-'):
         if (len(el) > 3 and not el[3].startswith('[max_link_capacity=')):
@@ -174,13 +185,13 @@ def init_hubs(list0: list[list[str]]):
 
 def main():
     argv = sys.argv
-    try:
-        list0 = parser(argv)
-        init_hubs(list0)
-    except parsingException as e:
-        print(f"Got parsing Exception: {e}")
-    except Exception as e:
-        print(f"Got Exception: {e}")
+    # try:
+    list0 = parser(argv)
+    init_hubs(list0)
+    # except parsingException as e:
+    #     print(f"Got parsing Exception: {e}")
+    # except Exception as e:
+    #     print(f"Got Exception: {e}")
 
 
 if __name__ == "__main__":

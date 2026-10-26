@@ -45,28 +45,6 @@ def check_metadata(current_line: int, x: str, new_list: list[list[str]],
 # E restituisce una lista con i valori da utilizzare per creare i droni,
 # gli hub e le connessioni
 def parser(argv: list[str]) -> list[list[str]]:
-    new_list = [['nb_drones'], ['start_hub'], ['end_hub'], ['hubs'],
-                ['connection']]
-    with open(argv[1], "r") as f:
-        text = f.read()
-
-    # Controllo numero di volte in cui e' presente una determinata riga
-    nb_drones_line = text.count("nb_drones: ")
-    start_line = text.count("start_hub: ")
-    end_line = text.count("end_hub: ")
-    connection_line = text.count("connection: ")
-    if nb_drones_line != 1:
-        raise parsingException("Too many or 0 'nb_drones: ...' lines in "
-                               f"line {text.find('nb_drones: ')}")
-    if start_line != 1:
-        raise parsingException("Too many or 0 'start_hub: ...' lines in "
-                               f"line {text.find('start_hub: ')}")
-    if end_line != 1:
-        raise parsingException("Too many or 0 'end_hub: ...' lines in "
-                               f"line {text.find('end_hub: ')}")
-    if connection_line == 0:
-        raise parsingException("0 'connection: ...' lines")
-
     current_line = 0
     connections = list()
     first = 0
@@ -95,60 +73,60 @@ def parser(argv: list[str]) -> list[list[str]]:
 
         # Controllo riga start_hub
         elif x.startswith("start_hub: "):
-            line0 = x.split(' ')
-            line0.pop(0)
-            start_hub = line0.pop(0)
+            list0 = x.split(' ')
+            list0.pop(0)
+            start_hub = list0.pop(0)
             try:
-                int(line0[0])
-                int(line0[1])
+                int(list0[0])
+                int(list0[1])
             except ValueError as e:
                 raise parsingException(f"{e} in line {current_line}")
-            new_list[1].append(line0[0])
-            new_list[1].append(line0[1])
-            check = check_metadata(current_line, x, new_list, line0)
+            new_list[1].append(list0[0])
+            new_list[1].append(list0[1])
+            check = check_metadata(current_line, x, new_list, list0)
             if check[0] == 1:
                 raise parsingException(check[1])
 
         # Controllo riga end_hub
         elif x.startswith("end_hub: "):
-            line0 = x.split(' ')
-            line0.pop(0)
-            end_hub = line0.pop(0)
+            list0 = x.split(' ')
+            list0.pop(0)
+            end_hub = list0.pop(0)
             try:
-                int(line0[0])
-                int(line0[1])
+                int(list0[0])
+                int(list0[1])
             except ValueError as e:
                 raise parsingException(f"{e} in line {current_line}")
-            new_list[2].append(line0[0])
-            new_list[2].append(line0[1])
-            check = check_metadata(current_line, x, new_list, line0)
+            new_list[2].append(list0[0])
+            new_list[2].append(list0[1])
+            check = check_metadata(current_line, x, new_list, list0)
             if check[0] == 1:
                 raise parsingException(check[1])
 
         # Controllo righe hub
         elif x.startswith("hub: "):
-            line0 = x.split(' ')
-            line0.pop(0)
-            line0.pop(0)
+            list0 = x.split(' ')
+            list0.pop(0)
+            list0.pop(0)
             try:
-                int(line0[0])
-                int(line0[1])
+                int(list0[0])
+                int(list0[1])
             except ValueError as e:
                 raise parsingException(f"{e} in line {current_line}")
-            new_list[3].append(line0[0])
-            new_list[3].append(line0[1])
-            check = check_metadata(current_line, x, new_list, line0)
+            new_list[3].append(list0[0])
+            new_list[3].append(list0[1])
+            check = check_metadata(current_line, x, new_list, list0)
             if check[0] == 1:
                 raise parsingException(check[1])
 
         # Controllo righe connection dopo la fine del for
         elif x.startswith("connection: "):
-            line0 = x.split(' ')
-            line0.pop(0)
-            line0.append(current_line)
-            connections.append(line0[0])
-            if line0[1]:
-                connections.append(line0[1])
+            list0 = x.split(' ')
+            list0.pop(0)
+            list0.append(str(current_line))
+            connections.append(list0[0])
+            if list0[1]:
+                connections.append(list0[1])
         else:
             raise parsingException(f"Invalid line in line {current_line}")
 
@@ -168,9 +146,10 @@ def parser(argv: list[str]) -> list[list[str]]:
         raise parsingException("No 'start_hub' and/or 'end_hub' connections")
     for el in connections:
         el0 = el.split('-')
-        el1 = el0[1].split(' ')
-        print(el0)
-        print(el1)
+        if el[1]:
+            el1 = el0[1].split(' ')
+        print(f"el0: {el0}")
+        print(f"el1: {el1}")
         if (len(el1) > 1 and not el1[1].startswith('[max_link_capacity=')):
             raise parsingException("Invalid 'connection: ' line in line "
                                    f"{get_line(argv[1], el0[3])}")
@@ -185,6 +164,60 @@ def parser(argv: list[str]) -> list[list[str]]:
                 find = "max_link_capacity"
                 raise parsingException("Invalid max_link_capacity value in "
                                        f"line {get_line(argv[1], find)}")
+    return new_list
+
+
+def get_values(argv: list[str]) -> list[list[str]]:
+    x = 0
+    current_line = 0
+    new_list = [['nb_drones'], ['start_hub'], ['hubs'], ['end_hub'],
+                ['connection']]
+    with open(argv[1], "r") as f:
+        text = f.readlines()
+
+    # Controllo numero di volte in cui e' presente una determinata riga
+    nb_drones_line = text.count("nb_drones: ")
+    start_line = text.count("start_hub: ")
+    end_line = text.count("end_hub: ")
+    connection_line = text.count("connection: ")
+    if nb_drones_line != 1:
+        raise parsingException("Too many or 0 'nb_drones: ...' lines in "
+                               f"line {get_line(argv[1], 'nb_drones: ')}")
+    if start_line != 1:
+        raise parsingException("Too many or 0 'start_hub: ...' lines in "
+                               f"line {get_line(argv[1], 'start_hub: ')}")
+    if end_line != 1:
+        raise parsingException("Too many or 0 'end_hub: ...' lines in "
+                               f"line {get_line(argv[1], 'end_hub: ')}")
+    if connection_line == 0:
+        raise parsingException("0 'connection: ...' lines")
+    for line in text:
+        current_line += 1
+        if line.startswith('#') or line == "\n":
+            continue
+        # Prende solo il valore dopo "nb_drones: "
+        line = line.split('\n', 1).pop(0)
+        if line.startswith("nb_drones: ") and x == 0:
+            new_list[0].append(line)
+            x = 1
+        elif line.startswith("nb_drones: ") and x == 1:
+            raise parsingException("'nb_drones: ...' line isn't the first one "
+                                   f"in line {get_line(argv[1], 'nb_drones')}")
+
+        elif line.startswith("start_hub: "):
+            new_list[1].append(line)
+
+        elif line.startswith("hub: "):
+            new_list[2].append(line)
+
+        elif line.startswith("end_hub: "):
+            new_list[3].append(line)
+
+        elif line.startswith("connection: "):
+            new_list[4].append(line)
+
+        else:
+            raise parsingException(f"Invalid line in line {current_line}")
     return new_list
 
 
@@ -206,8 +239,9 @@ def init_hubs(list0: list[list[str]]):
 def main():
     argv = sys.argv
     # try:
-    list0 = parser(argv)
-    init_hubs(list0)
+    list0 = get_values(argv)
+    if parser(list0) == 0:
+        init_hubs(list0)
     # except parsingException as e:
     #     print(f"Got parsing Exception: {e}")
     # except Exception as e:

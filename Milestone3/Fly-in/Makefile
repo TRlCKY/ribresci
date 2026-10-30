@@ -1,7 +1,7 @@
 PYTHON := python3
 PIP := pip
 NAME := Fly-in.py
-FILE := config.txt
+FILE := config.txt, parser.py
 
 install:
 		$(PIP) install -r requirements.txt

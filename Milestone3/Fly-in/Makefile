@@ -1,13 +1,13 @@
 PYTHON := python3
 PIP := pip
 NAME := Fly-in.py
-FILE := config.txt, parser.py
+FILE := requirements.txt
 
 install:
-		$(PIP) install -r requirements.txt
+		$(PIP) install -r $(FILE)
 
 run:
-	 $(PYTHON) $(NAME) $(FILE)
+	 $(PYTHON) $(NAME) $(filter-out $@,$(MAKECMDGOALS))
 
 debug:
 		$(PYTHON) -m pdb $(NAME)
@@ -29,3 +29,6 @@ lint:
 lint-strict:
 		flake8 .
 		mypy . --strict
+
+%:
+	@:

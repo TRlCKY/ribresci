@@ -31,17 +31,18 @@ def check_metadata(current_line: int, line0: str) -> tuple:
                 el1 = el1.split(']', 1).pop(0)
             # Il controllo dei colori viene fatto quando si rappresenta
             # la mappa
-            elif (el1.startswith('color=')):
+            if (el1.startswith('color=')):
                 continue
             # Controllo numero droni
-            elif el1.startswith('max_drones='):
+            elif el1.startswith('capacity='):
                 el2 = el1.split('=').pop()
                 if int(el2) < 0:
                     return (1, f"Invalid max_drones value in line {current_line}")
-                print('line0')
             # Controllo zone
-            elif (el != "zone=normal" and el != "zone=blocked"
-                    and el != "zone=restricted" and el != "zone=priority"):
+            elif (el == "zone=normal" or el == "zone=blocked"
+                    or el == "zone=restricted" or el == "zone=priority"):
+                return (0, "")
+            else:
                 return (1, f"Invalid metadata format in line {current_line}")
     return (0, "")
 
@@ -63,9 +64,20 @@ def parser(new_list: list[str], text: str) -> list[str]:
         coordinates.append(coord0)
     for cord in coordinates:
         if coordinates.count(cord) > 1:
-            raise parsingException("Same coordinates for more than a hub in "
-                                    f"lin {get_line(text, cord)}")
+            raise parsingException("Same coordinates in more than a hub in "
+                                    f"line {get_line(text, cord)}")
 
+    hub_list = list()
+    for line in new_list:
+        if (line.startswith('start_hub: ') or line.startswith('hub: ')
+           or line.startswith('end_hub: ')):
+            hub_list.append(line)
+    # Controllo che tutti i nomi siano diversi
+    for el in hub_list:
+        el = el.split(' ').pop(1)
+        if hub_list.count(el) > 1:
+            raise parsingException("Same hub name in more than a hub in line"
+                                   f"{get_line(text, el)}")
     connections = list()
     # Viene separato il testo in righe a cui viene rimosso lo '\n'
     for line in new_list:
@@ -201,11 +213,13 @@ def get_values(argv: list[str]) -> list[str]:
         if line.startswith('#') or line == "\n":
             continue
 
+        if not line.startswith("nb_drones: "):
+            x += 1
         if line.startswith("nb_drones: "):
             nb_drones_line += 1
             if x == 0:
                 new_list.append(line)
-                x = 1
+                x += 1
             else:
                 raise parsingException("'nb_drones: ...' line isn't the first"
                                        " one in line "
@@ -229,6 +243,7 @@ def get_values(argv: list[str]) -> list[str]:
         else:
             raise parsingException(f"Invalid line in line {current_line}")
     if nb_drones_line != 1:
+        print(nb_drones_line)
         raise parsingException("Too many or 0 'nb_drones: ...' lines in "
                                f"line {get_line(argv[1], 'nb_drones: ')}")
     if start_line != 1:

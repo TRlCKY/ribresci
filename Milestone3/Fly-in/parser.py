@@ -194,9 +194,10 @@ def parser(new_list: list[str], text: str) -> list[str]:
             except ValueError as e:
                 raise parsingException(f"{e} in line {get_line(text, el)}")
         c = el1 + "-" + el0
-        if c in connections:
-            raise parsingException("Repeated connection in line "
-                                   f"{get_line(text, c)}")
+        for conn in connections:
+            if c in conn:
+                raise parsingException("Repeated connection in line "
+                                       f"{get_line(text, c)}")
 
     return init_list
 

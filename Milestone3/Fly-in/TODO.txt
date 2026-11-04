@@ -1,3 +1,6 @@
 # Controllare i mypy rimanenti
 Ricontrollare tutti i controlli del parser eseguendo il programma
 Ricontrollare di aver fatto/rispettato tutti i constraints del parser
+
+Connections must link only previously defined zones using connection: <zone1>-<zone2>
+[metadata].

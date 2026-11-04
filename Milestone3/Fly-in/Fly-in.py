@@ -4,7 +4,7 @@ from parser import parser, init_hubs, get_values, parsingException
 
 def start() -> None:
     argv = sys.argv
-    print(argv)
+    # print(argv)
     # try:
     list0 = get_values(argv)
     if parser(list0, argv[1]) == 0:

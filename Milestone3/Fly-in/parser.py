@@ -73,15 +73,20 @@ def parser(new_list: list[str], text: str) -> list[str]:
            or line.startswith('end_hub: ')):
             hub_list.append(line)
     # Controllo che tutti i nomi siano diversi
-    for el in hub_list:
-        el = el.split(' ').pop(1)
-        if hub_list.count(el) > 1:
-            raise parsingException("Same hub name in more than a hub in line"
-                                   f"{get_line(text, el)}")
+    for name0 in hub_list:
+        for name1 in hub_list:
+            if name0 == name1:
+                continue
+            name0 = name0.split(' ')
+            name1 = name1.split(' ')
+            if (name0[1] == name1[1]):
+                raise parsingException("Same hub name in more than a hub in line"
+                                       f" {get_line(text, name0[1])}")
+            name0 = ' '.join(name0)
+            name1 = ' '.join(name1)
+
     connections = list()
-    # Viene separato il testo in righe a cui viene rimosso lo '\n'
     for line in new_list:
-        line = line.split('\n').pop(0)
         if line.startswith("nb_drones: "):
             # Ottiene solo il valore dopo nb_drones
             line0 = (line.split("nb_drones: ", 1).pop())
@@ -218,7 +223,7 @@ def get_values(argv: list[str]) -> list[str]:
         if line.startswith("nb_drones: "):
             nb_drones_line += 1
             if x == 0:
-                new_list.append(line)
+                new_list.append(line.split('\n').pop(0))
                 x += 1
             else:
                 raise parsingException("'nb_drones: ...' line isn't the first"
@@ -227,18 +232,18 @@ def get_values(argv: list[str]) -> list[str]:
 
         elif line.startswith("start_hub: "):
             start_line += 1
-            new_list.append(line)
+            new_list.append(line.split('\n').pop(0))
 
         elif line.startswith("hub: "):
-            new_list.append(line)
+            new_list.append(line.split('\n').pop(0))
 
         elif line.startswith("end_hub: "):
             end_line += 1
-            new_list.append(line)
+            new_list.append(line.split('\n').pop(0))
 
         elif line.startswith("connection: "):
             connection_line += 1
-            new_list.append(line)
+            new_list.append(line.split('\n').pop(0))
 
         else:
             raise parsingException(f"Invalid line in line {current_line}")

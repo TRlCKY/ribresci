@@ -146,29 +146,30 @@ def parser(new_list: list[str], text: str) -> list[str]:
     if end == 0 or start == 0:
         raise parsingException("No 'start_hub' and/or 'end_hub' connections")
     for el in connections:
+        el2 = ""
         # Rimuove 'connection: '
         el0 = el.split(' ')
         el0.pop(0)
         if len(el0) == 1:
             el1 = el0[0].split('-').pop()
             el0 = el0[0].split('-').pop(0)
-        elif len(el1) == 2:
+        elif len(el0) == 2:
             el1 = el0[0].split('-').pop()
             el2 = el0[1]
-            el0 = el0[0].split('-').pop()
+            el0 = el0[0].split('-').pop(0)
         else:
             raise parsingException("Invalid 'connection: ' line in line "
                                    f"{get_line(text, el)}")
-        if el0[0] == el1[0]:
+        if el0 == el1:
             raise parsingException("Repeated hub in the same connection in "
                                    f"line {get_line(text, el)}")
-        if (el2 and not el2.startswith('[max_link_capacity=')):
+        if (el2 != "" and not el2.startswith('[max_link_capacity=')):
             raise parsingException("Invalid 'connection: ' line in line "
                                    f"{get_line(text, el)}")
-        else:
+        if el2 != "":
             # Controllo metadata di connection
             n = el2.split("[max_link_capacity=").pop()
-            n = el2.split("]").pop(0)
+            n = n.split("]").pop(0)
             try:
                 if int(n) < 1:
                     raise parsingException("Invalid max_link_capacity value "

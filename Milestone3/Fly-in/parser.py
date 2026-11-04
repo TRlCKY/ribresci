@@ -36,7 +36,7 @@ def check_metadata(current_line: int, line0: str) -> tuple:
             # Controllo numero droni
             elif el1.startswith('max_drones='):
                 el2 = el1.split('=').pop()
-                if int(el2) < 0:
+                if int(el2) <= 0:
                     return (1, f"Invalid max_drones value in line {current_line}")
             # Controllo zone
             elif (el1 == "zone=normal" or el1 == "zone=blocked"

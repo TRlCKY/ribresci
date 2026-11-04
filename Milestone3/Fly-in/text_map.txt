@@ -1,11 +1,20 @@
-# Easy Level 1: Simple linear path
-nb_drones: 2
+# Medium Level 3: Priority zones create optimal path challenges
+nb_drones: 5
 
-start_hub: start 0 0 [color=green]
-hub: waypoint1 1 0 [color=blue capacity=2]
-hub: waypoint2 2 0 [color=blue]
-end_hub: goal 3 0 [color=red]
+start_hub: start 0 0 [zone=normal color=green]
+hub: slow_path1 1 -1 [zone=restricted color=red]
+hub: slow_path2 2 -1 [color=red]
+hub: slow_path3 3 -1 [zone=blocked color=red]
+hub: fast_junction 1 0 [zone=priority color=blue max_drones=2]
+hub: fast_path 2 0 [zone=priority color=blue]
+hub: merge_point 3 0 [color=yellow max_drones=3]
+end_hub: goal 4 0 [color=green]
 
-connection: start-waypoint1 [max_link_capacity=2]
-connection: waypoint1-waypoint2
-connection: waypoint2-goal
+connection: start-slow_path1
+connection: start-fast_junction
+connection: slow_path1-slow_path2
+connection: slow_path2-merge_point
+connection: slow_path2-slow_path3
+connection: fast_junction-fast_path
+connection: fast_path-merge_point
+connection: merge_point-goal [max_link_capacity=2]

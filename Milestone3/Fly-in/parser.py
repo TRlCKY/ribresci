@@ -34,13 +34,13 @@ def check_metadata(current_line: int, line0: str) -> tuple:
             if (el1.startswith('color=')):
                 continue
             # Controllo numero droni
-            elif el1.startswith('capacity='):
+            elif el1.startswith('max_drones='):
                 el2 = el1.split('=').pop()
                 if int(el2) < 0:
                     return (1, f"Invalid max_drones value in line {current_line}")
             # Controllo zone
-            elif (el == "zone=normal" or el == "zone=blocked"
-                    or el == "zone=restricted" or el == "zone=priority"):
+            elif (el1 == "zone=normal" or el1 == "zone=blocked"
+                  or el1 == "zone=restricted" or el1 == "zone=priority"):
                 return (0, "")
             else:
                 return (1, f"Invalid metadata format in line {current_line}")

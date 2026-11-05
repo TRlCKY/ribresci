@@ -37,7 +37,8 @@ def check_metadata(current_line: int, line0: str) -> tuple:
             elif el1.startswith('max_drones='):
                 el2 = el1.split('=').pop()
                 if int(el2) <= 0:
-                    return (1, f"Invalid max_drones value in line {current_line}")
+                    return (1, "Invalid max_drones value in line "
+                            f"{current_line}")
             # Controllo zone
             elif (el1 == "zone=normal" or el1 == "zone=blocked"
                   or el1 == "zone=restricted" or el1 == "zone=priority"):
@@ -47,17 +48,36 @@ def check_metadata(current_line: int, line0: str) -> tuple:
     return (0, "")
 
 
+def check_previously_connection(text: str) -> None:
+    with open(text, "r") as f:
+        lines = f.readlines()
+    hubs = list()
+    for line in lines:
+        line = line.split('\n').pop(0)
+        if (line.startswith('start_hub: ') or line.startswith('hub: ')
+           or line.startswith('end_hub: ')):
+            hubs.append(line.split(' ').pop(1))
+        if line.startswith('connection: '):
+            hub01 = line.split(' ').pop(1)
+            hub0 = hub01.split('-').pop(0)
+            hub1 = hub01.split('-').pop(1)
+            if hub0 not in hubs or hub1 not in hubs:
+                raise parsingException('Undefined hub in a connection in line'
+                                       f'{get_line(text, line)}')
+
+
 # Controlla che il file dato come parametro sia scritto correttamente
 # E restituisce una lista con i valori da utilizzare per creare i droni,
 # gli hub e le connessioni
 def parser(new_list: list[str], text: str) -> list[str]:
     init_list = new_list
 
-    # Controllo che tutte le coordinate siano diverse(no hub nello stesso punto)
+    check_previously_connection(text)
+    # Controllo che le coordinate siano diverse(no hub nello stesso punto)
     coordinates = list()
     for line in new_list:
         if (line.startswith('connection: ') or line.startswith('nb_drones: ')
-            or line.startswith('#')):
+           or line.startswith('#')):
             continue
         coord = line.split(' ')
         coord0 = coord[2] + ' ' + coord[3]
@@ -65,7 +85,7 @@ def parser(new_list: list[str], text: str) -> list[str]:
     for cord in coordinates:
         if coordinates.count(cord) > 1:
             raise parsingException("Same coordinates in more than a hub in "
-                                    f"line {get_line(text, cord)}")
+                                   f"line {get_line(text, cord)}")
 
     hub_list = list()
     for line in new_list:
@@ -80,8 +100,8 @@ def parser(new_list: list[str], text: str) -> list[str]:
             name0 = name0.split(' ')
             name1 = name1.split(' ')
             if (name0[1] == name1[1]):
-                raise parsingException("Same hub name in more than a hub in line"
-                                       f" {get_line(text, name0[1])}")
+                raise parsingException("Same hub name in more than a hub in "
+                                       f"line {get_line(text, name0[1])}")
             name0 = ' '.join(name0)
             name1 = ' '.join(name1)
 
@@ -95,10 +115,10 @@ def parser(new_list: list[str], text: str) -> list[str]:
                 if nb_drones <= 0:
                     n = get_line(text, 'nb_drones: ')
                     raise parsingException("Invalid line or number of "
-                                            f"drones in line {n}.")
+                                           f"drones in line {n}.")
             except ValueError as e:
                 raise parsingException(f"{e} in line "
-                                        f"{get_line(text, 'nb_drones: ')}")
+                                       f"{get_line(text, 'nb_drones: ')}")
 
         # Controllo riga start_hub
         elif line.startswith("start_hub: "):
@@ -110,7 +130,7 @@ def parser(new_list: list[str], text: str) -> list[str]:
                 int(list0[1])
             except ValueError as e:
                 raise parsingException(f"{e} in line "
-                                        f"{get_line(text, 'start_hub: ')}")
+                                       f"{get_line(text, 'start_hub: ')}")
             check = check_metadata(get_line(text, 'start_hub: '), line)
             if check[0] == 1:
                 raise parsingException(check[1])
@@ -125,7 +145,7 @@ def parser(new_list: list[str], text: str) -> list[str]:
                 int(list0[1])
             except ValueError as e:
                 raise parsingException(f"{e} in line "
-                                        f"{get_line(text, 'end_hub: ')}")
+                                       f"{get_line(text, 'end_hub: ')}")
             check = check_metadata(get_line(text, 'end_hub: '), line)
             if check[0] == 1:
                 raise parsingException(check[1])
@@ -140,7 +160,7 @@ def parser(new_list: list[str], text: str) -> list[str]:
                 int(list0[1])
             except ValueError as e:
                 raise parsingException(f"{e} in line "
-                                        f"{get_line(text, 'hub: ')}")
+                                       f"{get_line(text, 'hub: ')}")
             check = check_metadata(get_line(text, f'hub: {hub_name}'), line)
             if check[0] == 1:
                 raise parsingException(check[1])

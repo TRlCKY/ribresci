@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/01 12:15:14 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/22 16:58:09 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/11/06 18:04:47 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int	check_values(int argc, char **argv)
 		i++;
 	}
 	if (strcmp(argv[argc -1], "fifo") != 0
-		&&strcmp(argv[argc -1], "edf") != 0)
+		&& strcmp(argv[argc -1], "edf") != 0)
 		return (1);
 	return (0);
 }

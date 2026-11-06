@@ -6,14 +6,12 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/02 16:42:16 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/20 12:23:35 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/11/06 16:57:17 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CODEXION_H
 # define CODEXION_H
-# define _POSIX_C_SOURCE 199309L
-# define _XOPEN_SOURCE 500
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>

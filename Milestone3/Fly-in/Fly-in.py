@@ -8,7 +8,8 @@ def start() -> None:
     try:
         list0 = get_values(argv)
         parser(list0, argv[1])
-        init_hubs(list0)
+        hubs = init_hubs(list0)
+        drones = init_drones(list0)
     except parsingException as e:
         print(f"Got parsing Exception: {e}")
     except Exception as e:

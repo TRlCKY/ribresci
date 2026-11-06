@@ -1,4 +1,5 @@
 import sys
+from classes import init_hubs
 
 
 class parsingException(Exception):
@@ -289,10 +290,6 @@ def get_line(file: str, find: str) -> int:
                 return n
             n += 1
     return -1
-
-
-def init_hubs(list0: list[str]) -> None:
-    print("ciao")
 
 
 def main() -> None:

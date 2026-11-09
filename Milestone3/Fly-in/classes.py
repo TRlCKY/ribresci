@@ -23,30 +23,31 @@ def init_drones(init_list: list[str]) -> list[Drone]:
 
 class Hub():
     def __init__(self, name: str, x: float, y: float, zone: str, color: str,
-                 max_drones: int, cost: int, type: str):
+                 max_drones: int, type: str, cost: int, connected: list[tuple[int, str]]):
         self.name = name
         self.x = x
         self.y = y
         self.zone = zone
         self.color = color
         self.max_drones = max_drones
-        self.cost = cost
         self.type = type
-        self.connected()
+        self.cost = cost
+        self.connected = connected
 
     def show(self) -> None:
         print(f"Name: {self.name}. X-Y: {self.x}-{self.y}. Zone: {self.zone}. "
               f"Color: {self.color}. Max_drones: {self.max_drones}. "
-              f"Cost: {self.cost}. Type: {self.type}")
+              f"Type: {self.type}. Cost: {self.cost}. Connected: {self.connected}")
 
 
 def init_hubs(init_list: list[str]) -> list[Hub]:
     hub_list: list[Hub] = []
-    zone = "normal"
-    color = "none"
-    max_drones = 1
-    type = "hub"
+    connected = list[tuple[int, str]]
     for line in init_list:
+        zone = "normal"
+        color = "none"
+        max_drones = 1
+        type = "hub"
         cost = 1
         if (line.startswith('start_hub: ') or line.startswith('hub: ')
            or line.startswith('end_hub: ')):
@@ -70,15 +71,40 @@ def init_hubs(init_list: list[str]) -> list[Hub]:
                         cost = 2
                     if zone == 'blocked':
                         cost = -1
+                    if zone == 'priority':
+                        cost = 0
                 if meta.startswith('color='):
                     color = meta.split('color=').pop()
                 if meta.startswith('max_drones='):
                     max_drones = int(meta.split('max_drones=').pop())
             hub0 = Hub(line0[1], float(line0[2]), float(line0[3]), zone, color,
-                       max_drones, cost, type)
+                       max_drones, type, cost, [])
             hub_list.append(hub0)
     return hub_list
 
+
+# Aggiunge ai droni i loro vicini con i rispettivi costi
+def get_connected(init_list: list[str], hubs: list[Hub]) -> list[tuple[int, str]]:
+    for hub in hubs:
+        cost = 1
+        name = hub.name
+        near_hub = "a"
+        connected: list[tuple[int, str]] = []
+        for line in init_list:
+            if line.startswith('connection:'):
+                line0 = line.split(' ').pop(1)
+                line01 = line0.split('-')
+                if name in line01:
+                    if name == line01[0]:
+                        near_hub = line01[1]
+                    else:
+                        near_hub = line01[0]
+                    for h in hubs:
+                        if near_hub == h.name:
+                            cost = h.cost
+                            break
+                    hub.connected.append([cost, near_hub])
+    return connected
 
 class Connection():
     def __init__(self, hub0: Hub, hub1: Hub, max_link_capacity: int):
@@ -113,3 +139,4 @@ def init_connections(init_list: list[str],
             connection = Connection(hub00, hub11, max)
             connection_list.append(connection)
     return connection_list
+        

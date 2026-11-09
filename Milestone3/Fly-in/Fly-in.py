@@ -1,10 +1,11 @@
 import sys
 from parser import parser, get_values, ParsingException
 from classes import init_hubs, init_drones, init_connections
-# from classes import Drone, Hub, Connection
+from solver import dijsktras
+from classes import Drone, Hub, Connection
 
 
-def start() -> None:
+def main() -> None:
     argv = sys.argv
     try:
         list0 = get_values(argv)
@@ -18,11 +19,18 @@ def start() -> None:
             drone.show()
         for conn in connections:
             conn.show()
+        start(drones, connections, hubs)
+        dijsktras(drones, connections, hubs)
     except ParsingException as e:
         print(f"Got parsing Exception: {e}")
     except Exception as e:
         print(f"Got Exception: {e}")
 
 
+def start(d_list: list[Drone], c_list: list[Connection],
+          h_list: list[Hub]) -> None:
+    print()
+
+
 if __name__ == "__main__":
-    start()
+    main()

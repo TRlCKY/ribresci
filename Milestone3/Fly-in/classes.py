@@ -3,7 +3,7 @@ class Drone():
         self.id = id
         self.visited: list[str] = []
 
-    def show(self):
+    def show(self) -> None:
         print(f"Id: {self.id}. Visited: {self.visited}")
 
 
@@ -32,7 +32,7 @@ class Hub():
         self.max_drones = max_drones
         self.cost = cost
 
-    def show(self):
+    def show(self) -> None:
         print(f"Name: {self.name}. X-Y: {self.x}-{self.y}. Zone: {self.zone}. "
               f"Color: {self.color}. Max_drones: {self.max_drones}. "
               f"Cost: {self.cost}")
@@ -63,12 +63,12 @@ def init_hubs(init_list: list[str]) -> list[Hub]:
                 if meta.startswith('color='):
                     color = meta.split('color=').pop()
                 if meta.startswith('max_drones='):
-                    max_drones = meta.split('max_drones=').pop()
+                    max_drones = int(meta.split('max_drones=').pop())
                     if (line0[0].startswith('start_hub:')
                        or line0[0].startswith('end_hub:')):
                         max_drones = -1
             hub0 = Hub(line0[1], float(line0[2]), float(line0[3]), zone, color,
-                       int(max_drones), cost)
+                       max_drones, cost)
             hub_list.append(hub0)
     return hub_list
 
@@ -79,7 +79,7 @@ class Connection():
         self.hub1 = hub1
         self.max_link_capacity = max_link_capacity
 
-    def show(self):
+    def show(self) -> None:
         print(f"Hub0: {self.hub0.name}. Hub1: {self.hub1.name}. "
               f"Max_link_capacity: {self.max_link_capacity}\n")
 

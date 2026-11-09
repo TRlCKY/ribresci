@@ -1,10 +1,1 @@
-# Controllare i mypy rimanenti
-Ricontrollare tutti i controlli del parser eseguendo il programma
-Ricontrollare di aver fatto/rispettato tutti i constraints del parser
-
-Connections must link ONLY PREVIOUSLY DEFINED zones using connection: <zone1>-<zone2> [metadata].
-
-The max_drones capacity IS IGNORED on the START_HUB and END_HUB zones: these
-have no capacity limit (all drones may start in the start zone, and any number of
-drones may be delivered to the end zone). If such metadata is PRESENT on those two
-zones, it is IGNORED and is not a validation error.
+Gli hub hanno una lista di hub connessi e il loro costo (list[tuple[Hub, cost(int)]])

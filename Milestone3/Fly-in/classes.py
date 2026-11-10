@@ -34,12 +34,13 @@ class Hub():
         self.type = type
         self.cost = cost
         self.connected = connected
+        self.visited = False
 
     def show(self) -> None:
         print(f"Name: {self.name}. X-Y: {self.x}-{self.y}. Zone: {self.zone}. "
               f"Color: {self.color}. Max_drones: {self.max_drones}. "
               f"Type: {self.type}. Cost: {self.cost}. "
-              f"Connected: {self.connected}")
+              f"Connected: {self.connected}. Visited: {self.visited}")
 
 
 def init_hubs(init_list: list[str]) -> list[Hub]:
@@ -71,7 +72,7 @@ def init_hubs(init_list: list[str]) -> list[Hub]:
                     if zone == 'restricted':
                         cost = 2
                     if zone == 'blocked':
-                        cost = -1
+                        cost = 3
                     if zone == 'priority':
                         cost = 0
                 if meta.startswith('color='):

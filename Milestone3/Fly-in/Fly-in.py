@@ -7,29 +7,29 @@ from solver import dijsktras
 
 def main() -> None:
     argv = sys.argv
-    try:
-        if len(argv) != 2:
-            raise Exception("Number of arguments isn't 2. Wronge.")
-        init_list = get_values(argv)
-        parser(init_list, argv[1])
-        hubs = init_hubs(init_list)
-        drones = init_drones(init_list)
-        connections = init_connections(init_list, hubs)
-        get_connected(init_list, hubs)
-        print_info(hubs, drones, connections)
+    # try:
+    if len(argv) != 2:
+        raise Exception("Number of arguments isn't 2. Wronge.")
+    init_list = get_values(argv)
+    parser(init_list, argv[1])
+    hubs = init_hubs(init_list)
+    drones = init_drones(init_list)
+    connections = init_connections(init_list, hubs)
+    get_connected(init_list, hubs)
+    # print_info(hubs, drones, connections)
 
-        start(drones, connections, hubs)
-    except ParsingException as e:
-        print(f"Got parsing Exception: {e}")
-    except Exception as e:
-        print(f"Got Exception: {e}")
+    start(drones, connections, hubs)
+    # except ParsingException as e:
+    #     print(f"Got parsing Exception: {e}")
+    # except Exception as e:
+    #     print(f"Got Exception: {e}")
 
 
 def start(d_list: list[Drone], c_list: list[Connection],
           h_list: list[Hub]) -> None:
     paths: list[Hub] = []
     paths = dijsktras(c_list, h_list)
-    paths
+    print(paths)
 
 
 def print_info(hubs: list[Hub], drones: list[Drone],

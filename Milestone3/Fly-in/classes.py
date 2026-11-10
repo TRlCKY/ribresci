@@ -23,7 +23,8 @@ def init_drones(init_list: list[str]) -> list[Drone]:
 
 class Hub():
     def __init__(self, name: str, x: float, y: float, zone: str, color: str,
-                 max_drones: int, type: str, cost: int, connected: list[tuple[int, str]]):
+                 max_drones: int, type: str, cost: int,
+                 connected: list[tuple[int, str]]):
         self.name = name
         self.x = x
         self.y = y
@@ -37,12 +38,12 @@ class Hub():
     def show(self) -> None:
         print(f"Name: {self.name}. X-Y: {self.x}-{self.y}. Zone: {self.zone}. "
               f"Color: {self.color}. Max_drones: {self.max_drones}. "
-              f"Type: {self.type}. Cost: {self.cost}. Connected: {self.connected}")
+              f"Type: {self.type}. Cost: {self.cost}. "
+              f"Connected: {self.connected}")
 
 
 def init_hubs(init_list: list[str]) -> list[Hub]:
     hub_list: list[Hub] = []
-    connected = list[tuple[int, str]]
     for line in init_list:
         zone = "normal"
         color = "none"
@@ -84,7 +85,8 @@ def init_hubs(init_list: list[str]) -> list[Hub]:
 
 
 # Aggiunge ai droni i loro vicini con i rispettivi costi
-def get_connected(init_list: list[str], hubs: list[Hub]) -> list[tuple[int, str]]:
+def get_connected(init_list: list[str],
+                  hubs: list[Hub]) -> list[tuple[int, str]]:
     for hub in hubs:
         cost = 1
         name = hub.name
@@ -105,6 +107,7 @@ def get_connected(init_list: list[str], hubs: list[Hub]) -> list[tuple[int, str]
                             break
                     hub.connected.append([cost, near_hub])
     return connected
+
 
 class Connection():
     def __init__(self, hub0: Hub, hub1: Hub, max_link_capacity: int):
@@ -139,4 +142,3 @@ def init_connections(init_list: list[str],
             connection = Connection(hub00, hub11, max)
             connection_list.append(connection)
     return connection_list
-        

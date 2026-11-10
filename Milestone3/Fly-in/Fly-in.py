@@ -1,8 +1,8 @@
 import sys
 from parser import parser, get_values, ParsingException
 from classes import init_hubs, init_drones, init_connections, get_connected
-from solver import dijsktras
 from classes import Drone, Hub, Connection
+from solver import dijsktras
 
 
 def main() -> None:

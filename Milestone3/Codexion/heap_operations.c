@@ -6,7 +6,7 @@
 /*   By: ribresci <ribresci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/05 14:00:29 by ribresci          #+#    #+#             */
-/*   Updated: 2026/10/20 11:06:19 by ribresci         ###   ########.fr       */
+/*   Updated: 2026/11/10 18:12:07 by ribresci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,11 +85,6 @@ int	do_switch(t_coder *c1, t_coder *c2, int burnout, t_heap heap)
 	{
 		d1 = c1->last_compile_start + burnout;
 		d2 = c2->last_compile_start + burnout;
-	}
-	else
-	{
-		d1 = c1->request_time;
-		d2 = c2->request_time;
 	}
 	if (d1 > d2)
 		return (1);

@@ -2,7 +2,7 @@ import sys
 from parser import parser, get_values, ParsingException
 from classes import init_hubs, init_drones, init_connections, get_connected
 from classes import Drone, Hub, Connection
-from solver import dijsktras
+from solver import solver
 
 
 def main() -> None:
@@ -16,7 +16,7 @@ def main() -> None:
     drones = init_drones(init_list)
     connections = init_connections(init_list, hubs)
     get_connected(init_list, hubs)
-    # print_info(hubs, drones, connections)
+    print_info(hubs, drones, connections)
 
     start(drones, connections, hubs)
     # except ParsingException as e:
@@ -28,8 +28,9 @@ def main() -> None:
 def start(d_list: list[Drone], c_list: list[Connection],
           h_list: list[Hub]) -> None:
     paths: list[Hub] = []
-    paths = dijsktras(c_list, h_list)
-    print(paths)
+    paths = solver(c_list, h_list)
+    for hub in paths:
+        hub.show()
 
 
 def print_info(hubs: list[Hub], drones: list[Drone],

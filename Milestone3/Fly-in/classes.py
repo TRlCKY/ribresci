@@ -24,7 +24,8 @@ def init_drones(init_list: list[str]) -> list[Drone]:
 class Hub():
     def __init__(self, name: str, x: float, y: float, zone: str, color: str,
                  max_drones: int, type: str, cost: int,
-                 connected: list[tuple[int, str]]):
+                 connected: list[tuple[int, str]],
+                 path: list[list[tuple[int, str]]]):
         self.name = name
         self.x = x
         self.y = y
@@ -35,12 +36,14 @@ class Hub():
         self.cost = cost
         self.connected = connected
         self.visited = False
+        self.path = path
 
     def show(self) -> None:
         print(f"Name: {self.name}. X-Y: {self.x}-{self.y}. Zone: {self.zone}. "
               f"Color: {self.color}. Max_drones: {self.max_drones}. "
               f"Type: {self.type}. Cost: {self.cost}. "
-              f"Connected: {self.connected}. Visited: {self.visited}")
+              f"Connected: {self.connected}. Visited: {self.visited} "
+              f"Path: {self.path}")
 
 
 def init_hubs(init_list: list[str]) -> list[Hub]:
@@ -62,6 +65,7 @@ def init_hubs(init_list: list[str]) -> list[Hub]:
                 type = "start"
             if line0[0].startswith('end_hub:'):
                 type = "end"
+                cost = 0
             for meta in meta0:
                 if meta.startswith('['):
                     meta = meta.split('[').pop()
@@ -80,7 +84,7 @@ def init_hubs(init_list: list[str]) -> list[Hub]:
                 if meta.startswith('max_drones='):
                     max_drones = int(meta.split('max_drones=').pop())
             hub0 = Hub(line0[1], float(line0[2]), float(line0[3]), zone, color,
-                       max_drones, type, cost, [])
+                       max_drones, type, cost, [], [])
             hub_list.append(hub0)
     return hub_list
 

@@ -29,18 +29,22 @@ def start(d_list: list[Drone], c_list: list[Connection],
           h_list: list[Hub]) -> None:
     paths: list[Hub] = []
     paths = solver(c_list, h_list)
+    print("Paths:")
     for hub in paths:
         hub.show()
 
 
 def print_info(hubs: list[Hub], drones: list[Drone],
                connections: list[Connection]) -> None:
+    print("=== HUB INFO ===")
     for hub in hubs:
         hub.show()
     print()
+    print("=== DRONE INFO ===")
     for drone in drones:
         drone.show()
     print()
+    print("=== CONNECTION INFO ===")
     for conn in connections:
         conn.show()
     print()

@@ -5,8 +5,8 @@ class Connection():
         self.max_link_capacity = max_link_capacity
 
     def show(self) -> None:
-        print(f"Hub0: {self.hub0.name}. Hub1: {self.hub1.name}. "
-              f"Max_link_capacity: {self.max_link_capacity}")
+        print(f"HUB0: {self.hub0.name}. HUB1: {self.hub1.name}. "
+              f"MAX_LINK_CAPACITY: {self.max_link_capacity}")
 
 
 class Hub():
@@ -27,12 +27,12 @@ class Hub():
         self.path = path
 
     def show(self) -> None:
-        print(f"Name: {self.name}. X-Y: {self.x}-{self.y}. Zone: {self.zone}. "
-              f"Color: {self.color}. Max_drones: {self.max_drones}. "
-              f"Type: {self.type}. Cost: {self.cost}. "
-              f"Path: {self.path}. Visited: {self.visited} ")
+        print(f"NAME: {self.name}. X-Y: {self.x}-{self.y}. ZONE: {self.zone}."
+              f" COLOR: {self.color}. MAX_DRONES: {self.max_drones}. "
+              f"TYPE: {self.type}. COST: {self.cost}. "
+              f"PATH: {self.path}. VISITED: {self.visited}.\nCONNECTION:")
         for c in self.connected:
-            c.show()
+            print(f"{c.hub0.name}-{c.hub1.name}")
 
 
 class Drone():
@@ -41,7 +41,7 @@ class Drone():
         self.visited: list[str] = []
 
     def show(self) -> None:
-        print(f"Id: {self.id}. Visited: {self.visited}")
+        print(f"ID: {self.id}. VISITED: {self.visited}")
 
 
 def init_drones(init_list: list[str]) -> list[Drone]:

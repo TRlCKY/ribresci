@@ -13,7 +13,7 @@ class Hub():
     def __init__(self, name: str, x: float, y: float, zone: str, color: str,
                  max_drones: int, type: str, cost: int,
                  connected: list[Connection],
-                 path: list[list[tuple[int, str]]]):
+                 path: list[Hub]):
         self.name = name
         self.x = x
         self.y = y
@@ -28,9 +28,9 @@ class Hub():
 
     def show(self) -> None:
         print(f"NAME: {self.name}. X-Y: {self.x}-{self.y}. ZONE: {self.zone}."
-              f" COLOR: {self.color}. MAX_DRONES: {self.max_drones}. "
+              f"COLOR: {self.color}. MAX_DRONES: {self.max_drones}. "
               f"TYPE: {self.type}. COST: {self.cost}. "
-              f"PATH: {self.path}. VISITED: {self.visited}.\nCONNECTION:")
+              f"VISITED: {self.visited}.\nCONNECTION:")
         for c in self.connected:
             print(f"{c.hub0.name}-{c.hub1.name}")
 

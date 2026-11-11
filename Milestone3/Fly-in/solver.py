@@ -28,7 +28,7 @@ def solver(c_list: list[Connection], h_list: list[Hub]) -> list[Hub]:
         path.append(curr_hub)
         for hub in h_list:
             for near in curr_hub.connected:
-                if ((near.hub0 == hub.name or near.hub1 == hub.name)
+                if ((near.hub0.name == hub.name or near.hub1.name == hub.name)
                    and hub.visited is False and hub.zone != 'blocked'):
                     possibile_hubs.append(hub)
         if len(possibile_hubs) > 0:
@@ -39,11 +39,13 @@ def solver(c_list: list[Connection], h_list: list[Hub]) -> list[Hub]:
                     if pos.name == pos0.hub1.name:
                         update_path(curr_hub, pos0.hub0)
         curr_hub.visited = True
-#    for final_path in end_hub.path:
-#        print(f"Final path: {final_path}")
-#        paths.append(final_path)
+    for final_path in end_hub.path:
+        print(f"Final path: {final_path.name}")
+        paths.append(final_path)
     return paths
 
 
 def update_path(prev_h: Hub, next_h: Hub) -> None:
-    next_h.path.append([prev_h.path])
+    new_path = prev_h.path
+    new_path.append(next_h)
+    next_h.path = new_path

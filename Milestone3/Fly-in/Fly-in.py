@@ -29,9 +29,10 @@ def start(d_list: list[Drone], c_list: list[Connection],
           h_list: list[Hub]) -> None:
     paths: list[Hub] = []
     paths = solver(c_list, h_list)
-    print("Paths:")
+    print()
+    print("PATHS")
     for hub in paths:
-        hub.show()
+        print(hub.name)
 
 
 def print_info(hubs: list[Hub], drones: list[Drone],

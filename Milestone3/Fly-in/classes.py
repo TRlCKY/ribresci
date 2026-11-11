@@ -1,3 +1,40 @@
+class Connection():
+    def __init__(self, hub0: "Hub", hub1: "Hub", max_link_capacity: int):
+        self.hub0 = hub0
+        self.hub1 = hub1
+        self.max_link_capacity = max_link_capacity
+
+    def show(self) -> None:
+        print(f"Hub0: {self.hub0.name}. Hub1: {self.hub1.name}. "
+              f"Max_link_capacity: {self.max_link_capacity}")
+
+
+class Hub():
+    def __init__(self, name: str, x: float, y: float, zone: str, color: str,
+                 max_drones: int, type: str, cost: int,
+                 connected: list[Connection],
+                 path: list[list[tuple[int, str]]]):
+        self.name = name
+        self.x = x
+        self.y = y
+        self.zone = zone
+        self.color = color
+        self.max_drones = max_drones
+        self.type = type
+        self.cost = cost
+        self.connected = connected
+        self.visited = False
+        self.path = path
+
+    def show(self) -> None:
+        print(f"Name: {self.name}. X-Y: {self.x}-{self.y}. Zone: {self.zone}. "
+              f"Color: {self.color}. Max_drones: {self.max_drones}. "
+              f"Type: {self.type}. Cost: {self.cost}. "
+              f"Path: {self.path}. Visited: {self.visited} ")
+        for c in self.connected:
+            c.show()
+
+
 class Drone():
     def __init__(self, id: int):
         self.id = id
@@ -19,31 +56,6 @@ def init_drones(init_list: list[str]) -> list[Drone]:
         drone = Drone(i)
         drone_list.append(drone)
     return drone_list
-
-
-class Hub():
-    def __init__(self, name: str, x: float, y: float, zone: str, color: str,
-                 max_drones: int, type: str, cost: int,
-                 connected: list[tuple[int, str]],
-                 path: list[list[tuple[int, str]]]):
-        self.name = name
-        self.x = x
-        self.y = y
-        self.zone = zone
-        self.color = color
-        self.max_drones = max_drones
-        self.type = type
-        self.cost = cost
-        self.connected = connected
-        self.visited = False
-        self.path = path
-
-    def show(self) -> None:
-        print(f"Name: {self.name}. X-Y: {self.x}-{self.y}. Zone: {self.zone}. "
-              f"Color: {self.color}. Max_drones: {self.max_drones}. "
-              f"Type: {self.type}. Cost: {self.cost}. "
-              f"Connected: {self.connected}. Visited: {self.visited} "
-              f"Path: {self.path}")
 
 
 def init_hubs(init_list: list[str]) -> list[Hub]:
@@ -90,39 +102,11 @@ def init_hubs(init_list: list[str]) -> list[Hub]:
 
 
 # Aggiunge ai droni i loro vicini con i rispettivi costi
-def get_connected(init_list: list[str],
-                  hubs: list[Hub]) -> list[tuple[int, str]]:
+def get_connected(connections: list[Connection], hubs: list[Hub]) -> None:
     for hub in hubs:
-        cost = 1
-        name = hub.name
-        near_hub = "a"
-        connected: list[tuple[int, str]] = []
-        for line in init_list:
-            if line.startswith('connection:'):
-                line0 = line.split(' ').pop(1)
-                line01 = line0.split('-')
-                if name in line01:
-                    if name == line01[0]:
-                        near_hub = line01[1]
-                    else:
-                        near_hub = line01[0]
-                    for h in hubs:
-                        if near_hub == h.name:
-                            cost = h.cost
-                            break
-                    hub.connected.append([cost, near_hub])
-    return connected
-
-
-class Connection():
-    def __init__(self, hub0: Hub, hub1: Hub, max_link_capacity: int):
-        self.hub0 = hub0
-        self.hub1 = hub1
-        self.max_link_capacity = max_link_capacity
-
-    def show(self) -> None:
-        print(f"Hub0: {self.hub0.name}. Hub1: {self.hub1.name}. "
-              f"Max_link_capacity: {self.max_link_capacity}")
+        for conn in connections:
+            if hub.name == conn.hub0.name or hub.name == conn.hub1.name:
+                hub.connected.append(conn)
 
 
 def init_connections(init_list: list[str],

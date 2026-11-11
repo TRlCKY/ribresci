@@ -15,7 +15,7 @@ def main() -> None:
     hubs = init_hubs(init_list)
     drones = init_drones(init_list)
     connections = init_connections(init_list, hubs)
-    get_connected(init_list, hubs)
+    get_connected(connections, hubs)
     print_info(hubs, drones, connections)
 
     start(drones, connections, hubs)

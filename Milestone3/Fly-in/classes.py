@@ -13,7 +13,7 @@ class Hub():
     def __init__(self, name: str, x: float, y: float, zone: str, color: str,
                  max_drones: int, type: str, cost: int,
                  connected: list[Connection],
-                 path: list[Hub]):
+                 path: list["Hub"]):
         self.name = name
         self.x = x
         self.y = y

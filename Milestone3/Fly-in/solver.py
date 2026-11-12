@@ -1,4 +1,4 @@
-from classes import Connection, Hub
+from classes import Hub
 
 
 def sort_list(hub: Hub) -> int:
@@ -10,29 +10,32 @@ def sort_list(hub: Hub) -> int:
         return 1
 
 
-def solver(c_list: list[Connection], h_list: list[Hub]) -> list[Hub]:
+def get_near_hubs(curr_hub: Hub, hub_list: list[Hub]) -> list[Hub]:
+    near_hubs: list[Hub] = []
+    for hub in hub_list:
+        for near in curr_hub.connected:
+            if ((near.hub0.name == hub.name or near.hub1.name == hub.name)
+               and hub.visited is False and hub.zone != 'blocked'):
+                near_hubs.append(hub)
+    return near_hubs
+
+
+def solver(hub_list: list[Hub]) -> list[Hub]:
     paths: list[list[Hub]] = []
-    h_list.sort(key=sort_list)
-    for hub in h_list:
+    hub_list.sort(key=sort_list)
+    for hub in hub_list:
         if hub.type == "start":
             curr_hub = hub
         if hub.type == "end":
             end_hub = hub
     curr_hub.visited = True
-    for hubbo in h_list:
-        if hubbo.type == "start":
-            continue
+    for hubbo in hub_list:
         curr_hub = hubbo
         path: list[Hub] = []
-        possibile_hubs: list[Hub] = []
+        near_hubs = get_near_hubs(curr_hub, hub_list)
         path.append(curr_hub)
-        for hub in h_list:
-            for near in curr_hub.connected:
-                if ((near.hub0.name == hub.name or near.hub1.name == hub.name)
-                   and hub.visited is False and hub.zone != 'blocked'):
-                    possibile_hubs.append(hub)
-        if len(possibile_hubs) > 0:
-            for pos in possibile_hubs:
+        if len(near_hubs) > 0:
+            for pos in near_hubs:
                 for pos0 in pos.connected:
                     if pos.name == pos0.hub0.name:
                         update_path(curr_hub, pos0.hub1)

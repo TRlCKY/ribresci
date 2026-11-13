@@ -1,4 +1,4 @@
-from classes import Hub
+from classes import Hub, Connection
 
 
 def sort_list(hub: Hub) -> int:
@@ -20,7 +20,7 @@ def get_near_hubs(curr_hub: Hub, hub_list: list[Hub]) -> list[Hub]:
     return near_hubs
 
 
-def solver(hub_list: list[Hub]) -> list[Hub]:
+def solver(hub_list: list[Hub], connections: list[Connection]) -> list[Hub]:
     paths: list[list[Hub]] = []
     hub_list.sort(key=sort_list)
     for hub in hub_list:
@@ -29,19 +29,21 @@ def solver(hub_list: list[Hub]) -> list[Hub]:
         if hub.type == "end":
             end_hub = hub
     curr_hub.visited = True
-    for hubbo in hub_list:
-        curr_hub = hubbo
+    heap: list[tuple[int, str]] = [(0, end_hub.name)]
+    while heap:
+        dist, name = heap
         path: list[Hub] = []
         near_hubs = get_near_hubs(curr_hub, hub_list)
-        path.append(curr_hub)
-        if len(near_hubs) > 0:
-            for pos in near_hubs:
-                for pos0 in pos.connected:
-                    if pos.name == pos0.hub0.name:
-                        update_path(curr_hub, pos0.hub1)
-                    if pos.name == pos0.hub1.name:
-                        update_path(curr_hub, pos0.hub0)
-        curr_hub.visited = True
+        
+        # path.append(curr_hub)
+        # if len(near_hubs) > 0:
+        #     for pos in near_hubs:
+        #         for pos0 in pos.connected:
+        #             if pos.name == pos0.hub0.name:
+        #                 update_path(curr_hub, pos0.hub1)
+        #             if pos.name == pos0.hub1.name:
+        #                 update_path(curr_hub, pos0.hub0)
+        # curr_hub.visited = True
     for final_path in end_hub.path:
         print(f"Final path: {final_path.name}")
         paths.append(final_path)

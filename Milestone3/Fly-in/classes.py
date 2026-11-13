@@ -1,3 +1,9 @@
+class ParsingException(Exception):
+    def __init__(self, msg: str):
+        super().__init__(msg)
+        self.msg = "parsingException found"
+
+
 class Connection():
     def __init__(self, hub0: "Hub", hub1: "Hub", max_link_capacity: int):
         self.hub0 = hub0
@@ -10,7 +16,7 @@ class Connection():
 
 
 class Hub():
-    def __init__(self, name: str, x: float, y: float, zone: str, color: str,
+    def __init__(self, name: str, x: int, y: int, zone: str, color: str,
                  max_drones: int, type: str, cost: int,
                  connected: list[Connection],
                  path: list["Hub"]):
@@ -37,11 +43,19 @@ class Hub():
 
 class Drone():
     def __init__(self, id: int):
-        self.id = id
+        self.id = id + 1
         self.visited: list[str] = []
 
     def show(self) -> None:
         print(f"ID: {self.id}. VISITED: {self.visited}")
+
+    def print_status(self, hub: Hub, status: str) -> None:
+        if status == "wait":
+            print(f"Drone {self.id} is waiting in hub: {hub.name}")
+        if status == "leave":
+            print(f"Drone {self.id} left hub: {hub.name}")
+        if status == "reach":
+            print(f"Drone {self.id} reached hub: {hub.name}")
 
 
 def init_drones(init_list: list[str]) -> list[Drone]:
@@ -77,7 +91,7 @@ def init_hubs(init_list: list[str]) -> list[Hub]:
                 type = "start"
             if line0[0].startswith('end_hub:'):
                 type = "end"
-                cost = 0
+                cost = 1
             for meta in meta0:
                 if meta.startswith('['):
                     meta = meta.split('[').pop()
@@ -89,20 +103,22 @@ def init_hubs(init_list: list[str]) -> list[Hub]:
                         cost = 2
                     if zone == 'blocked':
                         cost = 3
-                    if zone == 'priority':
-                        cost = 0
+                    if zone == 'priority' or zone == 'normal':
+                        cost = 1
                 if meta.startswith('color='):
                     color = meta.split('color=').pop()
-                if meta.startswith('max_drones='):
+                if (meta.startswith('max_drones=') and type != "start"
+                   and type != "end"):
                     max_drones = int(meta.split('max_drones=').pop())
-            hub0 = Hub(line0[1], float(line0[2]), float(line0[3]), zone, color,
+            hub0 = Hub(line0[1], int(line0[2]), int(line0[3]), zone, color,
                        max_drones, type, cost, [], [])
             hub_list.append(hub0)
     return hub_list
 
 
 # Aggiunge ai droni i loro vicini con i rispettivi costi
-def get_connected(connections: list[Connection], hubs: list[Hub]) -> None:
+def get_connected(connections: list[Connection],
+                  hubs: list[Hub]) -> None:
     for hub in hubs:
         for conn in connections:
             if hub.name == conn.hub0.name or hub.name == conn.hub1.name:
@@ -111,7 +127,6 @@ def get_connected(connections: list[Connection], hubs: list[Hub]) -> None:
 
 def init_connections(init_list: list[str],
                      hub_list: list[Hub]) -> list[Connection]:
-    max = 1
     connection_list: list[Connection] = []
     for line in init_list:
         if line.startswith('connection: '):
@@ -119,6 +134,7 @@ def init_connections(init_list: list[str],
             hub01 = line0[1].split('-')
             hub0 = hub01[0]
             hub1 = hub01[1]
+            max = 1
             for hub in hub_list:
                 if hub0 == hub.name:
                     hub00 = hub

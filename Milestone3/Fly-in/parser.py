@@ -1,11 +1,6 @@
 import sys
+from classes import ParsingException
 from classes import init_hubs
-
-
-class ParsingException(Exception):
-    def __init__(self, msg: str):
-        super().__init__(msg)
-        self.msg = "parsingException found"
 
 
 def check_metadata(current_line: int, line0: str) -> tuple[int, str]:
@@ -126,8 +121,8 @@ def parser(new_list: list[str], text: str) -> None:
             list0.pop(0)
             start_name = list0.pop(0)
             try:
-                float(list0[0])
-                float(list0[1])
+                int(list0[0])
+                int(list0[1])
             except ValueError as e:
                 raise ParsingException(f"{e} in line "
                                        f"{get_line(text, 'start_hub: ')}")
@@ -141,8 +136,8 @@ def parser(new_list: list[str], text: str) -> None:
             list0.pop(0)
             end_name = list0.pop(0)
             try:
-                float(list0[0])
-                float(list0[1])
+                int(list0[0])
+                int(list0[1])
             except ValueError as e:
                 raise ParsingException(f"{e} in line "
                                        f"{get_line(text, 'end_hub: ')}")
@@ -156,8 +151,8 @@ def parser(new_list: list[str], text: str) -> None:
             list0.pop(0)
             hub_name = list0.pop(0)
             try:
-                float(list0[0])
-                float(list0[1])
+                int(list0[0])
+                int(list0[1])
             except ValueError as e:
                 raise ParsingException(f"{e} in line "
                                        f"{get_line(text, 'hub: ')}")

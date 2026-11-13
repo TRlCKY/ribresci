@@ -1,7 +1,7 @@
 import sys
-from parser import parser, get_values, ParsingException
+from parser import parser, get_values
+from classes import Drone, Hub, Connection, ParsingException
 from classes import init_hubs, init_drones, init_connections, get_connected
-from classes import Drone, Hub, Connection
 from solver import solver
 
 
@@ -28,7 +28,7 @@ def main() -> None:
 def start(d_list: list[Drone], c_list: list[Connection],
           h_list: list[Hub]) -> None:
     paths: list[Hub] = []
-    paths = solver(c_list, h_list)
+    paths = solver(h_list)
     print()
     print("PATHS")
     for hub in paths:

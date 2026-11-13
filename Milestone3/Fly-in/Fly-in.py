@@ -2,7 +2,7 @@ import sys
 from parser import parser, get_values
 from classes import Drone, Hub, Connection, ParsingException
 from classes import init_hubs, init_drones, init_connections, get_connected
-from solver import solver
+from solver import dijkstra
 
 
 def main() -> None:
@@ -27,11 +27,11 @@ def main() -> None:
 
 def start(d_list: list[Drone], c_list: list[Connection],
           h_list: list[Hub]) -> None:
-    paths: list[Hub] = []
-    paths = solver(h_list)
+    path: list[Hub] = []
+    path = dijkstra(h_list)
     print()
-    print("PATHS")
-    for hub in paths:
+    print("PATH:")
+    for hub in path:
         print(hub.name)
 
 

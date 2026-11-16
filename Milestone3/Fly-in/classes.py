@@ -9,6 +9,7 @@ class Connection():
         self.hub0 = hub0
         self.hub1 = hub1
         self.max_link_capacity = max_link_capacity
+        self.drones_inside: int = 0
 
     def show(self) -> None:
         print(f"HUB0: {self.hub0.name}. HUB1: {self.hub1.name}. "
@@ -31,6 +32,8 @@ class Hub():
         self.connected = connected
         self.visited = False
         self.path = path
+        self.current_drones: int = 0
+        self.waiting_drones: list[Drone] = []
 
     def show(self) -> None:
         print(f"NAME: {self.name}. X-Y: {self.x}-{self.y}. ZONE: {self.zone}."
@@ -55,7 +58,21 @@ class Drone():
         if status == "leave":
             print(f"Drone {self.id} left hub: {hub.name}")
         if status == "reach":
+            print(f"Drone {self.id} is waiting in hub: {hub.name}")
             print(f"Drone {self.id} reached hub: {hub.name}")
+        if status == "restricted":
+            print(f"Drone {self.id} is in a restricted zone")
+        if status == "finish":
+            return
+
+
+class ticket():
+    def __init__(self, n_drones: int, n_capacity: int, connection: Connection,
+                 hub: Hub):
+        self.n_drones = n_drones
+        self.n_capacity = n_capacity
+        self.connection = connection
+        self.hub = hub
 
 
 def init_drones(init_list: list[str]) -> list[Drone]:

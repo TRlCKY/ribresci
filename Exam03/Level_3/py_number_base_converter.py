@@ -35,6 +35,9 @@ def convert(from_base: int, number: str):
 
 
 def main():
+    number = 34
+    from_base = 6
+    to_base = 12
     print(number_base_converter(number, from_base, to_base))
 
 

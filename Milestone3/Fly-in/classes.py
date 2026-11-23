@@ -48,21 +48,22 @@ class Drone():
     def __init__(self, id: int):
         self.id = id + 1
         self.visited: list[str] = []
+        self.current_hub: Hub | None = None
+        self.next_hub: Hub | None = None
+        self.status: str = ""
 
     def show(self) -> None:
-        print(f"ID: {self.id}. VISITED: {self.visited}")
+        print(f"ID: {self.id}. VISITED: {self.visited}. "
+              f"CURRENT HUB: {self.current_hub}")
 
-    def print_status(self, hub: Hub, status: str) -> None:
-        if status == "wait":
+    def print_status(self, hub: Hub) -> None:
+        if self.status == "wait":
             print(f"Drone {self.id} is waiting in hub: {hub.name}")
-        if status == "leave":
-            print(f"Drone {self.id} left hub: {hub.name}")
-        if status == "reach":
-            print(f"Drone {self.id} is waiting in hub: {hub.name}")
+        if self.status == "reach":
             print(f"Drone {self.id} reached hub: {hub.name}")
-        if status == "restricted":
+        if self.status == "restricted":
             print(f"Drone {self.id} is in a restricted zone")
-        if status == "finish":
+        if self.status == "finish":
             return
 
 
@@ -73,6 +74,7 @@ class ticket():
         self.n_capacity = n_capacity
         self.connection = connection
         self.hub = hub
+        self.turn = 0
 
 
 def init_drones(init_list: list[str]) -> list[Drone]:

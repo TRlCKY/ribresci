@@ -27,12 +27,11 @@ def main() -> None:
 
 def start(d_list: list[Drone], c_list: list[Connection],
           h_list: list[Hub]) -> None:
-    path: list[Hub] = []
-    path = dijkstra(h_list)
+    distances: list[Hub] = dijkstra(h_list)
     print()
     print("PATH:")
-    for hub in path:
-        print(hub.name)
+    for name in distances:
+        print(name, distances[name])
 
 
 def print_info(hubs: list[Hub], drones: list[Drone],

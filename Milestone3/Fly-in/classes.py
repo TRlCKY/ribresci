@@ -103,7 +103,7 @@ def init_hubs(init_list: list[str]) -> list[Hub]:
             meta0 = line0[4].split(' ')
             if (line0[0].startswith('start_hub:')
                or line0[0].startswith('end_hub:')):
-                max_drones = -1
+                max_drones = init_list[0]
             if line0[0].startswith('start_hub:'):
                 type = "start"
             if line0[0].startswith('end_hub:'):
@@ -119,7 +119,7 @@ def init_hubs(init_list: list[str]) -> list[Hub]:
                     if zone == 'restricted':
                         cost = 2
                     if zone == 'blocked':
-                        cost = 3
+                        cost = -1
                     if zone == 'priority' or zone == 'normal':
                         cost = 1
                 if meta.startswith('color='):

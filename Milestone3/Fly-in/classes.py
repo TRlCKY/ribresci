@@ -46,9 +46,10 @@ class Hub():
 
 class Drone():
     def __init__(self, id: int):
-        self.id = id + 1
+        self.id: int = id + 1
         self.visited: list[str] = []
         self.current_hub: Hub | None = None
+        self.prev_hub: Hub | None = None
         self.next_hub: Hub | None = None
         self.status: str = ""
 
@@ -58,23 +59,13 @@ class Drone():
 
     def print_status(self, hub: Hub) -> None:
         if self.status == "wait":
-            print(f"Drone {self.id} is waiting in hub: {hub.name}")
+            print(f"Drone {self.id} is waiting in hub {hub.name}")
         if self.status == "reach":
-            print(f"Drone {self.id} reached hub: {hub.name}")
+            print(f"Drone {self.id} reached hub {hub.name}")
         if self.status == "restricted":
             print(f"Drone {self.id} is in a restricted zone")
         if self.status == "finish":
             return
-
-
-class ticket():
-    def __init__(self, n_drones: int, n_capacity: int, connection: Connection,
-                 hub: Hub):
-        self.n_drones = n_drones
-        self.n_capacity = n_capacity
-        self.connection = connection
-        self.hub = hub
-        self.turn = 0
 
 
 def init_drones(init_list: list[str]) -> list[Drone]:
@@ -105,7 +96,7 @@ def init_hubs(init_list: list[str]) -> list[Hub]:
             meta0 = line0[4].split(' ')
             if (line0[0].startswith('start_hub:')
                or line0[0].startswith('end_hub:')):
-                max_drones = init_list[0]
+                max_drones = int(init_list[0].split('nb_drones: ').pop())
             if line0[0].startswith('start_hub:'):
                 type = "start"
             if line0[0].startswith('end_hub:'):

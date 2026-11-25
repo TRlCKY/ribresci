@@ -82,6 +82,7 @@ def start(d_list: list[Drone], c_list: list[Connection],
                             # Alla fine del for il drone di turno sara' nel
                             # percorso disponibile piu' veloce
                             best_hub = poss
+            # Vengono aggiornate le posizioni dei droni
             if best_hub is None:
                 drone.status = "wait"
             elif drone.current_hub.zone == "restricted":
@@ -96,6 +97,8 @@ def start(d_list: list[Drone], c_list: list[Connection],
                 drone.current_hub = best_hub
             # Il drone compie un azione e stampa il suo status
             drone.print_status(drone.current_hub)
+            # Vengono aggiornati i valori del numero di droni nelle
+            # connessioni e negli hub
             if drone.status == "reach":
                 drone.current_hub.current_drones += 1
                 drone.prev_hub.current_drones -= 1
@@ -116,6 +119,10 @@ def start(d_list: list[Drone], c_list: list[Connection],
         # if x == len(d_list):
         #     finish = 1
         current_turn += 1
+
+
+def update_connections(drone: Drone, connection: Connection) -> None:
+    return
 
 
 def has_room(curr_hub: Hub, poss_hub: Hub,

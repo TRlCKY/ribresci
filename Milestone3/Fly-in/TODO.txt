@@ -1,1 +1,1 @@
-Gli hub hanno una lista di hub connessi e il loro costo (list[tuple[Hub, cost(int)]])
+Finire show dei droni

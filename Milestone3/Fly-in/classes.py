@@ -48,24 +48,49 @@ class Drone():
     def __init__(self, id: int):
         self.id: int = id + 1
         self.visited: list[str] = []
-        self.current_hub: Hub | None = None
         self.prev_hub: Hub | None = None
+        self.current_hub: Hub | None = None
         self.next_hub: Hub | None = None
         self.status: str = ""
+        self.prev_connection: Connection | None = None
+        self.current_connection: Connection | None = None
 
     def show(self) -> None:
-        print(f"ID: {self.id}. VISITED: {self.visited}. "
-              f"CURRENT HUB: {self.current_hub}")
+        visited = ''
+        if self.visited is not []:
+            for h in self.visited:
+                visited += f'{h.name}, '
+        else:
+            visited = 'none'
+        prev_hub = ''
+        if self.prev_hub is not None:
+            prev_hub = f'{self.prev_hub.name}'
+        else:
+            prev_hub = 'none'
+        curr_hub = ''
+        if self.curr_hub is not None:
+            curr_hub = f'{self.curr_hub.name}'
+        else:
+            curr_hub = 'none'
+        print(f"ID: {self.id}. VISITED: {visited}. "
+              f"PREVIOS HUB: {prev_hub}. "
+              f"CURRENT HUB: {curr_hub}. "
+              f"NEXT HUB: {self.next_hub.name}. "
+              f"PREVIOS CONNECTION: {self.prev_connection.hub0.name}-"
+              f"{self.prev_connection.hub1.name}. "
+              f"CURRENT CONNECTION: {self.current_connection.hub0.name}-"
+              f"{self.current_connection.hub1.name}. STATUS: {self.status}")
 
     def print_status(self, hub: Hub) -> None:
         if self.status == "wait":
-            print(f"Drone {self.id} is waiting in hub {hub.name}")
+            print(f"Drone {self.id} is waiting in hub '{hub.name}'")
         if self.status == "reach":
-            print(f"Drone {self.id} reached hub {hub.name}")
+            print(f"Drone {self.id} reached hub '{hub.name}'")
         if self.status == "restricted":
-            print(f"Drone {self.id} is in a restricted zone")
+            print(f"Drone {self.id} is reaching a restricted hub")
         if self.status == "finish":
             return
+        self.show()
 
 
 def init_drones(init_list: list[str]) -> list[Drone]:

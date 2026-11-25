@@ -261,7 +261,7 @@ def get_values(argv: list[str]) -> list[str]:
         else:
             raise ParsingException(f"Invalid line in line {current_line}")
     if nb_drones_line != 1:
-        print(nb_drones_line)
+        # print(nb_drones_line)
         raise ParsingException("Too many or 0 'nb_drones: ...' lines in "
                                f"line {get_line(argv[1], 'nb_drones: ')}")
     if start_line != 1:

@@ -57,17 +57,15 @@ class Drone():
 
     def show(self) -> None:
         visited = ''
-        if self.visited is not []:
+        if self.visited is not None:
             for h in self.visited:
                 visited += f'{h.name}, '
         else:
             visited = 'none'
-        prev_hub = ''
         if self.prev_hub is not None:
             prev_hub = self.prev_hub.name
         else:
             prev_hub = 'none'
-        curr_hub = ''
         if self.current_hub is not None:
             curr_hub = self.current_hub.name
         else:
@@ -90,8 +88,9 @@ class Drone():
               f"PREVIOS HUB: {prev_hub}. "
               f"CURRENT HUB: {curr_hub}. "
               f"NEXT HUB: {next_hub}. "
-              f"PREVIOS CONNECTION: {prev_connection}"
-              f"CURRENT CONNECTION: {curr_connection}. STATUS: {self.status}")
+              f"PREVIOS CONNECTION: {prev_connection}. "
+              f"CURRENT CONNECTION: {curr_connection}. "
+              f"STATUS: {self.status}. ")
 
     def print_status(self, hub: Hub) -> None:
         if self.status == "wait":
@@ -102,7 +101,7 @@ class Drone():
             print(f"Drone {self.id} is reaching a restricted hub")
         if self.status == "finish":
             return
-        self.show()
+        # self.show()
 
 
 def init_drones(init_list: list[str]) -> list[Drone]:

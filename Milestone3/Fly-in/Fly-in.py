@@ -37,10 +37,10 @@ def start(d_list: list[Drone], c_list: list[Connection],
     if start_hub is None:
         raise Exception("There's something wrong, I can feel it. No start hub "
                         "in hub list.")
-    print()
-    print("PATH:")
-    for name in distances:
-        print(name, distances[name])
+    # print()
+    # print("PATH:")
+    # for name in distances:
+    #     print(name, distances[name])
     current_turn = 1
     for drone in d_list:
         drone.current_hub = start_hub
@@ -53,7 +53,8 @@ def start(d_list: list[Drone], c_list: list[Connection],
         for drone in d_list:
             poss_hubs: list[Hub] = []
             # I droni che sono su end non fanno nulla
-            if drone.current_hub.type == "end":
+            if (drone.current_hub is not None
+               and drone.current_hub.type == "end"):
                 drone.status = "finish"
                 continue
             if drone.status == "restricted":
@@ -76,13 +77,14 @@ def start(d_list: list[Drone], c_list: list[Connection],
                     if has_room(drone.current_hub, poss, c_list):
                         if ((best_dist > distances.get(poss.name))
                             or (best_dist == distances.get(poss.name)
-                                and poss.type == "priority")):
+                                and poss.zone == "priority")):
                             best_dist = distances.get(poss.name)
                             # Alla fine del for il drone di turno sara' nel
                             # percorso disponibile piu' veloce
                             best_hub = poss
                 if best_hub is not None:
-                    update_connection(drone, drone.current_hub, poss, c_list)
+                    update_connection(drone, drone.current_hub,
+                                      best_hub, c_list)
             # Vengono aggiornate le posizioni dei droni i loro status
             # Se best_hub resta None, non ci sono movimenti disponibili
             if best_hub is None:
@@ -92,35 +94,34 @@ def start(d_list: list[Drone], c_list: list[Connection],
                 drone.status = "reach"
                 drone.current_hub = drone.next_hub
                 if drone.prev_hub is not None:
-                    drone.prev_hub.current_drones += 1
-                drone.current_hub.current_drones -= 1
+                    drone.prev_hub.current_drones -= 1
+                drone.current_hub.current_drones += 1
                 if drone.prev_connection is not None:
-                    drone.prev_connection.drones.inside += 1
-                drone.current_connection.drones.inside -= 1
+                    drone.prev_connection.drones_inside -= 1
+                drone.current_connection.drones_inside += 1
                 drone.next_hub = None
-            elif poss.zone == "restricted":
+            elif best_hub.zone == "restricted":
                 drone.prev_hub = drone.current_hub
                 drone.current_hub = None
-                drone.next_hub = poss
-                drone.current_connection.drones.inside -= 1
+                drone.next_hub = best_hub
+                drone.current_connection.drones_inside += 1
                 drone.status = "restricted"
-            elif poss.zone == "normal" or poss.zone == "priority":
+            elif best_hub.zone == "normal" or best_hub.zone == "priority":
                 drone.status = "reach"
                 drone.prev_hub = drone.current_hub
                 drone.current_hub = best_hub
                 if drone.prev_hub is not None:
-                    drone.current_hub.current_drones += 1
-                drone.current_hub.current_drones -= 1
-                if drone.prev_hub is not None:
-                    drone.prev_hub.current_drones += 1
-                drone.current_hub.current_drones -= 1
+                    drone.prev_hub.current_drones -= 1
+                drone.current_hub.current_drones += 1
                 if drone.prev_connection is not None:
-                    drone.prev_connection.drones.inside += 1
-                drone.current_connection.drones.inside -= 1
+                    drone.prev_connection.drones_inside -= 1
+                drone.current_connection.drones_inside += 1
             # Il drone compie un azione e stampa il suo status
             drone.print_status(drone.current_hub)
-            if drone.current_hub.type == 'end':
+            if (drone.current_hub is not None
+               and drone.current_hub.type == 'end'):
                 drone.status = "finish"
+                drone.current_connection.drones_inside -= 1
         current_turn += 1
 
 
@@ -129,8 +130,7 @@ def update_connection(drone: Drone, curr_hub: Hub, poss: Hub,
     for conn in connections:
         if ((curr_hub == conn.hub0 and poss == conn.hub1) or
            (curr_hub == conn.hub1 and poss == conn.hub0)):
-            if drone.prev_connection is not None:
-                drone.prev_connection = drone.current_connection
+            drone.prev_connection = drone.current_connection
             drone.current_connection = conn
 
 
@@ -139,8 +139,8 @@ def has_room(curr_hub: Hub, poss_hub: Hub,
     for conn in connectins:
         if ((curr_hub == conn.hub0 and poss_hub == conn.hub1) or
            (curr_hub == conn.hub1 and poss_hub == conn.hub0)):
-            if (conn.drones_inside < conn.drones_inside
-               and poss_hub.current_drones < poss_hub.current_drones):
+            if (conn.drones_inside < conn.max_link_capacity
+               and poss_hub.current_drones < poss_hub.max_drones):
                 return True
     return False
 
@@ -164,7 +164,7 @@ def print_info(hubs: list[Hub], drones: list[Drone],
 def check_drones(d_list: list[Drone]) -> bool:
     x = 0
     for d in d_list:
-        if d.current_hub.type == "end":
+        if d.current_hub is not None and d.current_hub.type == "end":
             x += 1
     if x == len(d_list):
         return True

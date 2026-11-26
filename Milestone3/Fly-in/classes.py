@@ -64,22 +64,34 @@ class Drone():
             visited = 'none'
         prev_hub = ''
         if self.prev_hub is not None:
-            prev_hub = f'{self.prev_hub.name}'
+            prev_hub = self.prev_hub.name
         else:
             prev_hub = 'none'
         curr_hub = ''
-        if self.curr_hub is not None:
-            curr_hub = f'{self.curr_hub.name}'
+        if self.current_hub is not None:
+            curr_hub = self.current_hub.name
         else:
             curr_hub = 'none'
+        if self.next_hub is not None:
+            next_hub = self.next_hub.name
+        else:
+            next_hub = 'none'
+        if self.prev_connection is not None:
+            prev_connection = (self.prev_connection.hub0.name + '-'
+                               + self.prev_connection.hub1.name)
+        else:
+            prev_connection = 'none'
+        if self.current_connection is not None:
+            curr_connection = (self.current_connection.hub0.name + '-'
+                               + self.current_connection.hub1.name)
+        else:
+            curr_connection = 'none'
         print(f"ID: {self.id}. VISITED: {visited}. "
               f"PREVIOS HUB: {prev_hub}. "
               f"CURRENT HUB: {curr_hub}. "
-              f"NEXT HUB: {self.next_hub.name}. "
-              f"PREVIOS CONNECTION: {self.prev_connection.hub0.name}-"
-              f"{self.prev_connection.hub1.name}. "
-              f"CURRENT CONNECTION: {self.current_connection.hub0.name}-"
-              f"{self.current_connection.hub1.name}. STATUS: {self.status}")
+              f"NEXT HUB: {next_hub}. "
+              f"PREVIOS CONNECTION: {prev_connection}"
+              f"CURRENT CONNECTION: {curr_connection}. STATUS: {self.status}")
 
     def print_status(self, hub: Hub) -> None:
         if self.status == "wait":

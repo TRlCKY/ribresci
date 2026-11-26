@@ -67,7 +67,8 @@ def start(d_list: list[Drone], c_list: list[Connection],
                         poss_hubs.append(hub1)
                 best_dist = int(distances.get(drone.current_hub.name))
                 best_hub: Hub | None = None
-                drone.visited.append(drone.current_hub)
+                if drone.current_hub not in drone.visited:
+                    drone.visited.append(drone.current_hub)
                 for poss in poss_hubs:
                     # Controlla se l'hub e la connessone sono liberi e viene
                     # scelto quello con costo minore e in caso di parita' si
@@ -91,31 +92,31 @@ def start(d_list: list[Drone], c_list: list[Connection],
                 drone.status = "reach"
                 drone.current_hub = drone.next_hub
                 if drone.prev_hub is not None:
-                    drone.prev_hub.max_drones += 1
-                drone.current_hub.max_drones -= 1
+                    drone.prev_hub.current_drones += 1
+                drone.current_hub.current_drones -= 1
                 if drone.prev_connection is not None:
-                    drone.prev_connection.max_link_capacity += 1
-                drone.current_connection.max_link_capacity -= 1
+                    drone.prev_connection.drones.inside += 1
+                drone.current_connection.drones.inside -= 1
                 drone.next_hub = None
             elif poss.zone == "restricted":
                 drone.prev_hub = drone.current_hub
                 drone.current_hub = None
                 drone.next_hub = poss
-                drone.current_connection.max_link_capacity -= 1
+                drone.current_connection.drones.inside -= 1
                 drone.status = "restricted"
             elif poss.zone == "normal" or poss.zone == "priority":
                 drone.status = "reach"
                 drone.prev_hub = drone.current_hub
                 drone.current_hub = best_hub
                 if drone.prev_hub is not None:
-                    drone.current_hub.max_drones += 1
-                drone.current_hub.max_drones -= 1
+                    drone.current_hub.current_drones += 1
+                drone.current_hub.current_drones -= 1
                 if drone.prev_hub is not None:
-                    drone.prev_hub.max_drones += 1
-                drone.current_hub.max_drones -= 1
+                    drone.prev_hub.current_drones += 1
+                drone.current_hub.current_drones -= 1
                 if drone.prev_connection is not None:
-                    drone.prev_connection.max_link_capacity += 1
-                drone.current_connection.max_link_capacity -= 1
+                    drone.prev_connection.drones.inside += 1
+                drone.current_connection.drones.inside -= 1
             # Il drone compie un azione e stampa il suo status
             drone.print_status(drone.current_hub)
             if drone.current_hub.type == 'end':
@@ -138,8 +139,8 @@ def has_room(curr_hub: Hub, poss_hub: Hub,
     for conn in connectins:
         if ((curr_hub == conn.hub0 and poss_hub == conn.hub1) or
            (curr_hub == conn.hub1 and poss_hub == conn.hub0)):
-            if (conn.drones_inside < conn.max_link_capacity
-               and poss_hub.current_drones < poss_hub.max_drones):
+            if (conn.drones_inside < conn.drones_inside
+               and poss_hub.current_drones < poss_hub.current_drones):
                 return True
     return False
 

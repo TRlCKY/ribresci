@@ -3,26 +3,32 @@ from parser import parser, get_values
 from classes import Drone, Hub, Connection  # ParsingException
 from classes import init_hubs, init_drones, init_connections, get_connected
 from solver import dijkstra, get_near_conn_hub
+import pygame
 
 
 def main() -> None:
-    argv = sys.argv
-    # try:
-    if len(argv) != 2:
-        raise Exception("Number of arguments isn't 2. Wronge.")
-    init_list = get_values(argv)
-    parser(init_list, argv[1])
-    hubs = init_hubs(init_list)
-    drones = init_drones(init_list)
-    connections = init_connections(init_list, hubs)
-    get_connected(connections, hubs)
-    # print_info(hubs, drones, connections)
+    pygame.init()
+    running = True
+    while running:
+        argv = sys.argv
+        # try:
+        if len(argv) != 2:
+            raise Exception("Number of arguments isn't 2. Wronge.")
+        init_list = get_values(argv)
+        parser(init_list, argv[1])
+        hubs = init_hubs(init_list)
+        drones = init_drones(init_list)
+        connections = init_connections(init_list, hubs)
+        get_connected(connections, hubs)
+        # print_info(hubs, drones, connections)
 
-    start(drones, connections, hubs)
-    # except ParsingException as e:
-    #     print(f"Got parsing Exception: {e}")
-    # except Exception as e:
-    #     print(f"Got Exception: {e}")
+        start(drones, connections, hubs)
+        # except ParsingException as e:
+        #     print(f"Got parsing Exception: {e}")
+        # except Exception as e:
+        #     print(f"Got Exception: {e}")
+        running = False
+    pygame.quit()
 
 
 def start(d_list: list[Drone], c_list: list[Connection],
